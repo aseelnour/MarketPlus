@@ -1,0 +1,184 @@
+{
+  "app": {
+    "name": "MarketPlus",
+    "title": "Seller Dashboard"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in to your seller dashboard",
+      "email": "Email Address",
+      "password": "Password",
+      "submit": "Sign In",
+      "noAccount": "Don't have a seller account?",
+      "createAccount": "Register as Seller",
+      "success": "Welcome back! 🎉",
+      "error": "Invalid email or password"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Register as seller",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone (Optional)",
+      "password": "Password",
+      "storeName": "Store Name",
+      "categories": "Categories (Select at least one)",
+      "submit": "Create Account",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign In",
+      "success": "Account created successfully! 🎉"
+    }
+  },
+  "dashboard": {
+    "noAllowedCategories": "You don't have any main categories assigned. Contact admin.",
+    "welcome": "Welcome back",
+    "goodMorning": "Good Morning",
+    "goodAfternoon": "Good Afternoon",
+    "goodEvening": "Good Evening",
+    "subtitle": "Manage your store and products",
+    "adminPanel": "Seller Panel",
+    "live": "Live",
+    "storeInfo": "Store Information",
+    "storeName": "Store Name",
+    "categories": "Categories",
+    "status": "Status",
+    "quickActions": "Quick Actions",
+    "addProduct": "Add Product",
+    "viewOrders": "View Orders",
+    "customers": "Customers",
+    "analytics": "Analytics",
+    "addCategory": "Add Category",
+    "selectCategory": "Select a category...",
+    "mainCategory": "Main Category",
+    "selectMainCategory": "Select a main category...",
+    "sellerCategory": "Your Category",
+    "selectSellerCategory": "Select your category...",
+    "selectMainFirst": "Select main category first",
+    "noSellerCategories": "No categories found. Create one first!",
+    "categoryName": "Category Name",
+    "categoryNameAr": "Category Name (Arabic) (Optional)",
+    "manageCategories": "Manage Your Categories",
+    "manageCategoriesDesc": "Create and manage your own sub-categories under the main categories approved by admin.",
+    "sellerCategories": "Your Categories",
+    "productTitle": "Product Title",
+    "productTitlePlaceholder": "e.g. iPhone 15 Pro",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe your product...",
+    "price": "Price",
+    "discountPrice": "Discount Price",
+    "quantity": "Quantity",
+    "brand": "Brand",
+    "brandPlaceholder": "e.g. Apple",
+    "images": "Images",
+    "imagesHint": "Add image URLs (you can add multiple)",
+    "addProductDesc": "Add a new product to your store",
+    "addImage": "Add Image",
+    "imageUrl": "Image URL",
+    "imageUrlPlaceholder": "https://example.com/image.jpg",
+    "imageUrlError": "Please enter an image URL",
+    "imageUrlInvalid": "Please enter a valid URL",
+    "stats": {
+      "totalProducts": "Total Products",
+      "totalOrders": "Total Orders",
+      "totalRevenue": "Total Revenue",
+      "totalSales": "Total Sales",
+      "rating": "Rating",
+      "followers": "Followers",
+      "sellerCategories": "Categories",
+      "noData": "No data",
+      "vsLastMonth": "vs last month"
+    },
+    "charts": {
+      "revenueOverview": "Revenue Overview",
+      "comingSoon": "📊 Chart coming soon",
+      "topCategories": "Top Categories",
+      "electronics": "Electronics",
+      "clothing": "Clothing",
+      "books": "Books"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "noActivities": "No recent activities to show",
+      "newActivities": "New activities will appear here"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "orders": "Orders",
+    "customers": "Customers",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "logout": "Logout",
+    "stores": "Stores"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search...",
+    "add": "Add",
+    "confirm": "Are you sure?",
+    "confirmMessage": "This action cannot be undone.",
+    "noCategories": "No categories added yet"
+  },
+  "categories": {
+    "Electronics": "Electronics",
+    "Clothing": "Clothing",
+    "Makeup": "Makeup",
+    "Cars": "Cars",
+    "Books": "Books",
+    "Food": "Food",
+    "Sports": "Sports",
+    "Toys": "Toys",
+    "Furniture": "Furniture",
+    "Health": "Health",
+    "main": "Main"
+  },
+  "sellers": {
+    "confirm": {
+      "delete": {
+        "title": "Delete Category",
+        "message": "Are you sure you want to delete this category? This action cannot be undone.",
+        "confirm": "Yes, Delete"
+      }
+    }
+  },
+  "products": {
+    "title": "My Products",
+    "subtitle": "Manage all your products across all categories",
+    "addProduct": "Add Product",
+    "search": "Search products...",
+    "noProducts": "No products found",
+    "allMainCategories": "All Main Categories",
+    "allSellerCategories": "All Your Categories",
+    "allStatus": "All Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "editProduct": "Edit Product",
+    "editProductDesc": "Update your product details",
+    "updateProduct": "Update Product",
+    "deleteProduct": "Delete Product",
+    "deleteConfirm": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
+    "yesDelete": "Yes, Delete",
+    "stats": {
+      "total": "Total",
+      "active": "Active",
+      "inactive": "Inactive",
+      "outOfStock": "Out of Stock"
+    },
+    "table": {
+      "product": "Product",
+      "category": "Category",
+      "price": "Price",
+      "stock": "Stock",
+      "status": "Status",
+      "actions": "Actions"
+    }
+  }
+}

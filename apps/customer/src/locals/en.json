@@ -1,0 +1,101 @@
+{
+  "nav": {
+    "home": "Home",
+    "stores": "Stores",
+    "cart": "Cart",
+    "wishlist": "Wishlist",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "app": {
+    "name": "MarketPlus"
+  },
+  "search": {
+    "placeholder": "Search products, stores..."
+  },
+  "hero": {
+    "badge": "Summer Sale — up to 50% off",
+    "title": "Discover Every Store & Product",
+    "subtitle": "Thousands of products from verified stores",
+    "button": "Browse Stores"
+  },
+  "home": {
+    "featuredStores": "Featured Stores",
+    "allProducts": "All Products",
+    "browseByCategory": "Browse by Category",
+    "trendingProducts": "Trending Products"
+  },
+  "categories": {
+    "all": "All",
+    "electronics": "Electronics",
+    "fashion": "Fashion",
+    "home": "Home",
+    "beauty": "Beauty",
+    "sports": "Sports",
+    "food": "Food",
+    "books": "Books",
+    "cars": "Cars",
+    "clothing": "Clothing",
+    "furniture": "Furniture",
+    "health": "Health",
+    "makeup": "Makeup",
+    "toys": "Toys"
+  },
+  "common": {
+    "seeAll": "See all",
+    "follow": "Follow",
+    "following": "Following",
+    "customerDashboard": "Customer Dashboard",
+    "activeStores": "Active Stores",
+    "products": "Products",
+    "avgRating": "Avg. Rating"
+  },
+  "notifications": {
+    "addedToCart": "Product added to cart!"
+  },
+  "product": {
+    "price": "Price"
+  },
+  "products": {
+    "loading": "Loading products...",
+    "tabs": {
+      "all": "All",
+      "sale": " Sale",
+      "trending": " Trending",
+      "hot": " Hot"
+    }
+  },
+  "stats": {
+    "activeStores": "Active Stores",
+    "products": "Products",
+    "avgRating": "Avg. Rating"
+  },
+  "header": {
+    "userAvatarAlt": "User avatar"
+  },
+  "pages": {
+    "cart": "Cart",
+    "stores": "Stores",
+    "wishlist": "Wishlist",
+    "profile": "Profile"
+  },
+  "store": {
+    "by": "By",
+    "products": "products",
+    "followers": "followers",
+    "allProducts": "All Products",
+    "noProducts": "No products in this category",
+    "addToCart": "Add to Cart"
+  },
+  "stores": {
+    "title": "All Stores",
+    "subtitle": "Discover amazing stores and their products",
+    "search": "Search stores...",
+    "allCategories": "All Categories",
+    "storesFound": "stores found",
+    "noStores": "No stores found",
+    "noStoresDesc": "Try adjusting your search or filters",
+    "visit": "Visit"
+  }
+}

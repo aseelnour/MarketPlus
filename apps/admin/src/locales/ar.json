@@ -1,0 +1,238 @@
+{
+  "app": {
+    "name": "ماركت بلس",
+    "title": "لوحة تحكم المدير"
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول إلى لوحة التحكم",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "submit": "تسجيل الدخول",
+      "noAccount": "ليس لديك حساب؟",
+      "createAccount": "إنشاء حساب مدير",
+      "success": "مرحباً بعودتك! 🎉",
+      "error": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "subtitle": "تسجيل كمدير",
+      "firstName": "الاسم الأول",
+      "lastName": "الاسم الأخير",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف (اختياري)",
+      "password": "كلمة المرور",
+      "submit": "إنشاء حساب",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول",
+      "success": "تم إنشاء الحساب بنجاح! 🎉"
+    }
+  },
+  "dashboard": {
+    "welcome": "مرحباً بعودتك",
+    "goodMorning": "صباح الخير",
+    "goodAfternoon": "مساء الخير",
+    "goodEvening": "مساء الخير",
+    "subtitle": "هذا ما يحدث في متجرك اليوم",
+    "adminPanel": "لوحة المدير",
+    "live": "مباشر",
+    "stats": {
+      "totalSellers": "إجمالي البائعين",
+      "pendingSellers": "قيد الانتظار",
+      "activeSellers": "نشط",
+      "totalCategories": "التصنيفات",
+      "totalProducts": "إجمالي المنتجات",
+      "totalOrders": "إجمالي الطلبات",
+      "revenue": "إجمالي الإيرادات",
+      "noData": "لا توجد بيانات",
+      "vsLastMonth": "مقارنة بالشهر الماضي"
+    },
+    "charts": {
+      "revenueOverview": "نظرة عامة على الإيرادات",
+      "comingSoon": "📊 المخطط قريباً",
+      "topCategories": "أفضل التصنيفات",
+      "electronics": "الإلكترونيات",
+      "clothing": "الملابس",
+      "books": "الكتب"
+    },
+    "activity": {
+      "title": "النشاط الأخير",
+      "noActivities": "لا توجد أنشطة حديثة",
+      "newActivities": "ستظهر الأنشطة الجديدة هنا",
+      "newSeller": "بائع جديد مسجل",
+      "newOrder": "طلب جديد",
+      "productAdded": "منتج جديد مضاف"
+    }
+  },
+  "sidebar": {
+    "dashboard": "لوحة التحكم",
+    "sellers": "البائعين",
+    "products": "المنتجات",
+    "orders": "الطلبات",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "retry": "إعادة المحاولة",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "search": "بحث...",
+    "confirm": "تأكيد",
+    "add": "إضافة",
+    "noCategories": "لم تتم إضافة تصنيفات بعد"
+  },
+  "sellers": {
+    "title": "إدارة البائعين",
+    "subtitle": "إدارة جميع البائعين والموافقات",
+    "search": "بحث عن بائع...",
+    "noSellers": "لا يوجد بائعين",
+    "noDescription": "لا يوجد وصف",
+    "fetchError": "فشل في تحميل البائعين",
+    "approveSuccess": "تمت الموافقة على البائع بنجاح!",
+    "approveError": "فشل في الموافقة على البائع",
+    "rejectSuccess": "تم رفض البائع بنجاح!",
+    "rejectError": "فشل في رفض البائع",
+    "suspendSuccess": "تم تعليق البائع بنجاح!",
+    "suspendError": "فشل في تعليق البائع",
+    "activateSuccess": "تم تفعيل البائع بنجاح!",
+    "activateError": "فشل في تفعيل البائع",
+    "deleteSuccess": "تم حذف البائع بنجاح!",
+    "deleteError": "فشل في حذف البائع",
+    "approve": "موافقة",
+    "reject": "رفض",
+    "suspend": "تعليق",
+    "activate": "تفعيل",
+    "delete": "حذف",
+    "viewDetails": "عرض التفاصيل",
+    "stats": {
+      "total": "الإجمالي",
+      "pending": "قيد الانتظار",
+      "active": "نشط",
+      "rejected": "مرفوض",
+      "suspended": "معلق"
+    },
+    "filters": {
+      "all": "جميع الحالات",
+      "pending": "قيد الانتظار",
+      "active": "نشط",
+      "rejected": "مرفوض",
+      "suspended": "معلق"
+    },
+    "table": {
+      "store": "المتجر",
+      "seller": "البائع",
+      "categories": "التصنيفات",
+      "status": "الحالة",
+      "joined": "تاريخ الانضمام",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "active": "نشط",
+      "rejected": "مرفوض",
+      "suspended": "معلق"
+    },
+    "details": {
+      "title": "تفاصيل البائع",
+      "storeInfo": "معلومات المتجر",
+      "storeName": "اسم المتجر",
+      "status": "الحالة",
+      "description": "الوصف",
+      "sellerInfo": "معلومات البائع",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "joined": "تاريخ الانضمام",
+      "categories": "التصنيفات",
+      "rating": "التقييم",
+      "totalSales": "إجمالي المبيعات",
+      "followers": "المتابعين"
+    },
+    "confirm": {
+      "approve": {
+        "title": "موافقة على البائع",
+        "message": "هل أنت متأكد من الموافقة على هذا البائع؟ سيتمكن من البدء في البيع فوراً.",
+        "confirm": "نعم، موافقة"
+      },
+      "reject": {
+        "title": "رفض البائع",
+        "message": "هل أنت متأكد من رفض هذا البائع؟ لا يمكن التراجع عن هذا الإجراء.",
+        "confirm": "نعم، رفض"
+      },
+      "suspend": {
+        "title": "تعليق البائع",
+        "message": "هل أنت متأكد من تعليق هذا البائع؟ لن يتمكن من البيع حتى يتم إعادة تفعيله.",
+        "confirm": "نعم، تعليق"
+      },
+      "activate": {
+        "title": "تفعيل البائع",
+        "message": "هل أنت متأكد من تفعيل هذا البائع؟ سيتمكن من البيع مرة أخرى.",
+        "confirm": "نعم، تفعيل"
+      },
+      "delete": {
+        "title": "حذف البائع",
+        "message": "هل أنت متأكد من حذف هذا البائع؟ لا يمكن التراجع عن هذا الإجراء.",
+        "confirm": "نعم، حذف"
+      }
+    }
+  },
+  "categories": {
+    "Electronics": "إلكترونيات",
+    "Clothing": "ملابس",
+    "Makeup": "مكياج",
+    "Cars": "سيارات",
+    "Books": "كتب",
+    "Food": "طعام",
+    "Sports": "رياضة",
+    "Toys": "ألعاب",
+    "Furniture": "أثاث",
+    "Health": "صحة"
+  },
+  "adminProducts": {
+    "title": "جميع المنتجات",
+    "subtitle": "إدارة جميع منتجات جميع البائعين",
+    "search": "بحث عن منتج...",
+    "noProducts": "لا توجد منتجات",
+    "allSellers": "جميع البائعين",
+    "allCategories": "جميع التصنيفات",
+    "allStatus": "جميع الحالات",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "deleteSuccess": "تم حذف المنتج بنجاح!",
+    "activeSuccess": "تم تفعيل المنتج بنجاح!",
+    "deactiveSuccess": "تم تعطيل المنتج بنجاح!",
+    "stats": {
+      "total": "الإجمالي",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "outOfStock": "نفذ من المخزون"
+    },
+    "table": {
+      "product": "المنتج",
+      "seller": "البائع",
+      "category": "التصنيف",
+      "price": "السعر",
+      "stock": "المخزون",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "details": {
+      "seller": "البائع",
+      "category": "التصنيف",
+      "price": "السعر",
+      "brandAndStock": "العلامة التجارية والمخزون",
+      "noBrand": "بدون علامة تجارية",
+      "inStock": "في المخزون",
+      "description": "الوصف"
+    },
+    "confirm": {
+      "deleteTitle": "حذف المنتج",
+      "deleteMessage": "هل أنت متأكد من رغبتك في حذف المنتج؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirmDelete": "نعم، حذف"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "market-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "dev:admin": "pnpm run --filter admin dev",
+    "dev:seller": "pnpm run --filter seller dev",
+    "dev:customer": "pnpm run --filter customer dev",
+    "dev:api": "pnpm run --filter api dev",
+    "build": "pnpm run --parallel build",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.0.0",
+    "@types/supertest": "^7.2.1",
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.12",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "axios": "^1.18.1",
+    "framer-motion": "^12.42.2",
+    "ts-node": "^10.9.2"
+  }
+}

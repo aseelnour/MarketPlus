@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-dark-700;
+  }
+  body {
+    @apply bg-dark-950 text-dark-50 antialiased;
+    font-family:
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-800/50;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-500/50 rounded-full hover:bg-primary-500/70 transition-colors;
+}
+
+/* Glassmorphism */
+.glass {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10;
+}
+
+.glass-dark {
+  @apply bg-dark-800/50 backdrop-blur-xl border border-dark-700/50;
+}
+
+/* Gradients */
+.gradient-primary {
+  @apply bg-gradient-to-r from-primary-500 via-primary-400 to-primary-600;
+}
+
+.gradient-accent {
+  @apply bg-gradient-to-r from-accent-purple via-accent-pink to-accent-orange;
+}
+
+/* Cards */
+.card {
+  @apply glass-dark rounded-2xl p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/10 hover:scale-[1.01] hover:border-primary-500/30;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply gradient-primary text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-primary-500/30 active:scale-[0.98];
+}
+
+/* Inputs */
+.input-primary {
+  @apply w-full px-4 py-3 bg-dark-800/50 border border-dark-700 rounded-xl text-dark-50 placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-transparent transition-all duration-200;
+  padding-left: 3rem !important;
+}
+/* منع المتصفح من تغيير لون الخلفية أو النص عند التعبئة التلقائية */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  /* تأخير تغيير لون الخلفية الافتراضي للمتصفح إلى مالا نهاية ليظل شفافاً */
+  transition:
+    background-color 999999s ease-in-out 0s,
+    color 999999s ease-in-out 0s;
+
+  /* الحفاظ على لون النص الأصلي الخاص بك (الفاتح) */
+  -webkit-text-fill-color: #f5f5f7 !important;
+}

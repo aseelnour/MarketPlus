@@ -1,0 +1,184 @@
+{
+  "app": {
+    "name": "ماركت بلس",
+    "title": "لوحة تحكم البائع"
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول إلى لوحة تحكم البائع",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "submit": "تسجيل الدخول",
+      "noAccount": "ليس لديك حساب بائع؟",
+      "createAccount": "إنشاء حساب بائع",
+      "success": "مرحباً بعودتك! 🎉",
+      "error": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "subtitle": "تسجيل كبائع",
+      "firstName": "الاسم الأول",
+      "lastName": "الاسم الأخير",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف (اختياري)",
+      "password": "كلمة المرور",
+      "storeName": "اسم المتجر",
+      "categories": "التصنيفات (اختر تصنيف واحد على الأقل)",
+      "submit": "إنشاء حساب",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول",
+      "success": "تم إنشاء الحساب بنجاح! 🎉"
+    }
+  },
+  "dashboard": {
+    "welcome": "مرحباً بعودتك",
+    "goodMorning": "صباح الخير",
+    "goodAfternoon": "مساء الخير",
+    "goodEvening": "مساء الخير",
+    "subtitle": "إدارة متجرك ومنتجاتك",
+    "adminPanel": "لوحة البائع",
+    "live": "مباشر",
+    "storeInfo": "معلومات المتجر",
+    "storeName": "اسم المتجر",
+    "categories": "التصنيفات",
+    "status": "الحالة",
+    "quickActions": "إجراءات سريعة",
+    "addProduct": "إضافة منتج",
+    "viewOrders": "عرض الطلبات",
+    "customers": "العملاء",
+    "analytics": "التحليلات",
+    "addCategory": "إضافة تصنيف",
+    "selectCategory": "اختر تصنيفاً...",
+    "mainCategory": "التصنيف الرئيسي",
+    "selectMainCategory": "اختر تصنيفاً رئيسياً...",
+    "sellerCategory": "تصنيفك",
+    "selectSellerCategory": "اختر تصنيفك...",
+    "selectMainFirst": "اختر التصنيف الرئيسي أولاً",
+    "noSellerCategories": "لا توجد تصنيفات. أنشئ واحداً أولاً!",
+    "categoryName": "اسم التصنيف",
+    "categoryNameAr": "اسم التصنيف (بالعربية) (اختياري)",
+    "manageCategories": "إدارة تصنيفاتك",
+    "manageCategoriesDesc": "أنشئ وأدر تصنيفاتك الفرعية تحت التصنيفات الرئيسية المعتمدة من المدير.",
+    "sellerCategories": "تصنيفاتك",
+    "productTitle": "عنوان المنتج",
+    "productTitlePlaceholder": "مثال: iPhone 15 Pro",
+    "description": "الوصف",
+    "descriptionPlaceholder": "صف منتجك...",
+    "price": "السعر",
+    "discountPrice": "سعر الخصم",
+    "quantity": "الكمية",
+    "brand": "العلامة التجارية",
+    "brandPlaceholder": "مثال: Apple",
+    "images": "الصور",
+    "imagesHint": "أضف روابط الصور (يمكنك إضافة عدة صور)",
+    "addProductDesc": "أضف منتجاً جديداً إلى متجرك",
+    "noAllowedCategories": "ليس لديك أي تصنيفات رئيسية مسموح بها. تواصل مع المدير.",
+    "addImage": "إضافة صورة",
+    "imageUrl": "رابط الصورة",
+    "imageUrlPlaceholder": "https://example.com/image.jpg",
+    "imageUrlError": "الرجاء إدخال رابط الصورة",
+    "imageUrlInvalid": "الرجاء إدخال رابط صحيح",
+    "stats": {
+      "totalProducts": "إجمالي المنتجات",
+      "totalOrders": "إجمالي الطلبات",
+      "totalRevenue": "إجمالي الإيرادات",
+      "totalSales": "إجمالي المبيعات",
+      "rating": "التقييم",
+      "followers": "المتابعين",
+      "sellerCategories": "التصنيفات",
+      "noData": "لا توجد بيانات",
+      "vsLastMonth": "مقارنة بالشهر الماضي"
+    },
+    "charts": {
+      "revenueOverview": "نظرة عامة على الإيرادات",
+      "comingSoon": "📊 المخطط قريباً",
+      "topCategories": "أفضل التصنيفات",
+      "electronics": "الإلكترونيات",
+      "clothing": "الملابس",
+      "books": "الكتب"
+    },
+    "activity": {
+      "title": "النشاط الأخير",
+      "noActivities": "لا توجد أنشطة حديثة",
+      "newActivities": "ستظهر الأنشطة الجديدة هنا"
+    }
+  },
+  "sidebar": {
+    "dashboard": "لوحة التحكم",
+    "products": "المنتجات",
+    "orders": "الطلبات",
+    "customers": "العملاء",
+    "analytics": "التحليلات",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "stores": "المتاجر"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "retry": "إعادة المحاولة",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "search": "بحث...",
+    "add": "إضافة",
+    "confirm": "تأكيد الإجراء",
+    "confirmMessage": "هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.",
+    "noCategories": "لم تتم إضافة تصنيفات بعد"
+  },
+  "categories": {
+    "Electronics": "إلكترونيات",
+    "Clothing": "ملابس",
+    "Makeup": "مكياج",
+    "Cars": "سيارات",
+    "Books": "كتب",
+    "Food": "طعام",
+    "Sports": "رياضة",
+    "Toys": "ألعاب",
+    "Furniture": "أثاث",
+    "Health": "صحة",
+    "main": "رئيسي"
+  },
+  "sellers": {
+    "confirm": {
+      "delete": {
+        "title": "حذف التصنيف",
+        "message": "هل أنت متأكد من حذف هذا التصنيف؟ لا يمكن التراجع عن هذا الإجراء.",
+        "confirm": "نعم، حذف"
+      }
+    }
+  },
+  "products": {
+    "title": "منتجاتي",
+    "subtitle": "إدارة جميع منتجاتك عبر جميع التصنيفات",
+    "addProduct": "إضافة منتج",
+    "search": "بحث عن منتج...",
+    "noProducts": "لا توجد منتجات",
+    "allMainCategories": "جميع التصنيفات الرئيسية",
+    "allSellerCategories": "جميع تصنيفاتك",
+    "allStatus": "جميع الحالات",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "editProduct": "تعديل المنتج",
+    "editProductDesc": "تحديث تفاصيل منتجك",
+    "updateProduct": "تحديث المنتج",
+    "deleteProduct": "حذف المنتج",
+    "deleteConfirm": "هل أنت متأكد من أنك تريد حذف \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+    "yesDelete": "نعم، حذف",
+    "stats": {
+      "total": "الإجمالي",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "outOfStock": "نفذ من المخزون"
+    },
+    "table": {
+      "product": "المنتج",
+      "category": "التصنيف",
+      "price": "السعر",
+      "stock": "المخزون",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    }
+  }
+}

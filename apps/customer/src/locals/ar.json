@@ -1,0 +1,101 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "stores": "المتاجر",
+    "cart": "السلة",
+    "wishlist": "المفضلة",
+    "profile": "الحساب",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "app": {
+    "name": "ماركت بلس"
+  },
+  "search": {
+    "placeholder": "ابحث عن منتجات، متاجر..."
+  },
+  "hero": {
+    "badge": "تخفيضات الصيف — حتى 50%",
+    "title": "اكتشف كل متجر ومنتج",
+    "subtitle": "آلاف المنتجات من متاجر موثوقة",
+    "button": "استعرض المتاجر"
+  },
+  "home": {
+    "featuredStores": "المتاجر المميزة",
+    "allProducts": "جميع المنتجات",
+    "browseByCategory": "تصفح حسب الفئة",
+    "trendingProducts": "المنتجات الرائجة"
+  },
+  "categories": {
+    "all": "الكل",
+    "electronics": "إلكترونيات",
+    "fashion": "أزياء",
+    "home": "منزل",
+    "beauty": "جمال",
+    "sports": "رياضة",
+    "food": "طعام",
+    "books": "كتب",
+    "cars": "سيارات",
+    "clothing": "ملابس",
+    "furniture": "أثاث",
+    "health": "صحة",
+    "makeup": "مكياج",
+    "toys": "ألعاب"
+  },
+  "common": {
+    "seeAll": "عرض الكل",
+    "follow": "متابعة",
+    "following": "متابَع",
+    "customerDashboard": "لوحة تحكم العميل",
+    "activeStores": "متاجر نشطة",
+    "products": "منتجات",
+    "avgRating": "متوسط التقييم"
+  },
+  "notifications": {
+    "addedToCart": "تمت إضافة المنتج إلى السلة!"
+  },
+  "product": {
+    "price": "السعر"
+  },
+  "products": {
+    "loading": "جاري تحميل المنتجات...",
+    "tabs": {
+      "all": "الكل",
+      "sale": "تخفيضات",
+      "trending": "رائج",
+      "hot": "ساخن"
+    }
+  },
+  "stats": {
+    "activeStores": "متاجر نشطة",
+    "products": "منتجات",
+    "avgRating": "متوسط التقييم"
+  },
+  "header": {
+    "userAvatarAlt": "صورة المستخدم"
+  },
+  "pages": {
+    "cart": "السلة",
+    "stores": "المتاجر",
+    "wishlist": "المفضلة",
+    "profile": "الحساب"
+  },
+  "store": {
+    "products": "منتج",
+    "followers": "متابع",
+    "allProducts": "جميع المنتجات",
+    "noProducts": "لا توجد منتجات في هذه الفئة",
+    "addToCart": "أضف إلى السلة",
+    "by": "بواسطة:"
+  },
+  "stores": {
+    "title": "جميع المتاجر",
+    "subtitle": "اكتشف متاجر رائعة ومنتجاتها",
+    "search": "ابحث عن متاجر...",
+    "allCategories": "جميع الفئات",
+    "storesFound": "متجر تم العثور عليه",
+    "noStores": "لم يتم العثور على متاجر",
+    "noStoresDesc": "حاول تعديل بحثك أو المرشحات",
+    "visit": "زيارة"
+  }
+}
