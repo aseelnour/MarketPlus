@@ -1,3 +1,4 @@
+
 import { Document, Types } from "mongoose";
 
 export interface ICategory extends Document {
@@ -8,6 +9,10 @@ export interface ICategory extends Document {
   description?: string;
   parentCategoryId?: Types.ObjectId;
   isActive: boolean;
-  createdAt: Date;
   isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+
+  type: "store" | "main"; 
+  storeCategoryId?: Types.ObjectId; 
 }

@@ -5,11 +5,11 @@ const API = process.env.API_URL || "http://localhost:5000/api";
 
 describe("API smoke", () => {
   beforeAll(async () => {
-    // ensure DB connection not required for external API tests
+    
   });
 
   afterAll(async () => {
-    // nothing
+    
   });
 
   it("GET /customers/products should return 200 and products", async () => {

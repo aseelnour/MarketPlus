@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { Seller } from "../models/Seller.model";
-import { Store } from "../models/customer-system/store.customer.model";
+import { Store } from "../models/store.model";
 import { Product } from "../models/Product.model";
 
 dotenv.config();
@@ -21,19 +21,12 @@ async function run() {
   }
 
   await mongoose.connect(uri, { family: 4 });
-  console.log("Connected to DB");
 
   const sellers = await Seller.find().exec();
-  console.log(`Found ${sellers.length} sellers`);
 
   for (const seller of sellers) {
-    // Check existing store for this seller
     const existing = await Store.findOne({ owner: seller._id }).exec();
     if (existing) {
-      console.log(
-        `Store already exists for seller ${seller._id} -> ${existing._id}`,
-      );
-      // Ensure products reference it
       await Product.updateMany(
         {
           sellerId: seller._id,
@@ -80,9 +73,7 @@ async function run() {
     });
 
     await store.save();
-    console.log(`Created store ${store._id} for seller ${seller._id}`);
 
-    // Attach products
     const result = await Product.updateMany(
       {
         sellerId: seller._id,
@@ -92,10 +83,8 @@ async function run() {
     ).exec();
     const modified =
       (result as any).modifiedCount ?? (result as any).nModified ?? 0;
-    console.log(`Updated ${modified} products for seller ${seller._id}`);
   }
 
-  console.log("Migration complete");
   await mongoose.disconnect();
   process.exit(0);
 }

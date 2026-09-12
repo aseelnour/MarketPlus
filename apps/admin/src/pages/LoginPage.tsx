@@ -48,7 +48,7 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-primary-950/30 to-dark-950 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Language Switcher */}
+      { }
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <button
           onClick={() => changeLanguage("en")}
@@ -72,7 +72,7 @@ export const LoginPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Animated Background */}
+      { }
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-500/20 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent-purple/20 rounded-full blur-3xl animate-pulse-slow delay-1000" />
@@ -84,7 +84,7 @@ export const LoginPage: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Logo */}
+        { }
         <div className="text-center mb-8">
           <motion.div
             initial={{ scale: 0 }}
@@ -100,7 +100,7 @@ export const LoginPage: React.FC = () => {
           <p className="text-dark-400 mt-2">{t("auth.login.title")}</p>
         </div>
 
-        {/* Login Card */}
+        { }
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}

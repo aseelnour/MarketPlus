@@ -11,4 +11,5 @@ export interface ISellerCategory extends Document {
   isDeleted?: boolean;
   createdAt: Date;
   updatedAt: Date;
+  storeId: mongoose.Types.ObjectId;
 }

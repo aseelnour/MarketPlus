@@ -4,22 +4,27 @@ import helmet from "helmet";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import dns from "dns";
-
+import path from "path";
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 import adminAuthRoutes from "./routes/admin-system/auth.routes";
 import adminRoutes from "./routes/admin-system/admin.routes";
+import adminStoreRoutes from "./routes/admin-system/store.routes";
+import settingRoutes from "./routes/admin-system/setting.routes";
+
 import sellerAuthRoutes from "./routes/seller-system/auth.routes";
 import sellerRoutes from "./routes/seller-system/seller.routes";
+import sellerStoreRoutes from "./routes/seller-system/store.routes";
+import sellerMessageRoutes from "./routes/seller-system/message.routes";
 
 import customerRoutes from "./routes/customer-system/customer.routes";
-import storeRoutes from "./routes/customer-system/store.customer.routes";
-import productRoutes from "./routes/customer-system/product.customer.routes";
-import statsRoutes from "./routes/customer-system/stats.customer.routes";
-import {
-  errorHandler,
-  notFound,
-} from "./middlewares/customer-system/error.middleware.customer";
+import customerStoreRoutes from "./routes/customer-system/store.routes";
+import orderRoutes from "./routes/customer-system/order.routes";
+import wishlistRoutes from "./routes/customer-system/wishlist.routes";
+import cartRoutes from "./routes/customer-system/cart.routes";
+import followRoutes from "./routes/customer-system/follow.routes";
+import reviewRoutes from "./routes/customer-system/review.routes";
+import messageRoutes from "./routes/customer-system/message.routes";
 
 import "./models/seller-category.model";
 import "./models/Product.model";
@@ -30,8 +35,11 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middlewares
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  }),
+);
 app.use(
   cors({
     origin: [
@@ -45,7 +53,8 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ MongoDB Connection with retry
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
 const connectDB = async () => {
   try {
     console.log("🔄 Connecting to MongoDB...");
@@ -66,23 +75,27 @@ const connectDB = async () => {
 
 connectDB();
 
-// Routes
 app.use("/api/admin/auth", adminAuthRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin/stores", adminStoreRoutes);
+app.use("/api/admin/settings", settingRoutes);
+
 app.use("/api/seller/auth", sellerAuthRoutes);
 app.use("/api/seller", sellerRoutes);
-app.use("/api/customer", customerRoutes);
+app.use("/api/seller/stores", sellerStoreRoutes);
+app.use("/api/seller/messages", sellerMessageRoutes);
 
 app.use("/api/customers", customerRoutes);
-app.use("/api/customers/stores", storeRoutes);
-app.use("/api/customers/products", productRoutes);
-app.use("/api/customers/stats", statsRoutes);
+app.use("/api/customers/stores", customerStoreRoutes);
+app.use("/api/customers/wishlist", wishlistRoutes);
+app.use("/api/customers/cart", cartRoutes);
+app.use("/api/customers/follow", followRoutes);
+app.use("/api/customers/reviews", reviewRoutes);
 
-// Error handling
-app.use(notFound);
-app.use(errorHandler);
+app.use("/api/orders", orderRoutes);
 
-// Health Check
+app.use("/api/messages", messageRoutes);
+
 app.get("/health", (req, res) => {
   res.json({ status: "OK", message: "Market API is running" });
 });

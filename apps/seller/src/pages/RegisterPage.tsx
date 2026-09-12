@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
@@ -25,20 +26,17 @@ const registerSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   phone: z.string().optional(),
-  storeName: z.string().min(2, "Store name is required"),
-  storeDescription: z.string().optional(),
 });
 
 type RegisterForm = z.infer<typeof registerSchema>;
 
 export const RegisterPage: React.FC = () => {
-  const { t , i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { register: registerSeller, isLoading } = useSellerAuth();
   const { changeLanguage, currentLanguage } = useLanguage();
   const navigate = useNavigate();
   const [error, setError] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const {
     register,
@@ -51,15 +49,7 @@ export const RegisterPage: React.FC = () => {
   const onSubmit = async (data: RegisterForm) => {
     setError("");
 
-    if (selectedCategories.length === 0) {
-      toast.error("Please select at least one category");
-      return;
-    }
-
-    const result = await registerSeller({
-      ...data,
-      categories: selectedCategories,
-    });
+    const result = await registerSeller(data);
 
     if (result.success) {
       toast.success(
@@ -74,7 +64,7 @@ export const RegisterPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-emerald-950/30 to-dark-950 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Language Switcher */}
+      { }
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <button
           onClick={() => changeLanguage("en")}
@@ -98,7 +88,7 @@ export const RegisterPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Animated Background */}
+      { }
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl animate-pulse-slow delay-1000" />
@@ -110,7 +100,7 @@ export const RegisterPage: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Logo */}
+        { }
         <div className="text-center mb-8">
           <motion.div
             initial={{ scale: 0 }}
@@ -128,7 +118,7 @@ export const RegisterPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Register Card */}
+        { }
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -198,73 +188,7 @@ export const RegisterPage: React.FC = () => {
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-dark-300 mb-1">
-                {t("auth.register.storeName") || "Store Name"}
-              </label>
-              <div className="relative">
-                <Store className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-400 w-4 h-4" />
-                <input
-                  {...register("storeName")}
-                  type="text"
-                  placeholder="My Awesome Store"
-                  className="input-primary pl-9 py-2 text-sm"
-                />
-              </div>
-              {errors.storeName && (
-                <p className="mt-1 text-xs text-red-400">
-                  {errors.storeName.message}
-                </p>
-              )}
-            </div>
-
-            {/* Categories Selection */}
-            <div>
-              <label className="block text-sm font-medium text-dark-300 mb-1">
-                Categories (Select at least one)
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  "Electronics",
-                  "Clothing",
-                  "Makeup",
-                  "Cars",
-                  "Books",
-                  "Food",
-                  "Sports",
-                  "Toys",
-                  "Furniture",
-                  "Health",
-                ].map((cat) => (
-                  <label
-                    key={cat}
-                    className="flex items-center gap-2 p-2 bg-dark-800/50 rounded-lg border border-dark-700 hover:border-emerald-500/30 transition-colors cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      value={cat}
-                      checked={selectedCategories.includes(cat)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedCategories([...selectedCategories, cat]);
-                        } else {
-                          setSelectedCategories(
-                            selectedCategories.filter((c) => c !== cat),
-                          );
-                        }
-                      }}
-                      className="w-4 h-4 rounded border-dark-600 text-emerald-500 focus:ring-emerald-500/50"
-                    />
-                    <span className="text-sm text-white">{cat}</span>
-                  </label>
-                ))}
-              </div>
-              {selectedCategories.length === 0 && (
-                <p className="mt-1 text-xs text-yellow-400">
-                  Please select at least one category
-                </p>
-              )}
-            </div>
+            { }
 
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">

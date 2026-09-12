@@ -54,7 +54,7 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
             className="glass rounded-2xl p-6 max-w-md w-full border border-white/10 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
+            { }
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">
                 {t("dashboard.addImage") || "Add Image"}
@@ -67,7 +67,7 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
               </button>
             </div>
 
-            {/* Form */}
+            { }
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-dark-300 mb-1">

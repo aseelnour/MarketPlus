@@ -4,7 +4,9 @@ import { Seller } from "../../models/Seller.model";
 import { Category } from "../../models/Category.model";
 import { SellerCategory } from "../../models/seller-category.model";
 import { Product } from "../../models/Product.model";
-import { Store } from "../../models/customer-system/store.customer.model";
+import { Order } from "../../models/Order.model";
+import { Store } from "../../models/store.model";
+import { Notification } from "../../models/Notification.model";
 const router = Router();
 
 router.get(
@@ -91,26 +93,34 @@ router.get(
   sellerAuthMiddleware,
   async (req: any, res: Response) => {
     try {
-      console.log("🔍 Fetching seller categories for seller:", req.seller._id);
+      const { storeId } = req.query;
+
+      if (!storeId || storeId === "null") {
+        return res.status(400).json({
+          success: false,
+          message: "Store ID is required",
+        });
+      }
 
       const sellerCategories = await SellerCategory.find({
         sellerId: req.seller._id,
+        storeId: storeId,
         isActive: true,
+        isDeleted: false,
       })
         .populate("mainCategoryId", "name nameAr")
-        .sort({ createdAt: -1 });
-
-      console.log("📊 Found seller categories:", sellerCategories.length);
+        .sort({ name: 1 });
 
       res.json({
         success: true,
         data: { sellerCategories },
       });
     } catch (error) {
-      console.error("Get seller categories error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to fetch seller categories" });
+      console.error("❌ Get seller categories error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch seller categories",
+      });
     }
   },
 );
@@ -121,11 +131,21 @@ router.get(
   async (req: any, res: Response) => {
     try {
       const { mainCategoryId } = req.params;
+      const { storeId } = req.query;
+
+      if (!storeId || storeId === "null") {
+        return res.status(400).json({
+          success: false,
+          message: "Store ID is required",
+        });
+      }
 
       const sellerCategories = await SellerCategory.find({
         sellerId: req.seller._id,
+        storeId: storeId,
         mainCategoryId,
         isActive: true,
+        isDeleted: false,
       }).sort({ name: 1 });
 
       res.json({
@@ -133,10 +153,11 @@ router.get(
         data: { sellerCategories },
       });
     } catch (error) {
-      console.error("Get seller categories by main category error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to fetch seller categories" });
+      console.error("❌ Get seller categories error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch seller categories",
+      });
     }
   },
 );
@@ -146,59 +167,72 @@ router.post(
   sellerAuthMiddleware,
   async (req: any, res: Response) => {
     try {
-      const { mainCategoryId, name, nameAr, description } = req.body;
+      const { storeId, mainCategoryId, name, nameAr, description } = req.body;
 
-      if (!mainCategoryId || !name) {
+      if (!storeId || !mainCategoryId || !name) {
         return res.status(400).json({
           success: false,
-          message: "Main category ID and name are required",
+          message: "storeId, main category ID and name are required",
         });
       }
 
-      const mainCategory = await Category.findById(mainCategoryId);
+      const store = await Store.findOne({
+        _id: storeId,
+        owner: req.seller._id,
+      });
+      if (!store) {
+        return res.status(404).json({
+          success: false,
+          message: "Store not found or not owned by you",
+        });
+      }
+
+      const mainCategory = await Category.findOne({
+        _id: mainCategoryId,
+        type: "store",
+        isActive: true,
+        isDeleted: false,
+      });
       if (!mainCategory) {
         return res.status(404).json({
           success: false,
-          message: "Main category not found",
+          message: "Store category not found",
         });
       }
 
-      const seller = await Seller.findById(req.seller._id);
-      if (!seller) {
-        return res.status(404).json({
-          success: false,
-          message: "Seller not found",
-        });
-      }
-
-      if (!seller.categories.includes(mainCategory.name)) {
+      const storeCategoryIds = store.storeCategoryIds || [];
+      if (!storeCategoryIds.includes(mainCategoryId)) {
         return res.status(403).json({
           success: false,
-          message: `You are not authorized to add categories under "${mainCategory.name}". Your allowed categories are: ${seller.categories.join(", ")}`,
+          message: `You are not authorized to add categories under "${mainCategory.name}". This store does not have this category.`,
         });
       }
 
       const existing = await SellerCategory.findOne({
         sellerId: req.seller._id,
+        storeId: storeId,
         mainCategoryId,
         name: { $regex: new RegExp(`^${name}$`, "i") },
+        isDeleted: false,
       });
 
       if (existing) {
         return res.status(400).json({
           success: false,
           message:
-            "You already have a category with this name under this main category",
+            "You already have a category with this name under this store category",
         });
       }
 
       const sellerCategory = new SellerCategory({
         sellerId: req.seller._id,
+        storeId: storeId,
         mainCategoryId,
         name,
         nameAr,
         description,
         isActive: true,
+        isDeleted: false,
       });
 
       await sellerCategory.save();
@@ -209,13 +243,15 @@ router.post(
         data: { sellerCategory },
       });
     } catch (error) {
-      console.error("Create seller category error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to create seller category" });
+      console.error("❌ Create seller category error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to create seller category",
+      });
     }
   },
 );
+
 router.put(
   "/categories/seller/:id",
   sellerAuthMiddleware,
@@ -310,7 +346,8 @@ router.post(
   async (req: any, res: Response) => {
     try {
       const {
-        mainCategoryId,
+        storeId,
+        storeCategoryId,
         sellerCategoryId,
         title,
         description,
@@ -321,42 +358,80 @@ router.post(
         images,
       } = req.body;
 
-      const mainCategory = await Category.findById(mainCategoryId);
-      if (!mainCategory) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Main category not found" });
+      let store;
+      if (storeId) {
+        store = await Store.findOne({ _id: storeId, owner: req.seller._id });
+      } else {
+        store = await Store.findOne({ owner: req.seller._id, isActive: true });
+      }
+
+      if (!store) {
+        return res.status(400).json({
+          success: false,
+          message: "You don't have an active store to add products to.",
+        });
+      }
+
+      if (!storeCategoryId) {
+        return res.status(400).json({
+          success: false,
+          message: "Store category is required",
+        });
+      }
+
+      const storeCategory = await Category.findOne({
+        _id: storeCategoryId,
+        type: "store",
+        isActive: true,
+      });
+
+      if (!storeCategory) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid store category",
+        });
+      }
+
+      if (!sellerCategoryId) {
+        return res.status(400).json({
+          success: false,
+          message: "Seller category is required",
+        });
       }
 
       const sellerCategory = await SellerCategory.findOne({
         _id: sellerCategoryId,
         sellerId: req.seller._id,
-        mainCategoryId,
+        storeId: store._id,
+        mainCategoryId: storeCategoryId,
       });
 
       if (!sellerCategory) {
         return res.status(404).json({
           success: false,
-          message:
-            "Seller category not found or does not belong to this seller",
+          message: "Seller category not found or does not belong to this store",
         });
       }
 
       const product = new Product({
         sellerId: req.seller._id,
-        mainCategoryId,
-        sellerCategoryId,
+        storeId: store._id,
+        mainCategoryId: storeCategoryId,
+        sellerCategoryId: sellerCategoryId,
         title,
         description,
         price,
         discountPrice,
         quantity,
         brand,
-        images,
+        images: images || ["placeholder.jpg"],
         isActive: true,
       });
 
       await product.save();
+
+      store.products.push(product._id);
+      await store.save();
 
       sellerCategory.products.push(product._id);
       await sellerCategory.save();
@@ -366,11 +441,13 @@ router.post(
         message: "Product created successfully",
         data: { product },
       });
-    } catch (error) {
-      console.error("Create product error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to create product" });
+    } catch (error: any) {
+      console.error("❌ Create product error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to create product",
+        error: error.message || "Something went wrong",
+      });
     }
   },
 );
@@ -380,10 +457,18 @@ router.get(
   sellerAuthMiddleware,
   async (req: any, res: Response) => {
     try {
-      const products = await Product.find({
+      const { storeId } = req.query;
+
+      let filter: any = {
         sellerId: req.seller._id,
         isDeleted: false,
-      })
+      };
+
+      if (storeId) {
+        filter.storeId = storeId;
+      }
+
+      const products = await Product.find(filter)
         .populate("mainCategoryId", "name nameAr")
         .populate("sellerCategoryId", "name nameAr")
         .sort({ createdAt: -1 });
@@ -394,18 +479,52 @@ router.get(
       });
     } catch (error) {
       console.error("Get products error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to fetch products" });
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch products",
+      });
     }
   },
 );
 
 router.get("/orders", sellerAuthMiddleware, async (req: any, res: Response) => {
   try {
-    res.json({ success: true, data: { orders: [] } });
+    const { storeId } = req.query;
+
+    if (!storeId || storeId === "null") {
+      return res.status(400).json({
+        success: false,
+        message: "Store ID is required to fetch orders",
+      });
+    }
+
+    const store = await Store.findOne({
+      _id: storeId,
+      owner: req.seller._id,
+      isDeleted: { $ne: true },
+    });
+
+    if (!store) {
+      return res.status(404).json({
+        success: false,
+        message: "Store not found or not owned by you",
+      });
+    }
+
+    const orders = await Order.find({ storeId: storeId })
+      .sort({ createdAt: -1 })
+      .populate("items.productId", "title price images");
+
+    res.json({
+      success: true,
+      data: { orders },
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to fetch orders" });
+    console.error("Get orders error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch orders",
+    });
   }
 });
 
@@ -414,15 +533,40 @@ router.get(
   sellerAuthMiddleware,
   async (req: any, res: Response) => {
     try {
-      const seller = await Seller.findById(req.seller._id);
-      if (!seller) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Seller not found" });
+      let { storeId } = req.query;
+
+      if (!storeId || storeId === "null") {
+        const firstStore = await Store.findOne({
+          owner: req.seller._id,
+          isActive: true,
+          isDeleted: { $ne: true },
+        }).sort({ createdAt: -1 });
+
+        if (firstStore) {
+          storeId = firstStore._id.toString();
+        } else {
+          return res.status(404).json({
+            success: false,
+            message:
+              "No active store found for this seller. Please create or activate a store.",
+          });
+        }
+      }
+
+      const store = await Store.findOne({
+        _id: storeId,
+        owner: req.seller._id,
+        isDeleted: { $ne: true },
+      });
+      if (!store) {
+        return res.status(404).json({
+          success: false,
+          message: "Store not found or not owned by you",
+        });
       }
 
       const totalProducts = await Product.countDocuments({
-        sellerId: req.seller._id,
+        storeId: store._id,
         isActive: true,
       });
 
@@ -438,14 +582,14 @@ router.get(
             totalProducts: totalProducts || 0,
             totalOrders: 0,
             totalRevenue: 0,
-            totalSales: seller.totalSales || 0,
-            rating: seller.rating || 0,
-            followers: seller.followers || 0,
+            totalSales: 0,
+            rating: store.rating || 0,
+            followers: store.followers?.length || 0,
             totalSellerCategories: totalSellerCategories || 0,
           },
           recentOrders: [],
           topProducts: [],
-          seller,
+          store,
         },
       });
     } catch (error) {
@@ -463,9 +607,11 @@ router.delete(
   async (req: any, res: Response) => {
     try {
       const { id } = req.params;
+      const { storeId } = req.query;
+
       const product = await Product.findOneAndUpdate(
-        { _id: id, sellerId: req.seller._id },
-        { isDeleted: true }, // ← Soft Delete
+        { _id: id, sellerId: req.seller._id, storeId: storeId },
+        { isDeleted: true },
         { new: true },
       );
 
@@ -491,10 +637,10 @@ router.patch(
   async (req: any, res: Response) => {
     try {
       const { id } = req.params;
-      const { isActive } = req.body;
+      const { storeId, isActive } = req.body;
 
       const product = await Product.findOneAndUpdate(
-        { _id: id, sellerId: req.seller._id },
+        { _id: id, sellerId: req.seller._id, storeId: storeId },
         { isActive },
         { new: true },
       );
@@ -525,9 +671,12 @@ router.get(
   async (req: any, res: Response) => {
     try {
       const { id } = req.params;
+      const { storeId } = req.query;
+
       const product = await Product.findOne({
         _id: id,
         sellerId: req.seller._id,
+        storeId: storeId,
         isDeleted: false,
       })
         .populate("mainCategoryId", "name nameAr")
@@ -548,7 +697,6 @@ router.get(
     }
   },
 );
-
 router.put(
   "/products/:id",
   sellerAuthMiddleware,
@@ -556,6 +704,7 @@ router.put(
     try {
       const { id } = req.params;
       const {
+        storeId,
         mainCategoryId,
         sellerCategoryId,
         title,
@@ -569,9 +718,9 @@ router.put(
       } = req.body;
 
       const product = await Product.findOneAndUpdate(
-        { _id: id, sellerId: req.seller._id },
+        { _id: id, sellerId: req.seller._id, storeId: storeId },
         {
-          mainCategoryId,
+          mainCategoryId: mainCategoryId,
           sellerCategoryId,
           title,
           description,
@@ -586,9 +735,10 @@ router.put(
       );
 
       if (!product) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Product not found" });
+        return res.status(404).json({
+          success: false,
+          message: "Product not found",
+        });
       }
 
       res.json({
@@ -598,167 +748,487 @@ router.put(
       });
     } catch (error) {
       console.error("Update product error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to update product" });
+      res.status(500).json({
+        success: false,
+        message: "Failed to update product",
+      });
     }
   },
 );
-
-// --- Seller Store management ---
-router.get("/stores", sellerAuthMiddleware, async (req: any, res: Response) => {
-  try {
-    const stores = await Store.find({
-      owner: req.seller._id,
-      isActive: true,
-    }).sort({ createdAt: -1 });
-    res.json({ success: true, data: { stores } });
-  } catch (error) {
-    console.error("Get seller stores error:", error);
-    res.status(500).json({ success: false, message: "Failed to fetch stores" });
-  }
-});
-
-router.post(
-  "/stores",
+router.patch(
+  "/orders/:id/status",
   sellerAuthMiddleware,
   async (req: any, res: Response) => {
     try {
-      const {
-        name,
-        slug,
-        description,
-        logo,
-        coverImage,
-        category,
-        location,
-        socialLinks,
-      } = req.body;
-      if (!name || !slug || !category) {
+      const { id } = req.params;
+      const { status, storeId } = req.body;
+
+      if (
+        !["pending", "confirmed", "shipped", "delivered", "cancelled"].includes(
+          status,
+        )
+      ) {
         return res
           .status(400)
-          .json({
-            success: false,
-            message: "name, slug and category are required",
-          });
+          .json({ success: false, message: "Invalid status value" });
       }
 
-      const existing = await Store.findOne({ slug });
-      if (existing)
-        return res
-          .status(400)
-          .json({ success: false, message: "Slug already in use" });
+      const order = await Order.findOne({ _id: id, storeId: storeId });
+      if (!order) {
+        return res.status(404).json({
+          success: false,
+          message: "Order not found or not owned by you",
+        });
+      }
 
-      const store = new Store({
-        name,
-        slug,
-        description: description || "",
-        logo,
-        coverImage,
-        category,
-        owner: req.seller._id,
-        location: location || {
-          address: "N/A",
-          city: "N/A",
-          state: "N/A",
-          country: "N/A",
-          coordinates: {},
-        },
-        socialLinks: socialLinks || {},
-        isActive: true,
+      order.status = status;
+      await order.save();
+
+      const store = await Store.findById(storeId);
+      const storeName = store?.name || "Unknown Store";
+
+      const notification = new Notification({
+        sellerId: req.seller._id,
+        storeId: storeId,
+        storeName: storeName,
+        type: status === "cancelled" ? "order_cancelled" : "order_updated",
+        message: `Order #${order.orderNumber} status updated to ${status} in store "${storeName}"`,
       });
+      await notification.save();
 
-      await store.save();
-      res.json({ success: true, message: "Store created", data: { store } });
+      res.json({
+        success: true,
+        message: `Order status updated to ${status}`,
+        data: { order },
+      });
     } catch (error) {
-      console.error("Create store error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to create store" });
+      console.error("Update order status error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to update order status",
+      });
     }
   },
 );
 
 router.get(
-  "/stores/:id",
+  "/notifications",
   sellerAuthMiddleware,
   async (req: any, res: Response) => {
     try {
-      const { id } = req.params;
-      const store = await Store.findOne({
-        _id: id,
-        owner: req.seller._id,
-        isActive: true,
+      const notifications = await Notification.find({
+        sellerId: req.seller._id,
+      })
+        .sort({ createdAt: -1 })
+        .limit(30);
+
+      res.json({
+        success: true,
+        data: { notifications },
       });
-      if (!store)
+    } catch (error) {
+      console.error("Get notifications error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch notifications",
+      });
+    }
+  },
+);
+
+router.post(
+  "/notifications/new-order",
+  sellerAuthMiddleware,
+  async (req: any, res: Response) => {
+    try {
+      const { storeId, orderNumber } = req.body;
+      if (!storeId || !orderNumber) {
+        return res.status(400).json({
+          success: false,
+          message: "Store ID and Order Number are required",
+        });
+      }
+
+      const store = await Store.findById(storeId);
+      if (!store) {
         return res
           .status(404)
           .json({ success: false, message: "Store not found" });
-      res.json({ success: true, data: { store } });
+      }
+
+      const notification = new Notification({
+        sellerId: req.seller._id,
+        storeId: storeId,
+        storeName: store.name,
+        type: "new_order",
+        message: `New order #${orderNumber} placed in "${store.name}"`,
+      });
+      await notification.save();
+
+      res.json({ success: true, message: "Notification sent" });
     } catch (error) {
-      console.error("Get store error:", error);
+      console.error("Create notification error:", error);
       res
         .status(500)
-        .json({ success: false, message: "Failed to fetch store" });
+        .json({ success: false, message: "Failed to create notification" });
     }
   },
 );
 
-router.put(
-  "/stores/:id",
+router.get(
+  "/orders/:orderId",
+  sellerAuthMiddleware,
+  async (req: any, res: Response) => {
+    try {
+      const { orderId } = req.params;
+      const { storeId } = req.query;
+
+      if (!storeId || storeId === "null") {
+        return res.status(400).json({
+          success: false,
+          message: "Store ID is required",
+        });
+      }
+
+      const store = await Store.findOne({
+        _id: storeId,
+        owner: req.seller._id,
+        isDeleted: { $ne: true },
+      });
+
+      if (!store) {
+        return res.status(404).json({
+          success: false,
+          message: "Store not found or not owned by you",
+        });
+      }
+
+      const order = await Order.findOne({
+        _id: orderId,
+        storeId: storeId,
+      }).populate("items.productId", "title images price");
+
+      if (!order) {
+        return res.status(404).json({
+          success: false,
+          message: "Order not found",
+        });
+      }
+
+      res.json({
+        success: true,
+        data: { order },
+      });
+    } catch (error) {
+      console.error("❌ Get order details error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch order details",
+      });
+    }
+  },
+);
+
+router.patch(
+  "/orders/:id/status",
   sellerAuthMiddleware,
   async (req: any, res: Response) => {
     try {
       const { id } = req.params;
-      const updates = req.body;
-      const store = await Store.findOneAndUpdate(
-        { _id: id, owner: req.seller._id },
-        updates,
-        { new: true },
-      );
-      if (!store)
+      const { status, storeId } = req.body;
+
+      if (
+        !["pending", "confirmed", "shipped", "delivered", "cancelled"].includes(
+          status,
+        )
+      ) {
         return res
-          .status(404)
-          .json({
-            success: false,
-            message: "Store not found or not owned by you",
-          });
-      res.json({ success: true, message: "Store updated", data: { store } });
+          .status(400)
+          .json({ success: false, message: "Invalid status value" });
+      }
+
+      const order = await Order.findOne({ _id: id, storeId: storeId });
+      if (!order) {
+        return res.status(404).json({
+          success: false,
+          message: "Order not found or not owned by you",
+        });
+      }
+
+      order.status = status;
+      await order.save();
+
+      const store = await Store.findById(storeId);
+      const storeName = store?.name || "Unknown Store";
+
+      const notification = new Notification({
+        sellerId: req.seller._id,
+        storeId: storeId,
+        storeName: storeName,
+        type: status === "cancelled" ? "order_cancelled" : "order_updated",
+        message: `Order #${order.orderNumber} status updated to ${status} in store "${storeName}"`,
+      });
+      await notification.save();
+
+      res.json({
+        success: true,
+        message: `Order status updated to ${status}`,
+        data: { order },
+      });
     } catch (error) {
-      console.error("Update store error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to update store" });
+      console.error("Update order status error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to update order status",
+      });
     }
   },
 );
 
-router.delete(
-  "/stores/:id",
+router.get(
+  "/analytics",
   sellerAuthMiddleware,
   async (req: any, res: Response) => {
     try {
-      const { id } = req.params;
-      const store = await Store.findOneAndUpdate(
-        { _id: id, owner: req.seller._id },
-        { isActive: false },
-        { new: true },
+      const { storeId, period = "30d" } = req.query;
+
+      if (!storeId) {
+        return res.status(400).json({
+          success: false,
+          message: "Store ID is required",
+        });
+      }
+
+      const store = await Store.findOne({
+        _id: storeId,
+        owner: req.seller._id,
+        isDeleted: { $ne: true },
+      });
+
+      if (!store) {
+        return res.status(404).json({
+          success: false,
+          message: "Store not found or not owned by you",
+        });
+      }
+
+      let days = 30;
+      if (period === "7d") days = 7;
+      if (period === "90d") days = 90;
+
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
+
+      const orders = await Order.find({
+        storeId: storeId,
+        createdAt: { $gte: startDate },
+      }).sort({ createdAt: 1 });
+
+      const revenueMap: Record<string, number> = {};
+      const ordersMap: Record<string, number> = {};
+
+      for (let i = 0; i < days; i++) {
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + i);
+        const key = date.toISOString().split("T")[0];
+        revenueMap[key] = 0;
+        ordersMap[key] = 0;
+      }
+
+      orders.forEach((order) => {
+        if (order.createdAt) {
+          const key = order.createdAt.toISOString().split("T")[0];
+          if (revenueMap[key] !== undefined) {
+            revenueMap[key] += order.totalPrice || 0;
+            ordersMap[key] += 1;
+          }
+        }
+      });
+
+      const revenueData = Object.entries(revenueMap).map(([date, revenue]) => ({
+        date,
+        revenue,
+      }));
+
+      const ordersData = Object.entries(ordersMap).map(
+        ([date, ordersCount]) => ({
+          date,
+          orders: ordersCount,
+        }),
       );
-      if (!store)
-        return res
-          .status(404)
-          .json({
-            success: false,
-            message: "Store not found or not owned by you",
-          });
-      res.json({ success: true, message: "Store deactivated" });
+
+      const categoryMap: Record<string, number> = {};
+      const productIds = store.products || [];
+      const products = await Product.find({
+        _id: { $in: productIds },
+        isActive: true,
+      }).populate("mainCategoryId", "name");
+
+      products.forEach((product) => {
+        let categoryName = "Uncategorized";
+        if (product.mainCategoryId) {
+          const category = product.mainCategoryId as any;
+          categoryName = category.name || "Uncategorized";
+        }
+        categoryMap[categoryName] = (categoryMap[categoryName] || 0) + 1;
+      });
+
+      const categoryData = Object.entries(categoryMap).map(([name, value]) => ({
+        name,
+        value,
+      }));
+
+      const statusMap: Record<string, number> = {};
+      orders.forEach((order) => {
+        statusMap[order.status] = (statusMap[order.status] || 0) + 1;
+      });
+
+      const statusData = Object.entries(statusMap).map(([name, value]) => ({
+        name: name.charAt(0).toUpperCase() + name.slice(1),
+        value,
+      }));
+
+      const productSales: Record<
+        string,
+        { title: string; sold: number; revenue: number; image?: string }
+      > = {};
+
+      orders.forEach((order) => {
+        order.items.forEach((item: any) => {
+          const productId = item.productId?.toString();
+          if (productId) {
+            if (!productSales[productId]) {
+              productSales[productId] = {
+                title: item.title || "Unknown",
+                sold: 0,
+                revenue: 0,
+                image: item.image || "",
+              };
+            }
+            productSales[productId].sold += item.quantity || 1;
+            productSales[productId].revenue +=
+              item.total || item.price * item.quantity;
+          }
+        });
+      });
+
+      const topProducts = Object.entries(productSales)
+        .map(([id, data]) => ({
+          _id: id,
+          ...data,
+        }))
+        .sort((a, b) => b.sold - a.sold)
+        .slice(0, 5);
+
+      const recentOrders = await Order.find({
+        storeId: storeId,
+      })
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .select("orderNumber totalPrice status createdAt");
+
+      res.json({
+        success: true,
+        data: {
+          revenueData,
+          ordersData,
+          categoryData,
+          statusData,
+          topProducts,
+          recentOrders,
+        },
+      });
     } catch (error) {
-      console.error("Delete store error:", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to delete store" });
+      console.error("❌ Analytics error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch analytics data",
+      });
     }
   },
 );
 
+router.get(
+  "/categories/store",
+  sellerAuthMiddleware,
+  async (req: any, res: Response) => {
+    try {
+      const categories = await Category.find({
+        type: "store",
+        isActive: true,
+        isDeleted: false,
+      }).sort({ name: 1 });
+
+      res.json({
+        success: true,
+        data: { categories },
+      });
+    } catch (error) {
+      console.error("❌ Get store categories error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch store categories",
+      });
+    }
+  },
+);
+
+router.get(
+  "/categories/store-main",
+  sellerAuthMiddleware,
+  async (req: any, res: Response) => {
+    try {
+      const { storeId } = req.query;
+
+      if (!storeId) {
+        return res.status(400).json({
+          success: false,
+          message: "Store ID is required",
+        });
+      }
+
+      const store = await Store.findOne({
+        _id: storeId,
+        owner: req.seller._id,
+        isDeleted: false,
+      });
+
+      if (!store) {
+        return res.status(404).json({
+          success: false,
+          message: "Store not found or not owned by you",
+        });
+      }
+
+      const storeCategoryIds = store.storeCategoryIds || [];
+
+      if (storeCategoryIds.length === 0) {
+        return res.json({
+          success: true,
+          data: { categories: [] },
+        });
+      }
+
+      const categories = await Category.find({
+        type: "main",
+        storeCategoryId: { $in: storeCategoryIds },
+        isActive: true,
+        isDeleted: false,
+      })
+        .select("_id name nameAr storeCategoryId")
+        .sort({ name: 1 });
+
+      res.json({
+        success: true,
+        data: { categories },
+      });
+    } catch (error) {
+      console.error("❌ Get store main categories error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch store categories",
+      });
+    }
+  },
+);
 export default router;

@@ -14,7 +14,6 @@ export const useLanguage = () => {
   }, []);
 
   const changeLanguage = (lang: "en" | "ar") => {
-    console.log("🌍 Changing language to:", lang);
     i18n.changeLanguage(lang);
     setCurrentLanguage(lang);
     localStorage.setItem("i18nextLng", lang);

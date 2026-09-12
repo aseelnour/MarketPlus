@@ -1,8 +1,10 @@
+
 import { Document, Types } from "mongoose";
 
 export interface IOrderItem {
   productId: Types.ObjectId;
   sellerId: Types.ObjectId;
+  storeId: Types.ObjectId;
   title: string;
   quantity: number;
   price: number;
@@ -11,9 +13,10 @@ export interface IOrderItem {
 }
 
 export interface IOrder extends Document {
-  _id: Types.ObjectId;
   orderNumber: string;
-  customerId: Types.ObjectId;
+  guestId?: string; 
+  customerId?: Types.ObjectId;
+  storeId: Types.ObjectId;
   items: IOrderItem[];
   totalPrice: number;
   subtotal: number;
@@ -31,10 +34,10 @@ export interface IOrder extends Document {
     zipCode: string;
     phone: string;
     fullName: string;
+    email?: string; 
   };
   notes?: string;
   deliveredAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  isDeleted: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

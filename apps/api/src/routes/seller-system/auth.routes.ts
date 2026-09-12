@@ -1,24 +1,13 @@
+
 import { Router, Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 import { SellerAuthService } from "../../services/seller/auth.service";
+import {
+  validateRegistration,
+  validateLogin,
+} from "../../validation/auth.validation";
 
 const router = Router();
-
-const validateRegistration = [
-  body("firstName").notEmpty().withMessage("First name is required"),
-  body("lastName").notEmpty().withMessage("Last name is required"),
-  body("email").isEmail().withMessage("Valid email is required"),
-  body("password")
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters"),
-  body("storeName").notEmpty().withMessage("Store name is required"),
-  body("categories").isArray().withMessage("Categories must be an array"),
-];
-
-const validateLogin = [
-  body("email").isEmail().withMessage("Valid email is required"),
-  body("password").notEmpty().withMessage("Password is required"),
-];
 
 router.post(
   "/register",

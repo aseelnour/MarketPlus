@@ -10,6 +10,8 @@ import {
   User,
   Bell,
   Sparkles,
+  Store as StoreIcon,
+  Tags, 
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useTranslation } from "react-i18next";
@@ -42,20 +44,23 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     },
     { icon: Store, label: t("sidebar.sellers"), path: "/sellers" },
     { icon: Package, label: t("sidebar.products"), path: "/products" },
+    { icon: Tags, label: t("sidebar.categories"), path: "/categories" }, 
     { icon: ShoppingCart, label: t("sidebar.orders"), path: "/orders" },
+    { icon: StoreIcon, label: "Stores", path: "/stores" },
+
     { icon: Settings, label: t("sidebar.settings"), path: "/settings" },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-primary-950/20 to-dark-950">
-      {/* Sidebar */}
+      { }
       <aside
         className={`fixed top-0 h-full w-64 glass-dark border-r border-white/10 p-4 transition-all duration-300 ${
           isRTL ? "right-0 border-l border-r-0" : "left-0"
         }`}
         dir={isRTL ? "rtl" : "ltr"}
       >
-        {/* Logo */}
+        { }
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,7 +74,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </span>
         </motion.div>
 
-        {/* Navigation */}
+        { }
         <nav className="space-y-1">
           {navItems.map((item, index) => (
             <motion.div
@@ -89,7 +94,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           ))}
         </nav>
 
-        {/* User Profile */}
+        { }
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -119,12 +124,12 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         </motion.div>
       </aside>
 
-      {/* Main Content */}
+      { }
       <main
         className={`p-8 ${isRTL ? "mr-64" : "ml-64"}`}
         dir={isRTL ? "rtl" : "ltr"}
       >
-        {/* Top Bar */}
+        { }
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -146,7 +151,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </div>
         </motion.div>
 
-        {/* Page Content */}
+        { }
         {children}
       </main>
     </div>

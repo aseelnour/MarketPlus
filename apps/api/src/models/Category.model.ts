@@ -1,3 +1,4 @@
+
 import mongoose, { Schema } from "mongoose";
 import { ICategory } from "../interfaces/Category.interface";
 
@@ -13,14 +14,20 @@ const CategorySchema = new Schema<ICategory>(
       default: null,
     },
     isActive: { type: Boolean, default: true },
-    isDeleted: {
-      type: Boolean,
-      default: false,
+    isDeleted: { type: Boolean, default: false },
+
+    type: {
+      type: String,
+      enum: ["store", "main"],
+      default: "main",
+    },
+    storeCategoryId: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      default: null,
     },
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true },
 );
 
 export const Category = mongoose.model<ICategory>("Category", CategorySchema);

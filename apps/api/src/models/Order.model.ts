@@ -1,3 +1,4 @@
+
 import mongoose, { Schema } from "mongoose";
 import { IOrder, IOrderItem } from "../interfaces/order.interface";
 
@@ -10,11 +11,16 @@ const OrderItemSchema = new Schema<IOrderItem>({
   sellerId: {
     type: Schema.Types.ObjectId,
     ref: "Seller",
-    required: true,
+    required: false, 
+  },
+  storeId: {
+    type: Schema.Types.ObjectId,
+    ref: "Store",
+    required: false, 
   },
   title: {
     type: String,
-    required: true,
+    required: false, 
   },
   quantity: {
     type: Number,
@@ -28,7 +34,7 @@ const OrderItemSchema = new Schema<IOrderItem>({
   },
   total: {
     type: Number,
-    required: true,
+    required: false, 
     min: 0,
   },
   isDeleted: {
@@ -44,9 +50,19 @@ const OrderSchema = new Schema<IOrder>(
       required: true,
       unique: true,
     },
+    guestId: {
+      type: String,
+      required: false,
+      index: true,
+    },
     customerId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Customer",
+      required: false,
+    },
+    storeId: {
+      type: Schema.Types.ObjectId,
+      ref: "Store",
       required: true,
     },
     items: [OrderItemSchema],
@@ -98,6 +114,7 @@ const OrderSchema = new Schema<IOrder>(
       zipCode: { type: String, required: true },
       phone: { type: String, required: true },
       fullName: { type: String, required: true },
+      email: { type: String, default: "" },
     },
     notes: {
       type: String,
@@ -113,6 +130,7 @@ const OrderSchema = new Schema<IOrder>(
 );
 
 OrderSchema.index({ customerId: 1 });
+OrderSchema.index({ guestId: 1 });
 OrderSchema.index({ status: 1 });
 OrderSchema.index({ createdAt: -1 });
 

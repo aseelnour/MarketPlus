@@ -6,7 +6,6 @@ async function check(path: string) {
   const url = `${API}${path}`;
   try {
     const res = await axios.get(url, { timeout: 5000 });
-    console.log(`OK ${path} -> ${res.status}`);
     return true;
   } catch (err: any) {
     console.error(`FAIL ${path} -> ${err.message}`);
@@ -15,7 +14,6 @@ async function check(path: string) {
 }
 
 (async () => {
-  console.log("Running smoke tests against", API);
   const paths = [
     "/customers/products?limit=1",
     "/customers/stores/featured?limit=1",
@@ -29,6 +27,5 @@ async function check(path: string) {
     console.error("Smoke tests failed");
     process.exit(1);
   }
-  console.log("Smoke tests passed");
   process.exit(0);
 })();

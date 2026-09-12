@@ -73,7 +73,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             className="glass rounded-2xl p-6 max-w-md w-full border border-white/10 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
+            { }
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-xl ${styles.bg} ${styles.border}`}>
@@ -99,7 +99,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               </button>
             </div>
 
-            {/* Actions */}
+            { }
             <div className="flex gap-3 mt-6">
               <button
                 onClick={onClose}

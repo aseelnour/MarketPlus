@@ -20,23 +20,13 @@ const categories = [
 const seedCategories = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI!);
-    console.log("✅ Connected to MongoDB");
 
-    // حذف الفئات القديمة (اختياري)
     await Category.deleteMany({});
-    console.log("🗑️ Old categories cleared");
 
-    // إدخال الفئات الجديدة
     const insertedCategories = await Category.insertMany(categories);
-    console.log(`✅ ${insertedCategories.length} categories inserted`);
 
-    // عرض الفئات المضافة
-    console.log("\n📋 Categories added:");
-    insertedCategories.forEach((cat) => {
-      console.log(`   - ${cat.icon} ${cat.name} (${cat.nameAr})`);
-    });
+    insertedCategories.forEach((cat) => {});
 
-    console.log("\n🎉 Seeding completed successfully!");
     process.exit(0);
   } catch (error) {
     console.error("❌ Seeding error:", error);

@@ -24,8 +24,6 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
- console.log('🔤 Current language:', i18n.language);
-  console.log('🔤 Test translation:', t('app.name'));
   const {
     register,
     handleSubmit,
@@ -49,7 +47,6 @@ export const LoginPage: React.FC = () => {
       );
 
       const result = await response.json();
-      console.log("🔐 Login Response:", result);
 
       if (result.success) {
         localStorage.setItem("sellerToken", result.data.token);
@@ -58,7 +55,7 @@ export const LoginPage: React.FC = () => {
         toast.success("Welcome back! 🎉");
         window.location.href = "/dashboard";
       } else {
-        // ✅ عرض رسالة مناسبة للمستخدم
+        
         if (result.message.includes("pending admin approval")) {
           setError(
             "Your account is pending admin approval. Please wait for admin to verify your account.",
@@ -78,7 +75,7 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-emerald-950/30 to-dark-950 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Language Switcher */}
+      { }
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <button
           onClick={() => changeLanguage("en")}
@@ -102,7 +99,7 @@ export const LoginPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Animated Background */}
+      { }
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl animate-pulse-slow delay-1000" />
@@ -114,7 +111,7 @@ export const LoginPage: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Logo */}
+        { }
         <div className="text-center mb-8">
           <motion.div
             initial={{ scale: 0 }}
@@ -132,7 +129,7 @@ export const LoginPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Login Card */}
+        { }
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}

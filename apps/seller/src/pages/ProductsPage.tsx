@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSellerAuth } from "../hooks/useSellerAuth";
 import { api } from "../services/api";
 import toast from "react-hot-toast";
@@ -61,6 +61,15 @@ export const ProductsPage: React.FC = () => {
   const { currentLanguage } = useLanguage();
   const { seller } = useSellerAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  let activeStoreId = searchParams.get("storeId");
+  if (!activeStoreId || activeStoreId === "null") {
+    activeStoreId = localStorage.getItem("lastActiveStoreId");
+  }
+  if (!activeStoreId || activeStoreId === "null") {
+    navigate("/stores");
+  }
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -83,10 +92,16 @@ export const ProductsPage: React.FC = () => {
     productTitle: "",
   });
 
+  const normalizeStoreId = (storeId: string | null) => {
+    return storeId && storeId !== "null" ? storeId : null;
+  };
+
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await api.get("/seller/products");
+      const response = await api.get(
+        `/seller/products?storeId=${activeStoreId}`,
+      );
       if (response.data.success) {
         setProducts(response.data.data.products || []);
       }
@@ -103,7 +118,7 @@ export const ProductsPage: React.FC = () => {
       try {
         const [mainRes, sellerRes] = await Promise.all([
           api.get("/seller/categories/main"),
-          api.get("/seller/categories/seller"),
+          api.get(`/seller/categories/seller?storeId=${activeStoreId}`),
         ]);
 
         if (mainRes.data.success) {
@@ -117,11 +132,11 @@ export const ProductsPage: React.FC = () => {
       }
     };
     fetchCategories();
-  }, []);
+  }, [activeStoreId]);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [activeStoreId]);
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.title
@@ -151,7 +166,9 @@ export const ProductsPage: React.FC = () => {
     if (!productId) return;
 
     try {
-      const response = await api.delete(`/seller/products/${productId}`);
+      const response = await api.delete(
+        `/seller/products/${productId}?storeId=${activeStoreId}`,
+      );
       if (response.data.success) {
         toast.success("Product deleted successfully!");
         setProducts(products.filter((p) => p._id !== productId));
@@ -169,9 +186,12 @@ export const ProductsPage: React.FC = () => {
     currentStatus: boolean,
   ) => {
     try {
-      const response = await api.patch(`/seller/products/${productId}/status`, {
-        isActive: !currentStatus,
-      });
+      const response = await api.patch(
+        `/seller/products/${productId}/status?storeId=${activeStoreId}`,
+        {
+          isActive: !currentStatus,
+        },
+      );
       if (response.data.success) {
         toast.success(
           `Product ${!currentStatus ? "activated" : "deactivated"} successfully!`,
@@ -190,12 +210,32 @@ export const ProductsPage: React.FC = () => {
     }
   };
 
-  const getMainCategoryName = (id: string) => {
+  const getMainCategoryName = (product: Product) => {
+    
+    if (product.mainCategoryId && product.mainCategoryId.name) {
+      return product.mainCategoryId.name;
+    }
+    
+    if (typeof product.mainCategoryId === "string") {
+      
+      const cat = mainCategories.find(
+        (c) => c._id === product.mainCategoryId._id,
+      );
+      return cat?.name || "No Category";
+    }
+    return "No Category";
+  };
+
+  const getSellerCategoryName = (product: Product) => {
+    return product.sellerCategoryId?.name || "No Sub-Category";
+  };
+
+  const getMainCategoryNameForFilter = (id: string) => {
     const cat = mainCategories.find((c) => c._id === id);
     return cat?.name || id;
   };
 
-  const getSellerCategoryName = (id: string) => {
+  const getSellerCategoryNameForFilter = (id: string) => {
     const cat = sellerCategories.find((c) => c._id === id);
     return cat?.name || id;
   };
@@ -210,10 +250,9 @@ export const ProductsPage: React.FC = () => {
       </div>
     );
   }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
+    <div className="space-y-6" dir={currentLanguage === "ar" ? "rtl" : "ltr"}>
+      { }
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-white">
@@ -225,7 +264,7 @@ export const ProductsPage: React.FC = () => {
           </p>
         </div>
         <button
-          onClick={() => navigate("/add-product")}
+          onClick={() => navigate(`/add-product?storeId=${activeStoreId}`)}
           className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition-colors font-medium"
         >
           <Plus className="w-4 h-4" />
@@ -233,7 +272,7 @@ export const ProductsPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Stats */}
+      { }
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="card p-4">
           <p className="text-sm text-dark-400">
@@ -278,16 +317,16 @@ export const ProductsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Filters */}
+      { }
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 rtl:left-auto rtl:right-3 top-1/2 -translate-y-1/2 text-dark-400 w-5 h-5" />
+          <Search className="absolute ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 text-dark-400 w-5 h-5 pointer-events-none" />
           <input
             type="text"
             placeholder={t("products.search") || "Search products..."}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-2 bg-dark-800/50 border border-dark-700 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            className="w-full ltr:pl-10 ltr:pr-4 rtl:pr-10 rtl:pl-4 py-2 bg-dark-800/50 border border-dark-700 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
           />
         </div>
 
@@ -344,31 +383,31 @@ export const ProductsPage: React.FC = () => {
 
         <button
           onClick={fetchProducts}
-          className="p-2 glass hover:bg-white/10 rounded-lg transition-colors"
+          className="p-2 glass hover:bg-white/10 rounded-lg transition-colors flex items-center justify-center"
         >
           <RefreshCw className="w-5 h-5 text-dark-400" />
         </button>
       </div>
 
-      {/* Products Table */}
+      { }
       <div className="glass rounded-2xl overflow-hidden border border-white/10">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full text-start">
             <thead className="bg-white/5 border-b border-white/10">
               <tr>
-                <th className="px-6 py-3 ltr:text-left rtl:text-right text-xs font-medium text-dark-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-start text-xs font-medium text-dark-400 uppercase tracking-wider">
                   {t("products.table.product") || "Product"}
                 </th>
-                <th className="px-6 py-3 ltr:text-left rtl:text-right text-xs font-medium text-dark-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-start text-xs font-medium text-dark-400 uppercase tracking-wider">
                   {t("products.table.category") || "Category"}
                 </th>
-                <th className="px-6 py-3 ltr:text-left rtl:text-right text-xs font-medium text-dark-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-start text-xs font-medium text-dark-400 uppercase tracking-wider">
                   {t("products.table.price") || "Price"}
                 </th>
-                <th className="px-6 py-3 ltr:text-left rtl:text-right text-xs font-medium text-dark-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-start text-xs font-medium text-dark-400 uppercase tracking-wider">
                   {t("products.table.stock") || "Stock"}
                 </th>
-                <th className="px-6 py-3 ltr:text-left rtl:text-right text-xs font-medium text-dark-400 uppercase tracking-wider">
+                <th className="px-6 py-3 text-start text-xs font-medium text-dark-400 uppercase tracking-wider">
                   {t("products.table.status") || "Status"}
                 </th>
                 <th className="px-6 py-3 ltr:text-right rtl:text-left text-xs font-medium text-dark-400 uppercase tracking-wider">
@@ -395,8 +434,17 @@ export const ProductsPage: React.FC = () => {
                     transition={{ delay: index * 0.05 }}
                     className="hover:bg-white/5 transition-colors"
                   >
-                    <td className="px-6 py-4 ltr:text-left rtl:text-right">
-                      <div className="flex items-center gap-3">
+                    { }
+                    <td className="px-6 py-4 text-start">
+                      <div className="flex items-center gap-3 rtl:flex-row-reverse justify-end rtl:justify-end">
+                        <div className="text-end rtl:text-right">
+                          <p className="text-white font-medium">
+                            {product.title}
+                          </p>
+                          <p className="text-xs text-dark-400">
+                            {product.brand || t("common.noBrand") || "No brand"}
+                          </p>
+                        </div>
                         <div className="w-10 h-10 rounded-lg bg-dark-700 flex items-center justify-center overflow-hidden flex-shrink-0">
                           {product.images?.[0] ? (
                             <img
@@ -412,26 +460,23 @@ export const ProductsPage: React.FC = () => {
                             <Package className="w-5 h-5 text-dark-400" />
                           )}
                         </div>
-                        <div>
-                          <p className="text-white font-medium">
-                            {product.title}
-                          </p>
-                          <p className="text-xs text-dark-400">
-                            {product.brand || "No brand"}
-                          </p>
-                        </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 ltr:text-left rtl:text-right">
-                      <p className="text-white text-sm">
-                        {getMainCategoryName(product.mainCategoryId?._id)}
-                      </p>
-                      <p className="text-xs text-dark-400">
-                        {getSellerCategoryName(product.sellerCategoryId?._id)}
-                      </p>
+
+                    { }
+                    <td className="px-6 py-4 text-start">
+                      <div>
+                        <span className="text-xs text-slate-400 block">
+                          {getMainCategoryName(product)}
+                        </span>
+                        <span className="text-sm text-white font-medium block">
+                          {getSellerCategoryName(product)}
+                        </span>
+                      </div>
                     </td>
 
-                    <td className="px-6 py-4 ltr:text-left rtl:text-right">
+                    { }
+                    <td className="px-6 py-4 text-start">
                       {product.discountPrice &&
                       product.discountPrice < product.price ? (
                         <div>
@@ -453,7 +498,8 @@ export const ProductsPage: React.FC = () => {
                       )}
                     </td>
 
-                    <td className="px-6 py-4 ltr:text-left rtl:text-right">
+                    { }
+                    <td className="px-6 py-4 text-start">
                       <p
                         className={`text-sm font-medium ${
                           product.quantity === 0 ? "text-red-400" : "text-white"
@@ -462,7 +508,9 @@ export const ProductsPage: React.FC = () => {
                         {formatNumber(product.quantity, currentLanguage)}
                       </p>
                     </td>
-                    <td className="px-6 py-4 ltr:text-left rtl:text-right">
+
+                    { }
+                    <td className="px-6 py-4 text-start">
                       <span
                         className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
                           product.isActive
@@ -480,8 +528,10 @@ export const ProductsPage: React.FC = () => {
                           : t("products.inactive") || "Inactive"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 ltr:text-right rtl:text-left">
-                      <div className="flex items-center ltr:justify-end rtl:justify-start gap-2">
+
+                    { }
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-end rtl:justify-start gap-2">
                         <button
                           onClick={() =>
                             toggleProductStatus(product._id, product.isActive)
@@ -491,7 +541,11 @@ export const ProductsPage: React.FC = () => {
                               ? "hover:bg-red-500/20 text-red-400 hover:text-red-300"
                               : "hover:bg-emerald-500/20 text-emerald-400 hover:text-emerald-300"
                           }`}
-                          title={product.isActive ? "Deactivate" : "Activate"}
+                          title={
+                            product.isActive
+                              ? t("common.deactivate") || "Deactivate"
+                              : t("common.activate") || "Activate"
+                          }
                         >
                           {product.isActive ? (
                             <XCircle className="w-4 h-4" />
@@ -499,15 +553,32 @@ export const ProductsPage: React.FC = () => {
                             <CheckCircle className="w-4 h-4" />
                           )}
                         </button>
+
                         <button
-                          onClick={() =>
-                            navigate(`/edit-product/${product._id}`)
-                          }
+                          onClick={() => {
+                            const currentStoreId = normalizeStoreId(
+                              searchParams.get("storeId") ||
+                                localStorage.getItem("lastActiveStoreId"),
+                            );
+
+                            if (!currentStoreId) {
+                              toast.error(
+                                t("products.selectStoreFirst") ||
+                                  "Please select a store first",
+                              );
+                              return;
+                            }
+
+                            navigate(
+                              `/products/${product._id}/edit?storeId=${currentStoreId}`,
+                            );
+                          }}
                           className="p-1.5 hover:bg-blue-500/20 rounded-lg transition-colors text-blue-400 hover:text-blue-300"
-                          title="Edit"
+                          title={t("common.edit") || "Edit"}
                         >
                           <Edit className="w-4 h-4" />
                         </button>
+
                         <button
                           onClick={() =>
                             setConfirmDialog({
@@ -517,7 +588,7 @@ export const ProductsPage: React.FC = () => {
                             })
                           }
                           className="p-1.5 hover:bg-red-500/20 rounded-lg transition-colors text-red-400 hover:text-red-300"
-                          title="Delete"
+                          title={t("common.delete") || "Delete"}
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -531,7 +602,7 @@ export const ProductsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Confirm Dialog */}
+      { }
       <ConfirmDialog
         isOpen={confirmDialog.isOpen}
         onClose={() =>

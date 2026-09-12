@@ -1,6 +1,7 @@
-import { Document, Types } from "mongoose";
+
+import { Document } from "mongoose";
+
 export interface IAdmin extends Document {
-  _id: Types.ObjectId;
   firstName: string;
   lastName: string;
   email: string;
@@ -12,6 +13,18 @@ export interface IAdmin extends Document {
   lastLogin?: Date;
   createdAt: Date;
   isDeleted: boolean;
+
+  siteName?: string;
+  siteEmail?: string;
+  currency?: string;
+  timezone?: string;
+  maintenanceMode?: boolean;
+  notificationSettings?: {
+    newOrders: boolean;
+    newSellers: boolean;
+    storeApprovals: boolean;
+    dailyReports: boolean;
+  };
 
   comparePassword(candidatePassword: string): Promise<boolean>;
 }

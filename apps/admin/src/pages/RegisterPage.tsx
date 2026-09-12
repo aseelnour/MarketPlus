@@ -46,7 +46,7 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-primary-900 to-slate-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo */}
+        { }
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-2xl mb-4">
             <span className="text-4xl">🛒</span>
@@ -55,10 +55,10 @@ export const RegisterPage: React.FC = () => {
           <p className="text-slate-400 mt-2">Register as admin</p>
         </div>
 
-        {/* Register Card */}
+        { }
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-white/20">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* First Name */}
+            { }
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
                 First Name
@@ -80,7 +80,7 @@ export const RegisterPage: React.FC = () => {
               )}
             </div>
 
-            {/* Last Name */}
+            { }
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
                 Last Name
@@ -102,7 +102,7 @@ export const RegisterPage: React.FC = () => {
               )}
             </div>
 
-            {/* Email */}
+            { }
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
                 Email Address
@@ -124,7 +124,7 @@ export const RegisterPage: React.FC = () => {
               )}
             </div>
 
-            {/* Phone */}
+            { }
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
                 Phone (Optional)
@@ -140,7 +140,7 @@ export const RegisterPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Password */}
+            { }
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
                 Password
@@ -162,7 +162,7 @@ export const RegisterPage: React.FC = () => {
               )}
             </div>
 
-            {/* Error Message */}
+            { }
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-sm flex items-center gap-2">
                 <AlertCircle className="w-5 h-5" />
@@ -170,7 +170,7 @@ export const RegisterPage: React.FC = () => {
               </div>
             )}
 
-            {/* Submit Button */}
+            { }
             <button
               type="submit"
               disabled={isLoading}
@@ -189,7 +189,7 @@ export const RegisterPage: React.FC = () => {
               )}
             </button>
 
-            {/* Login Link */}
+            { }
             <p className="text-center text-slate-400 text-sm">
               Already have an account?{" "}
               <Link

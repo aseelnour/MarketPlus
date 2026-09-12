@@ -14,6 +14,7 @@ const SellerCategorySchema = new Schema<ISellerCategory>(
       ref: "Category",
       required: true,
     },
+    storeId: { type: Schema.Types.ObjectId, ref: "Store", required: true },
     name: {
       type: String,
       required: true,

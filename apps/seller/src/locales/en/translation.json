@@ -44,6 +44,10 @@
     "categories": "Categories",
     "status": "Status",
     "quickActions": "Quick Actions",
+    "noStoreFound": "You haven't created a store yet!",
+    "noStoreDesc": "You need to create your first store to start selling products and managing your business.",
+    "noStoreSub": "It only takes a minute. You'll add your store name, logo, and cover image.",
+    "createStore": "Create Your Store Now",
     "addProduct": "Add Product",
     "viewOrders": "View Orders",
     "customers": "Customers",
@@ -107,6 +111,7 @@
     "dashboard": "Dashboard",
     "products": "Products",
     "orders": "Orders",
+    "messages": "Messages",
     "customers": "Customers",
     "analytics": "Analytics",
     "settings": "Settings",
@@ -125,7 +130,9 @@
     "add": "Add",
     "confirm": "Are you sure?",
     "confirmMessage": "This action cannot be undone.",
-    "noCategories": "No categories added yet"
+    "noCategories": "No categories added yet",
+    "saving": "Saving...",
+    "update": "Update"
   },
   "categories": {
     "Electronics": "Electronics",
@@ -138,7 +145,8 @@
     "Toys": "Toys",
     "Furniture": "Furniture",
     "Health": "Health",
-    "main": "Main"
+    "main": "Main",
+    "add": "Add"
   },
   "sellers": {
     "confirm": {
@@ -166,6 +174,7 @@
     "deleteProduct": "Delete Product",
     "deleteConfirm": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
     "yesDelete": "Yes, Delete",
+    "selectStoreFirst": "Please select a store first",
     "stats": {
       "total": "Total",
       "active": "Active",
@@ -179,6 +188,279 @@
       "stock": "Stock",
       "status": "Status",
       "actions": "Actions"
+    }
+  },
+  "stores": {
+    "title": "Your Stores",
+    "list": "My Stores",
+    "new": "New Store",
+    "create": "Create Store",
+    "edit": "Edit Store",
+    "name": "Store Name",
+    "slug": "Slug (URL)",
+    "category": "Main Category",
+    "description": "Description",
+    "logo": "Store Logo",
+    "uploadLogo": "Choose Logo",
+    "coverImage": "Cover Image",
+    "uploadCover": "Choose Cover",
+    "save": "Save Store",
+    "noStores": "No stores yet",
+    "noCategory": "General",
+    "active": "Active",
+    "pending": "Awaiting Approval",
+    "rejected": "Rejected",
+    "createSuccess": "Store created! Waiting for admin approval.",
+    "updateSuccess": "Store update requested for admin approval.",
+    "deleteSuccess": "Store deleted",
+    "deleteError": "Failed to delete store",
+    "saveError": "Failed to save store",
+    "confirmDelete": "Are you sure you want to delete this store? This action cannot be undone.",
+    "confirmDeleteTitle": "Delete Store",
+    "confirmDeleteMessage": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+    "enter": "Enter",
+    "selectCategory": "Select at least one category for your store",
+    "categoriesSelected": "{{count}} category(ies) selected"
+  },
+  "orders": {
+    "title": "Orders",
+    "subtitle": "Manage your store orders",
+    "quantity": "Qty",
+    "shippingAddress": "Shipping to",
+    "total": "Total",
+    "noOrders": "No orders found",
+    "noOrdersDesc": "Orders will appear here once customers place them",
+    "approve": "Approve",
+    "reject": "Reject",
+    "viewDetails": "View Details",
+    "updateStatus": "Update Status",
+    "updateStatusDesc": "Change the status of this order",
+    "updateStatusSuccess": "Order status updated successfully",
+    "updateStatusError": "Failed to update order status",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
+  },
+  "customers": {
+    "title": "Customers",
+    "subtitle": "{{count}} customer(s) who purchased from your store",
+    "searchPlaceholder": "Search customers...",
+    "noCustomers": "No customers yet",
+    "noMatch": "No customers match your search",
+    "unknown": "Unknown",
+    "loadError": "Failed to load customers",
+    "viewOrders": "View Orders",
+    "columns": {
+      "customer": "Customer",
+      "contact": "Contact",
+      "orders": "Orders",
+      "totalSpent": "Total Spent",
+      "firstOrder": "First Order",
+      "action": "Action"
+    }
+  },
+  "categoryManager": {
+    "yourCategories": "Your Categories",
+    "mainCategory": "Main Category",
+    "storeCategory": "Store Category",
+    "selectStoreCategory": "Select a store category...",
+    "noStoreCategories": "No store categories found. Please select categories when creating a store.",
+    "categoryName": "Category Name",
+    "categoryNameAr": "Category Name (Arabic) (Optional)",
+    "placeholderName": "e.g. Smartphones",
+    "placeholderNameAr": "e.g. هواتف ذكية"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Track your store performance",
+    "fetchError": "Failed to load analytics",
+    "noData": "No analytics data available",
+    "items": "items",
+    "sales": "Sales",
+    "periods": {
+      "7d": "7 Days",
+      "30d": "30 Days",
+      "90d": "90 Days"
+    },
+    "charts": {
+      "revenue": "Revenue",
+      "orders": "Orders",
+      "categorySales": "Category Sales",
+      "orderStatus": "Order Status"
+    },
+    "tables": {
+      "topProducts": "Top Selling Products",
+      "noProducts": "No products sold yet",
+      "product": "Product",
+      "sold": "Sold",
+      "revenue": "Revenue",
+      "recentOrders": "Recent Orders",
+      "noOrders": "No orders yet",
+      "order": "Order",
+      "date": "Date",
+      "status": "Status",
+      "total": "Total"
+    }
+  },
+  "messages": {
+    "title": "Messages",
+    "subtitle": "Manage order communications with customers",
+    "search": "Search customer or order...",
+    "noConversations": "No conversations found",
+    "noMessagesYet": "No messages yet. Send a message to start conversing.",
+    "order": "Order",
+    "orderDetails": "Order Details",
+    "typeMessage": "Type your message...",
+    "loadError": "Failed to load conversations",
+    "sendError": "Failed to send message",
+    "emptyState": {
+      "title": "Your Conversations",
+      "subtitle": "Select a chat from the sidebar to view customer messages and order updates."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your store and account settings",
+    "common": {
+      "saving": "Saving..."
+    },
+    "tabs": {
+      "profile": "Profile",
+      "store": "Store",
+      "shipping": "Shipping",
+      "payment": "Payment",
+      "notifications": "Notifications",
+      "security": "Security"
+    },
+    "profile": {
+      "title": "Profile Settings",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "storeName": "Store Name",
+      "storeDescription": "Store Description",
+      "address": "Address",
+      "saveBtn": "Save Profile"
+    },
+    "store": {
+      "title": "Store Settings",
+      "statusTitle": "Store Status",
+      "statusActiveDesc": "Your store is active and visible to customers",
+      "statusInactiveDesc": "Your store is inactive",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "name": "Store Name",
+      "description": "Store Description",
+      "saveBtn": "Save Store"
+    },
+    "security": {
+      "title": "Security",
+      "subtitle": "Change your password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "saveBtn": "Change Password",
+      "changing": "Changing..."
+    },
+    "shipping": {
+      "title": "Shipping Settings",
+      "cost": "Shipping Cost ($)",
+      "freeThreshold": "Free Shipping Threshold ($)",
+      "deliveryTime": "Delivery Time",
+      "daysOptions": {
+        "1_2": "1-2 days",
+        "2_3": "2-3 days",
+        "3_5": "3-5 days",
+        "5_7": "5-7 days",
+        "7_14": "7-14 days"
+      },
+      "saveBtn": "Save Shipping Settings"
+    },
+    "payment": {
+      "title": "Payment Settings",
+      "subtitle": "Configure accepted payment methods",
+      "methods": {
+        "cod": "Cash on Delivery",
+        "creditCard": "Credit Card"
+      },
+      "saveBtn": "Save Payment Settings"
+    },
+    "notifications": {
+      "title": "Notification Settings",
+      "subtitle": "Choose what notifications you want to receive",
+      "options": {
+        "newOrders": "New Orders",
+        "orderUpdates": "Order Updates",
+        "customerMessages": "Customer Messages",
+        "promotions": "Promotions & Offers"
+      },
+      "saveBtn": "Save Notification Settings"
+    },
+    "toast": {
+      "fetchError": "Failed to load settings",
+      "profileSuccess": "Profile updated successfully",
+      "profileError": "Failed to update profile",
+      "storeSuccess": "Store updated successfully",
+      "storeError": "Failed to update store",
+      "passwordMismatch": "Passwords do not match",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "passwordSuccess": "Password changed successfully",
+      "passwordError": "Failed to change password",
+      "storeActivated": "Store activated successfully",
+      "storeDeactivated": "Store deactivated",
+      "storeStatusError": "Failed to update store status",
+      "shippingSaved": "Shipping settings saved",
+      "paymentSaved": "Payment settings saved",
+      "notificationsSaved": "Notification settings saved"
+    }
+  },
+  "order": {
+    "details": "Order Details",
+    "notFound": "Order not found",
+    "loadError": "Failed to load order details",
+    "noId": "No order ID provided",
+    "backToOrders": "Back to Orders",
+    "statusUpdated": "Order status updated to {{status}}",
+    "updateError": "Failed to update order status",
+    "items": "Order Items ({{count}})",
+    "qty": "Qty",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "discount": "Discount",
+    "tax": "Tax",
+    "total": "Total",
+    "customer": "Customer",
+    "shippingAddress": "Shipping Address",
+    "payment": "Payment",
+    "method": "Method",
+    "paymentStatus": "Payment Status",
+    "paid": "Paid",
+    "pending": "Pending",
+    "cashOnDelivery": "Cash on Delivery",
+    "notes": "Notes",
+    "message": "Message",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
+  },
+
+  "notifications": {
+    "title": "Notifications",
+    "clearAll": "Clear all",
+    "empty": "No notifications",
+    "types": {
+      "new_order": "New order #{{orderNumber}} placed in {{storeName}}",
+      "order_updated": "Order #{{orderNumber}} status updated to {{status}} in {{storeName}}",
+      "order_cancelled": "Order #{{orderNumber}} cancelled in {{storeName}}"
     }
   }
 }

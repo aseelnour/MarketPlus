@@ -31,6 +31,7 @@ interface Product {
   images: string[];
   rating: number;
   isActive: boolean;
+  storeName?: string;
   sellerId: {
     _id: string;
     storeName: string;
@@ -64,14 +65,12 @@ interface Category {
   nameAr?: string;
 }
 
-// SVG Placeholder - مشفر كـ Base64 (بديل مثالي عن placeholder.jpg)
 const PLACEHOLDER_SVG = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzlDQTNBRiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHJlY3QgeD0iMyIgeT0iMyIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiByeD0iMiIgcnk9IjIiLz48Y2lyY2xlIGN4PSI4LjUiIGN5PSI4LjUiIHI9IjEuNSIvPjxwb2x5bGluZSBwb2ludHM9IjIxIDE1IDE2IDEwIDUgMjEiLz48L3N2Zz4=`;
 
-// دالة قوية جداً للتعامل مع أخطاء الصور
 const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
   const img = e.currentTarget;
-  img.onerror = null; // منع التكرار اللانهائي
-  img.src = PLACEHOLDER_SVG; // استخدام الـ SVG المشفر
+  img.onerror = null;
+  img.src = PLACEHOLDER_SVG;
   img.className = "w-full h-full object-contain p-2 bg-dark-700";
   img.style.objectFit = "contain";
 };
@@ -103,14 +102,11 @@ export const AdminProductsPage: React.FC = () => {
     productTitle: "",
   });
 
-  // منع أي طلب لـ placeholder.jpg على مستوى التطبيق
   useEffect(() => {
-    // منع تحميل أي صورة باسم placeholder.jpg
     const originalImage = window.Image;
     window.Image = class extends originalImage {
       constructor() {
         super();
-        // اعتراض أي محاولة لتحميل placeholder.jpg
         this.addEventListener("error", function (e) {
           if (this.src && this.src.includes("placeholder.jpg")) {
             e.preventDefault();
@@ -121,12 +117,10 @@ export const AdminProductsPage: React.FC = () => {
       }
     };
 
-    // منع الطلبات عبر fetch للصور
     const originalFetch = window.fetch;
     window.fetch = function (input: RequestInfo | URL, init?: RequestInit) {
       const url = input.toString();
       if (url.includes("placeholder.jpg")) {
-        // إرجاع استجابة فارغة بدلاً من طلب الصورة
         return Promise.resolve(new Response(null, { status: 200 }));
       }
       return originalFetch.call(this, input, init);
@@ -235,10 +229,45 @@ export const AdminProductsPage: React.FC = () => {
   };
 
   const getCategoryName = (category: any) => {
+    
     if (!category) return "Unknown";
-    return isRTL ? category.nameAr || category.name : category.name;
+
+    if (typeof category === "object" && category !== null) {
+      return isRTL
+        ? category.nameAr || category.name || "Unknown"
+        : category.name || category.nameAr || "Unknown";
+    }
+
+    return "Unknown";
   };
 
+  const getProductCategoryName = (product: any) => {
+    if (!product) return "Unknown";
+
+    if (product.categoryName) {
+      return isRTL
+        ? product.categoryNameAr || product.categoryName
+        : product.categoryName;
+    }
+
+    if (product.mainCategoryId) {
+      if (typeof product.mainCategoryId === "object") {
+        return isRTL
+          ? product.mainCategoryId.nameAr || product.mainCategoryId.name
+          : product.mainCategoryId.name;
+      }
+    }
+
+    if (product.sellerCategoryId) {
+      if (typeof product.sellerCategoryId === "object") {
+        return isRTL
+          ? product.sellerCategoryId.nameAr || product.sellerCategoryId.name
+          : product.sellerCategoryId.name;
+      }
+    }
+
+    return "Unknown";
+  };
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
@@ -252,7 +281,7 @@ export const AdminProductsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      { }
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-white">
@@ -271,7 +300,7 @@ export const AdminProductsPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Stats */}
+      { }
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="card p-4">
           <p className="text-sm text-dark-400">
@@ -316,7 +345,7 @@ export const AdminProductsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Filters */}
+      { }
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1 relative">
           <Search className="absolute left-3 rtl:left-auto rtl:right-3 top-1/2 -translate-y-1/2 text-dark-400 w-5 h-5" />
@@ -376,7 +405,7 @@ export const AdminProductsPage: React.FC = () => {
         </select>
       </div>
 
-      {/* Products Table */}
+      { }
       <div className="glass rounded-2xl overflow-hidden border border-white/10">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -451,22 +480,34 @@ export const AdminProductsPage: React.FC = () => {
                         </div>
                       </div>
                     </td>
+
                     <td className="px-6 py-4 ltr:text-left rtl:text-right">
                       <div>
-                        <p className="text-white text-sm">
-                          {getSellerName(product.sellerId)}
+                        <p className="text-sm font-medium text-primary-400">
+                          {product.storeName || getSellerName(product.sellerId)}
+                        </p>
+                        <p className="text-xs text-white">
+                          {product.sellerId?.firstName}{" "}
+                          {product.sellerId?.lastName}
                         </p>
                         <p className="text-xs text-dark-400">
                           {product.sellerId?.email || ""}
                         </p>
                       </div>
                     </td>
+
+                    { }
                     <td className="px-6 py-4 ltr:text-left rtl:text-right">
                       <p className="text-white text-sm">
-                        {getCategoryName(product.mainCategoryId)}
+                        {getProductCategoryName(product)}
                       </p>
                       <p className="text-xs text-dark-400">
-                        {getCategoryName(product.sellerCategoryId)}
+                        { }
+                        {product.sellerCategoryId &&
+                          product.mainCategoryId &&
+                          getCategoryName(product.sellerCategoryId) !==
+                            getCategoryName(product.mainCategoryId) &&
+                          getCategoryName(product.sellerCategoryId)}
                       </p>
                     </td>
 
@@ -568,7 +609,7 @@ export const AdminProductsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal لعرض تفاصيل المنتج عند ضغط العين */}
+      { }
       <AnimatePresence>
         {selectedProductDetails && (
           <motion.div
@@ -598,7 +639,6 @@ export const AdminProductsPage: React.FC = () => {
                 </button>
               </div>
 
-              {/* معرض الصور */}
               {selectedProductDetails.images?.length > 0 && (
                 <div className="flex gap-3 overflow-x-auto pb-2">
                   {selectedProductDetails.images.map((img, idx) => (
@@ -618,7 +658,6 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
               )}
 
-              {/* التفاصيل الأساسية */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
                   <span className="text-xs text-dark-400 flex items-center gap-1">
@@ -702,7 +741,6 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* الوصف */}
               {selectedProductDetails.description && (
                 <div className="space-y-1">
                   <h4 className="text-sm font-medium text-dark-400">
@@ -718,7 +756,6 @@ export const AdminProductsPage: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Confirm Dialog */}
       <ConfirmDialog
         isOpen={confirmDialog.isOpen}
         onClose={() =>

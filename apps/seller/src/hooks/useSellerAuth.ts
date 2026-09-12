@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { api } from "../services/api";
-//done
+
 interface Seller {
   id: string;
   firstName: string;
@@ -38,7 +38,6 @@ export const useSellerAuth = () => {
     setIsLoading(true);
     try {
       const response = await api.post("/seller/auth/login", data);
-      console.log("Login Response:", response.data);
       if (response.data.success) {
         localStorage.setItem("sellerToken", response.data.data.token);
         localStorage.setItem(

@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_URL =
-  (import.meta as any).env?.VITE_API_URL || "http://localhost:5000/api";
-
+const BASE_URL =
+  (import.meta as any).env?.VITE_API_URL || "http://localhost:5000";
+const API_URL = `${BASE_URL}/api`;
 export const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -10,7 +10,6 @@ export const api = axios.create({
   },
 });
 
-// Add token to requests
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -19,7 +18,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle token expiration
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -31,3 +29,10 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+export const getImageUrl = (path: string | undefined) => {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  if (path.startsWith("/uploads")) return `${BASE_URL}${path}`;
+  return `${BASE_URL}/uploads/${path}`;
+};

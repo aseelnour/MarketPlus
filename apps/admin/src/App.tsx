@@ -1,3 +1,4 @@
+
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -9,6 +10,10 @@ import { SellersPage } from "./pages/SellersPage";
 import { ProtectedRoute } from "./components/protected-route";
 import { AdminLayout } from "./layouts/AdminLayout";
 import { AdminProductsPage } from "./pages/AdminProductsPage";
+import { CategoriesPage } from "./pages/CategoriesPage";
+import { AdminOrdersPage } from "./pages/AdminOrdersPage";
+import { SettingsPage } from "./pages/SettingsPage";
+import { AdminStoresPage } from "./pages/AdminStoresPage";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +35,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
           <Route
             path="/dashboard"
             element={
@@ -51,11 +57,51 @@ function App() {
             }
           />
           <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AdminOrdersPage />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/products"
             element={
               <ProtectedRoute>
                 <AdminLayout>
                   <AdminProductsPage />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <CategoriesPage />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <SettingsPage />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/stores"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AdminStoresPage />
                 </AdminLayout>
               </ProtectedRoute>
             }

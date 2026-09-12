@@ -35,6 +35,13 @@ export interface ISeller extends Document {
   createdAt: Date;
   updatedAt?: Date;
   isDeleted: boolean;
+  deletedAt?: Date | null; 
+  notificationSettings: {
+    newOrders: Boolean;
+    orderUpdates: Boolean;
+    customerMessages: Boolean;
+    promotions: Boolean;
+  };
 
   comparePassword(candidatePassword: string): Promise<boolean>;
 }

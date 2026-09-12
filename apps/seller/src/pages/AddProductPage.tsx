@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +22,13 @@ interface MainCategory {
   _id: string;
   name: string;
   nameAr?: string;
+  storeCategoryId?: string;
+}
+
+interface StoreCategory {
+  _id: string;
+  name: string;
+  nameAr?: string;
 }
 
 interface SellerCategory {
@@ -35,8 +43,14 @@ export const AddProductPage: React.FC = () => {
   const { seller } = useSellerAuth();
   const navigate = useNavigate();
 
+  const activeStoreId = localStorage.getItem("lastActiveStoreId");
+
   const [loading, setLoading] = useState(false);
+  const [storeCategories, setStoreCategories] = useState<StoreCategory[]>([]);
   const [mainCategories, setMainCategories] = useState<MainCategory[]>([]);
+  const [filteredMainCategories, setFilteredMainCategories] = useState<
+    MainCategory[]
+  >([]);
   const [sellerCategories, setSellerCategories] = useState<SellerCategory[]>(
     [],
   );
@@ -46,6 +60,7 @@ export const AddProductPage: React.FC = () => {
   const [showImageModal, setShowImageModal] = useState(false);
 
   const [formData, setFormData] = useState({
+    storeCategoryId: "",
     mainCategoryId: "",
     sellerCategoryId: "",
     title: "",
@@ -56,6 +71,38 @@ export const AddProductPage: React.FC = () => {
     brand: "",
     images: [] as string[],
   });
+
+  useEffect(() => {
+    const fetchStoreCategories = async () => {
+      if (!activeStoreId || activeStoreId === "null") {
+        console.warn("No active store ID");
+        return;
+      }
+
+      try {
+        
+        const storeRes = await api.get(`/seller/stores/${activeStoreId}`);
+        if (storeRes.data.success) {
+          const store = storeRes.data.data.store;
+          const categoryIds = store.storeCategoryIds || [];
+
+          const categoriesRes = await api.get("/seller/categories/store");
+          if (categoriesRes.data.success) {
+            const allCategories = categoriesRes.data.data.categories || [];
+            
+            const filtered = allCategories.filter((cat: any) =>
+              categoryIds.includes(cat._id),
+            );
+            setStoreCategories(filtered);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch store categories:", error);
+        toast.error("Failed to load store categories");
+      }
+    };
+    fetchStoreCategories();
+  }, [activeStoreId]);
 
   useEffect(() => {
     const fetchMainCategories = async () => {
@@ -74,47 +121,37 @@ export const AddProductPage: React.FC = () => {
 
   useEffect(() => {
     const fetchSellerCategories = async () => {
+      if (!activeStoreId || activeStoreId === "null") return;
+
       try {
-        const response = await api.get("/seller/categories/seller");
+        const response = await api.get(
+          `/seller/categories/seller?storeId=${activeStoreId}`,
+        );
         if (response.data.success) {
-          setSellerCategories(response.data.data.sellerCategories);
+          setSellerCategories(response.data.data.sellerCategories || []);
         }
       } catch (error) {
         console.error("Failed to fetch seller categories:", error);
       }
     };
     fetchSellerCategories();
-  }, []);
-
-  const availableMainCategories = useMemo(() => {
-    return mainCategories.filter((mainCat) =>
-      sellerCategories.some((sellerCat) => {
-        const mainCatId =
-          typeof sellerCat.mainCategoryId === "object"
-            ? sellerCat.mainCategoryId._id
-            : sellerCat.mainCategoryId;
-        return mainCatId === mainCat._id;
-      }),
-    );
-  }, [mainCategories, sellerCategories]);
+  }, [activeStoreId]);
 
   useEffect(() => {
-    if (formData.mainCategoryId) {
+    if (formData.storeCategoryId) {
       const filtered = sellerCategories.filter((cat) => {
         const mainCatId =
           typeof cat.mainCategoryId === "object"
             ? cat.mainCategoryId._id
             : cat.mainCategoryId;
-
-        return mainCatId === formData.mainCategoryId;
+        return mainCatId === formData.storeCategoryId;
       });
-
       setFilteredSellerCategories(filtered);
       setFormData((prev) => ({ ...prev, sellerCategoryId: "" }));
     } else {
       setFilteredSellerCategories([]);
     }
-  }, [formData.mainCategoryId, sellerCategories]);
+  }, [formData.storeCategoryId, sellerCategories]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -142,8 +179,16 @@ export const AddProductPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.mainCategoryId) {
-      toast.error("Please select a main category");
+    if (!activeStoreId || activeStoreId === "null") {
+      toast.error(
+        "No active store selected. Please go to Stores and enter a store.",
+      );
+      navigate("/stores");
+      return;
+    }
+
+    if (!formData.storeCategoryId) {
+      toast.error("Please select a store category");
       return;
     }
     if (!formData.sellerCategoryId) {
@@ -166,7 +211,8 @@ export const AddProductPage: React.FC = () => {
     setLoading(true);
     try {
       const response = await api.post("/seller/products", {
-        mainCategoryId: formData.mainCategoryId,
+        storeId: activeStoreId,
+        storeCategoryId: formData.storeCategoryId,
         sellerCategoryId: formData.sellerCategoryId,
         title: formData.title.trim(),
         description: formData.description.trim(),
@@ -182,7 +228,7 @@ export const AddProductPage: React.FC = () => {
 
       if (response.data.success) {
         toast.success("Product added successfully! 🎉");
-        navigate("/dashboard");
+        navigate(`/dashboard?storeId=${activeStoreId}`);
       }
     } catch (error: any) {
       console.error("Add product error:", error);
@@ -194,10 +240,10 @@ export const AddProductPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      { }
       <div className="flex items-center gap-4">
         <button
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate(`/dashboard?storeId=${activeStoreId}`)}
           className="p-2 glass hover:bg-white/10 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5 text-dark-400" />
@@ -212,50 +258,48 @@ export const AddProductPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Form */}
+      { }
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="card max-w-3xl"
       >
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Categories */}
+          { }
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            { }
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
-                {t("dashboard.mainCategory") || "Main Category"} *
+                Store Category *
               </label>
               <div className="relative">
                 <Folder className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-400 w-4 h-4" />
                 <select
-                  name="mainCategoryId"
-                  value={formData.mainCategoryId}
+                  name="storeCategoryId"
+                  value={formData.storeCategoryId}
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-2 bg-dark-800/50 border border-dark-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
                   required
                 >
-                  <option value="">
-                    {t("dashboard.selectMainCategory") ||
-                      "Select main category..."}
-                  </option>
-                  {availableMainCategories.map((cat) => (
+                  <option value="">Select Store Category...</option>
+                  {storeCategories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
                       {cat.name} {cat.nameAr ? `(${cat.nameAr})` : ""}
                     </option>
                   ))}
                 </select>
               </div>
-              {availableMainCategories.length === 0 && (
+              {storeCategories.length === 0 && (
                 <p className="mt-1 text-xs text-yellow-400">
-                  {t("dashboard.noSubscribedMainCategories") ||
-                    "No associated main categories found."}
+                  No store categories available for this store.
                 </p>
               )}
             </div>
 
+            { }
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
-                {t("dashboard.sellerCategory") || "Your Category"} *
+                Your Category *
               </label>
               <div className="relative">
                 <Folder className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-400 w-4 h-4" />
@@ -265,14 +309,12 @@ export const AddProductPage: React.FC = () => {
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-2 bg-dark-800/50 border border-dark-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
                   required
-                  disabled={!formData.mainCategoryId}
+                  disabled={!formData.storeCategoryId}
                 >
                   <option value="">
-                    {formData.mainCategoryId
-                      ? t("dashboard.selectSellerCategory") ||
-                        "Select your category..."
-                      : t("dashboard.selectMainFirst") ||
-                        "Select main category first"}
+                    {formData.storeCategoryId
+                      ? "Select your category..."
+                      : "Select store category first"}
                   </option>
                   {filteredSellerCategories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
@@ -282,16 +324,15 @@ export const AddProductPage: React.FC = () => {
                 </select>
               </div>
               {filteredSellerCategories.length === 0 &&
-                formData.mainCategoryId && (
+                formData.storeCategoryId && (
                   <p className="mt-1 text-xs text-yellow-400">
-                    {t("dashboard.noSellerCategories") ||
-                      "No categories found. Create one first!"}
+                    No sub-categories found. Create one in Dashboard first!
                   </p>
                 )}
             </div>
           </div>
 
-          {/* Title */}
+          { }
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.productTitle") || "Product Title"} *
@@ -312,7 +353,7 @@ export const AddProductPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Description */}
+          { }
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.description") || "Description"}
@@ -330,7 +371,7 @@ export const AddProductPage: React.FC = () => {
             />
           </div>
 
-          {/* Price & Quantity */}
+          { }
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
@@ -391,7 +432,7 @@ export const AddProductPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Brand */}
+          { }
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.brand") || "Brand"}
@@ -406,7 +447,7 @@ export const AddProductPage: React.FC = () => {
             />
           </div>
 
-          {/* Images */}
+          { }
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.images") || "Images"}
@@ -446,7 +487,7 @@ export const AddProductPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Submit */}
+          { }
           <div className="flex gap-3 pt-4 border-t border-white/10">
             <button
               type="submit"
@@ -464,7 +505,7 @@ export const AddProductPage: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate(`/dashboard?storeId=${activeStoreId}`)}
               className="px-6 py-2.5 bg-dark-700 hover:bg-dark-600 text-white rounded-xl transition-colors font-medium"
             >
               {t("common.cancel") || "Cancel"}

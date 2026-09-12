@@ -3,8 +3,7 @@ import { useSellerAuth } from "../hooks/useSellerAuth";
 import { formatNumber } from "../utils/numbers";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../hooks/useLanguage";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Package,
   ShoppingCart,
@@ -18,10 +17,12 @@ import {
   Store,
   BarChart3,
   Folder,
+  PlusCircle,
 } from "lucide-react";
 import { api } from "../services/api";
 import { motion } from "framer-motion";
 import { CategoryManager } from "../components/CategoryManager";
+import toast from "react-hot-toast";
 
 interface SellerCategory {
   _id: string;
@@ -47,7 +48,10 @@ export const DashboardPage: React.FC = () => {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [storesCount, setStoresCount] = useState<number>(0);
+  const [searchParams] = useSearchParams();
+  const activeStoreId =
+    searchParams.get("storeId") || localStorage.getItem("lastActiveStoreId");
   const navigate = useNavigate();
 
   const [sellerCategories, setSellerCategories] = useState<SellerCategory[]>(
@@ -55,57 +59,160 @@ export const DashboardPage: React.FC = () => {
   );
 
   useEffect(() => {
+    let activeStoreId = searchParams.get("storeId");
+
+    if (!activeStoreId || activeStoreId === "null") {
+      activeStoreId = localStorage.getItem("lastActiveStoreId");
+      if (activeStoreId && activeStoreId !== "null") {
+        navigate(`/dashboard?storeId=${activeStoreId}`, { replace: true });
+        return; 
+      }
+    } else {
+      localStorage.setItem("lastActiveStoreId", activeStoreId);
+    }
+
+    if (!activeStoreId || activeStoreId === "null") {
+      navigate("/stores");
+      return;
+    }
+
     const fetchDashboardData = async () => {
       try {
-        const response = await api.get("/seller/dashboard");
+        
+        if (!activeStoreId || activeStoreId === "null") {
+          console.warn("⚠️ No active store ID found");
+          
+          try {
+            const storesRes = await api.get("/seller/stores");
+            const stores = storesRes.data.data.stores || [];
+            const activeStores = stores.filter((s: any) => s.isActive === true);
+
+            if (activeStores.length > 0) {
+              const firstStoreId = activeStores[0]._id;
+              localStorage.setItem("lastActiveStoreId", firstStoreId);
+              navigate(`/dashboard?storeId=${firstStoreId}`);
+              return; 
+            } else {
+              setError("No active stores found. Please create a store first.");
+              setStats({
+                totalProducts: 0,
+                totalOrders: 0,
+                totalRevenue: 0,
+                totalSales: 0,
+                rating: 0,
+                followers: 0,
+                totalSellerCategories: 0,
+              });
+              return;
+            }
+          } catch (storeError) {
+            console.error("Failed to fetch stores:", storeError);
+            setError("Failed to load stores");
+            return;
+          }
+        }
+
+        const response = await api.get(
+          `/seller/dashboard?storeId=${activeStoreId}`,
+        );
+
         if (response.data.success) {
           setStats(response.data.data.stats);
+          setError(null); 
         }
       } catch (error: any) {
         console.error("Dashboard error:", error);
+
         if (error.response?.status === 401) {
           setError("Session expired. Please login again.");
+        } else if (error.response?.status === 404) {
+          
+          console.warn("⚠️ Store not found, trying to get first active store");
+
+          try {
+            
+            const storesRes = await api.get("/seller/stores");
+            const stores = storesRes.data.data.stores || [];
+            const activeStores = stores.filter((s: any) => s.isActive === true);
+
+            if (activeStores.length > 0) {
+              const firstStoreId = activeStores[0]._id;
+              localStorage.setItem("lastActiveStoreId", firstStoreId);
+              navigate(`/dashboard?storeId=${firstStoreId}`);
+              
+              return;
+            } else {
+              setError("No active stores found. Please create a store first.");
+            }
+          } catch (storeError) {
+            console.error("Failed to fetch stores:", storeError);
+            setError("Failed to load stores. Please try again.");
+          }
+
+          setStats({
+            totalProducts: 0,
+            totalOrders: 0,
+            totalRevenue: 0,
+            totalSales: 0,
+            rating: 0,
+            followers: 0,
+            totalSellerCategories: 0,
+          });
         } else {
           setError("Failed to load dashboard data");
+          setStats({
+            totalProducts: 0,
+            totalOrders: 0,
+            totalRevenue: 0,
+            totalSales: 0,
+            rating: 0,
+            followers: 0,
+            totalSellerCategories: 0,
+          });
         }
-        setStats({
-          totalProducts: 0,
-          totalOrders: 0,
-          totalRevenue: 0,
-          totalSales: 0,
-          rating: 0,
-          followers: 0,
-          totalSellerCategories: 0,
-        });
+      }
+    };
+
+    const loadStoresAndDashboard = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get("/seller/stores");
+        const stores = res.data.data.stores || res.data.stores || [];
+
+        setStoresCount(stores.length);
+
+        if (stores.length > 0) {
+          const activeStore = stores.find((s: any) => s._id === activeStoreId);
+          setPrimaryStoreName(activeStore?.name || stores[0].name);
+
+          await fetchDashboardData();
+        } else {
+          setStats({
+            totalProducts: 0,
+            totalOrders: 0,
+            totalRevenue: 0,
+            totalSales: 0,
+            rating: 0,
+            followers: 0,
+            totalSellerCategories: 0,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load data", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDashboardData();
-    const loadPrimaryStore = async () => {
-      try {
-        const res = await api.get("/seller/stores");
-        const stores = res.data.data.stores || [];
-        if (stores.length) setPrimaryStoreName(stores[0].name);
-      } catch (err) {
-        // ignore
-      }
-    };
-    loadPrimaryStore();
-  }, []);
+    loadStoresAndDashboard();
+  }, [searchParams, navigate]);
 
   useEffect(() => {
     const fetchSellerCategories = async () => {
       try {
         const response = await api.get("/seller/categories/seller");
-        console.log("📊 Seller Categories Response:", response.data);
         if (response.data.success) {
           setSellerCategories(response.data.data.sellerCategories || []);
-          console.log(
-            "📊 Seller Categories set:",
-            response.data.data.sellerCategories,
-          );
         }
       } catch (error) {
         console.error("Failed to fetch seller categories:", error);
@@ -177,9 +284,43 @@ export const DashboardPage: React.FC = () => {
     );
   }
 
+  if (storesCount === 0) {
+    return (
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="glass rounded-3xl p-12 max-w-2xl w-full text-center border border-white/10"
+        >
+          <div className="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Store className="w-12 h-12 text-emerald-400" />
+          </div>
+          <h2 className="text-3xl font-bold text-white mb-3">
+            {t("dashboard.noStoreFound") || "You haven't created a store yet!"}
+          </h2>
+          <p className="text-dark-400 text-lg mb-8">
+            {t("dashboard.noStoreDesc") ||
+              "You need to create your first store to start selling products and managing your business."}
+          </p>
+          <button
+            onClick={() => navigate("/stores")}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-lg font-semibold rounded-2xl transition-all shadow-lg shadow-emerald-500/30 hover:scale-105"
+          >
+            <PlusCircle className="w-6 h-6" />
+            {t("dashboard.createStore") || "Create Your Store Now"}
+          </button>
+          <p className="text-dark-400 text-sm mt-6">
+            {t("dashboard.noStoreSub") ||
+              "It only takes a minute. You'll add your store name, logo, and cover image."}
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8" dir={isRTL ? "rtl" : "ltr"}>
-      {/* Welcome Section */}
+      { }
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -216,7 +357,7 @@ export const DashboardPage: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Stats Grid */}
+      { }
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat, index) => (
           <motion.div
@@ -243,7 +384,9 @@ export const DashboardPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Store Info & Quick Actions */}
+      { }
+
+      { }
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -260,7 +403,7 @@ export const DashboardPage: React.FC = () => {
                 {t("dashboard.storeName") || "Store Name"}
               </span>
               <span className="text-white font-medium">
-                {seller?.storeName}
+                {seller?.storeName || primaryStoreName || "N/A"}
               </span>
             </div>
 
@@ -317,6 +460,7 @@ export const DashboardPage: React.FC = () => {
           </div>
         </motion.div>
 
+        { }
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -328,28 +472,40 @@ export const DashboardPage: React.FC = () => {
           </h3>
           <div className="grid grid-cols-2 gap-3">
             <button
-              onClick={() => navigate("/add-product")}
-              className="p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors"
+              onClick={() => navigate(`/add-product?storeId=${activeStoreId}`)}
+              className="p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors group"
             >
-              <Package className="w-6 h-6 text-emerald-400 mx-auto mb-2" />
+              <Package className="w-6 h-6 text-emerald-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
               <span className="text-sm text-white">
                 {t("dashboard.addProduct") || "Add Product"}
               </span>
             </button>
-            <button className="p-4 bg-blue-500/10 rounded-xl border border-blue-500/20 hover:bg-blue-500/20 transition-colors">
-              <ShoppingCart className="w-6 h-6 text-blue-400 mx-auto mb-2" />
+
+            <button
+              onClick={() => navigate(`/orders?storeId=${activeStoreId}`)}
+              className="p-4 bg-blue-500/10 rounded-xl border border-blue-500/20 hover:bg-blue-500/20 transition-colors group"
+            >
+              <ShoppingCart className="w-6 h-6 text-blue-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
               <span className="text-sm text-white">
                 {t("dashboard.viewOrders") || "View Orders"}
               </span>
             </button>
-            <button className="p-4 bg-purple-500/10 rounded-xl border border-purple-500/20 hover:bg-purple-500/20 transition-colors">
-              <Users className="w-6 h-6 text-purple-400 mx-auto mb-2" />
+
+            <button
+              onClick={() => navigate(`/customers?storeId=${activeStoreId}`)}
+              className="p-4 bg-purple-500/10 rounded-xl border border-purple-500/20 hover:bg-purple-500/20 transition-colors group"
+            >
+              <Users className="w-6 h-6 text-purple-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
               <span className="text-sm text-white">
                 {t("dashboard.customers") || "Customers"}
               </span>
             </button>
-            <button className="p-4 bg-orange-500/10 rounded-xl border border-orange-500/20 hover:bg-orange-500/20 transition-colors">
-              <BarChart3 className="w-6 h-6 text-orange-400 mx-auto mb-2" />
+
+            <button
+              onClick={() => navigate(`/analytics?storeId=${activeStoreId}`)}
+              className="p-4 bg-orange-500/10 rounded-xl border border-orange-500/20 hover:bg-orange-500/20 transition-colors group"
+            >
+              <BarChart3 className="w-6 h-6 text-orange-400 mx-auto mb-2 group-hover:scale-110 transition-transform" />
               <span className="text-sm text-white">
                 {t("dashboard.analytics") || "Analytics"}
               </span>
@@ -374,10 +530,6 @@ export const DashboardPage: React.FC = () => {
         <CategoryManager
           sellerCategories={sellerCategories}
           onUpdate={(updatedCategories) => {
-            console.log(
-              "📊 CategoryManager - onUpdate called:",
-              updatedCategories,
-            );
             setSellerCategories(updatedCategories);
             setStats((prev: any) => ({
               ...prev,
@@ -387,7 +539,7 @@ export const DashboardPage: React.FC = () => {
         />
       </motion.div>
 
-      {/* Recent Activity */}
+      { }
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

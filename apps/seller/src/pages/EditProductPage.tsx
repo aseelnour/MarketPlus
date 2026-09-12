@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useSellerAuth } from "../hooks/useSellerAuth";
 import { api } from "../services/api";
 import toast from "react-hot-toast";
@@ -19,7 +20,7 @@ import {
 } from "lucide-react";
 import { ImageUploadModal } from "../components/ImageUploadModal";
 
-interface MainCategory {
+interface StoreCategory {
   _id: string;
   name: string;
   nameAr?: string;
@@ -29,7 +30,7 @@ interface SellerCategory {
   _id: string;
   name: string;
   nameAr?: string;
-  mainCategoryId: string | { _id: string };
+  mainCategoryId: string | { _id: string; name?: string; nameAr?: string };
 }
 
 const toEnglishDigits = (str: string | number | undefined | null): string => {
@@ -44,10 +45,12 @@ export const EditProductPage: React.FC = () => {
   const { seller } = useSellerAuth();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
   const { currentLanguage } = useLanguage();
+
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
-  const [mainCategories, setMainCategories] = useState<MainCategory[]>([]);
+  const [storeCategories, setStoreCategories] = useState<StoreCategory[]>([]);
   const [sellerCategories, setSellerCategories] = useState<SellerCategory[]>(
     [],
   );
@@ -57,7 +60,7 @@ export const EditProductPage: React.FC = () => {
   const [showImageModal, setShowImageModal] = useState(false);
 
   const [formData, setFormData] = useState({
-    mainCategoryId: "",
+    storeCategoryId: "",
     sellerCategoryId: "",
     title: "",
     description: "",
@@ -74,40 +77,91 @@ export const EditProductPage: React.FC = () => {
     return typeof catId === "object" ? catId._id : catId;
   };
 
+  const activeStoreId =
+    searchParams.get("storeId") || localStorage.getItem("lastActiveStoreId");
+
   useEffect(() => {
-    const loadInitialData = async () => {
+    const fetchStoreCategories = async () => {
+      if (!activeStoreId || activeStoreId === "null") return;
+
+      try {
+        const storeRes = await api.get(`/seller/stores/${activeStoreId}`);
+        if (storeRes.data.success) {
+          const store = storeRes.data.data.store;
+          const categoryIds = store.storeCategoryIds || [];
+
+          const categoriesRes = await api.get("/seller/categories/store");
+          if (categoriesRes.data.success) {
+            const allCategories = categoriesRes.data.data.categories || [];
+            const filtered = allCategories.filter((cat: any) =>
+              categoryIds.includes(cat._id),
+            );
+            setStoreCategories(filtered);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch store categories:", error);
+      }
+    };
+    fetchStoreCategories();
+  }, [activeStoreId]);
+
+  useEffect(() => {
+    const fetchSellerCategories = async () => {
+      if (!activeStoreId || activeStoreId === "null") return;
+
+      try {
+        const response = await api.get(
+          `/seller/categories/seller?storeId=${activeStoreId}`,
+        );
+        if (response.data.success) {
+          setSellerCategories(response.data.data.sellerCategories || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch seller categories:", error);
+      }
+    };
+    fetchSellerCategories();
+  }, [activeStoreId]);
+
+  useEffect(() => {
+    if (formData.storeCategoryId) {
+      const filtered = sellerCategories.filter((cat) => {
+        const mainCatId =
+          typeof cat.mainCategoryId === "object"
+            ? cat.mainCategoryId._id
+            : cat.mainCategoryId;
+        return mainCatId === formData.storeCategoryId;
+      });
+      setFilteredSellerCategories(filtered);
+    } else {
+      setFilteredSellerCategories([]);
+    }
+  }, [formData.storeCategoryId, sellerCategories]);
+
+  useEffect(() => {
+    const loadProduct = async () => {
       if (!id) return;
+      if (!activeStoreId || activeStoreId === "null") {
+        navigate("/stores");
+        return;
+      }
 
       try {
         setFetching(true);
 
-        const [mainRes, sellerRes, productRes] = await Promise.all([
-          api.get("/seller/categories/main"),
-          api.get("/seller/categories/seller"),
-          api.get(`/seller/products/${id}`),
-        ]);
-
-        let fetchedMainCats: MainCategory[] = [];
-        let fetchedSellerCats: SellerCategory[] = [];
-
-        if (mainRes.data.success) {
-          fetchedMainCats = mainRes.data.data.categories || [];
-          setMainCategories(fetchedMainCats);
-        }
-
-        if (sellerRes.data.success) {
-          fetchedSellerCats = sellerRes.data.data.sellerCategories || [];
-          setSellerCategories(fetchedSellerCats);
-        }
+        const productRes = await api.get(
+          `/seller/products/${id}?storeId=${activeStoreId}`,
+        );
 
         if (productRes.data.success) {
           const product = productRes.data.data.product;
 
-          const mainCategoryId = getCategoryId(product.mainCategoryId);
+          const storeCategoryId = getCategoryId(product.mainCategoryId);
           const sellerCategoryId = getCategoryId(product.sellerCategoryId);
 
           setFormData({
-            mainCategoryId: mainCategoryId || "",
+            storeCategoryId: storeCategoryId || "",
             sellerCategoryId: sellerCategoryId || "",
             title: product.title || "",
             description: product.description || "",
@@ -118,9 +172,12 @@ export const EditProductPage: React.FC = () => {
             images: product.images || [],
             isActive: product.isActive ?? true,
           });
+        } else {
+          toast.error("Product not found");
+          navigate("/products");
         }
       } catch (error) {
-        console.error("Failed to fetch page data:", error);
+        console.error("Failed to fetch product:", error);
         toast.error("Failed to load product data");
         navigate("/products");
       } finally {
@@ -128,19 +185,8 @@ export const EditProductPage: React.FC = () => {
       }
     };
 
-    loadInitialData();
-  }, [id, navigate]);
-
-  useEffect(() => {
-    if (formData.mainCategoryId && sellerCategories.length > 0) {
-      const filtered = sellerCategories.filter(
-        (cat) => getCategoryId(cat.mainCategoryId) === formData.mainCategoryId,
-      );
-      setFilteredSellerCategories(filtered);
-    } else {
-      setFilteredSellerCategories([]);
-    }
-  }, [formData.mainCategoryId, sellerCategories]);
+    loadProduct();
+  }, [id, activeStoreId, navigate]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -148,16 +194,7 @@ export const EditProductPage: React.FC = () => {
     >,
   ) => {
     const { name, value } = e.target;
-
-    if (name === "mainCategoryId") {
-      setFormData((prev) => ({
-        ...prev,
-        mainCategoryId: value,
-        sellerCategoryId: "",
-      }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageAdd = (url: string) => {
@@ -177,8 +214,14 @@ export const EditProductPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.mainCategoryId) {
-      toast.error("Please select a main category");
+    if (!activeStoreId || activeStoreId === "null") {
+      toast.error("No active store selected");
+      navigate("/stores");
+      return;
+    }
+
+    if (!formData.storeCategoryId) {
+      toast.error("Please select a store category");
       return;
     }
     if (!formData.sellerCategoryId) {
@@ -201,7 +244,8 @@ export const EditProductPage: React.FC = () => {
     setLoading(true);
     try {
       const response = await api.put(`/seller/products/${id}`, {
-        mainCategoryId: formData.mainCategoryId,
+        storeId: activeStoreId,
+        mainCategoryId: formData.storeCategoryId, 
         sellerCategoryId: formData.sellerCategoryId,
         title: formData.title.trim(),
         description: formData.description.trim(),
@@ -218,7 +262,7 @@ export const EditProductPage: React.FC = () => {
 
       if (response.data.success) {
         toast.success("Product updated successfully! 🎉");
-        navigate("/products");
+        navigate(`/products?storeId=${activeStoreId}`);
       }
     } catch (error: any) {
       console.error("Update product error:", error);
@@ -241,10 +285,14 @@ export const EditProductPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      { }
       <div className="flex items-center gap-4">
         <button
-          onClick={() => navigate("/products")}
+          onClick={() =>
+            navigate(
+              `/products?storeId=${localStorage.getItem("lastActiveStoreId")}`,
+            )
+          }
           className="p-2 glass hover:bg-white/10 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5 text-dark-400" />
@@ -259,41 +307,48 @@ export const EditProductPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Form */}
+      { }
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="card max-w-3xl"
       >
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Categories */}
+          { }
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            { }
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
-                {t("dashboard.mainCategory") || "Main Category"} *
+                {t("dashboard.storeCategory") || "Store Category"} *
               </label>
               <div className="relative">
                 <Folder className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-400 w-4 h-4 pointer-events-none" />
                 <select
-                  name="mainCategoryId"
-                  value={formData.mainCategoryId}
+                  name="storeCategoryId"
+                  value={formData.storeCategoryId}
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-2 bg-dark-800/50 border border-dark-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
                   required
                 >
                   <option value="">
-                    {t("dashboard.selectMainCategory") ||
-                      "Select main category..."}
+                    {t("dashboard.selectStoreCategory") ||
+                      "Select Store Category..."}
                   </option>
-                  {mainCategories.map((cat) => (
+                  {storeCategories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
                       {cat.name} {cat.nameAr ? `(${cat.nameAr})` : ""}
                     </option>
                   ))}
                 </select>
               </div>
+              {storeCategories.length === 0 && (
+                <p className="mt-1 text-xs text-yellow-400">
+                  No store categories available for this store.
+                </p>
+              )}
             </div>
 
+            { }
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
                 {t("dashboard.sellerCategory") || "Your Category"} *
@@ -306,14 +361,14 @@ export const EditProductPage: React.FC = () => {
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-2 bg-dark-800/50 border border-dark-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
                   required
-                  disabled={!formData.mainCategoryId}
+                  disabled={!formData.storeCategoryId}
                 >
                   <option value="">
-                    {formData.mainCategoryId
+                    {formData.storeCategoryId
                       ? t("dashboard.selectSellerCategory") ||
                         "Select your category..."
-                      : t("dashboard.selectMainFirst") ||
-                        "Select main category first"}
+                      : t("dashboard.selectStoreFirst") ||
+                        "Select store category first"}
                   </option>
                   {filteredSellerCategories.map((cat) => (
                     <option key={cat._id} value={cat._id}>
@@ -323,16 +378,16 @@ export const EditProductPage: React.FC = () => {
                 </select>
               </div>
               {filteredSellerCategories.length === 0 &&
-                formData.mainCategoryId && (
+                formData.storeCategoryId && (
                   <p className="mt-1 text-xs text-yellow-400">
                     {t("dashboard.noSellerCategories") ||
-                      "No categories found. Create one first!"}
+                      "No sub-categories found. Create one in Dashboard first!"}
                   </p>
                 )}
             </div>
           </div>
 
-          {/* Product Title */}
+          { }
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.productTitle") || "Product Title"} *
@@ -353,7 +408,7 @@ export const EditProductPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Description */}
+          { }
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.description") || "Description"}
@@ -371,7 +426,7 @@ export const EditProductPage: React.FC = () => {
             />
           </div>
 
-          {/* Pricing & Quantity */}
+          { }
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
@@ -462,7 +517,7 @@ export const EditProductPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Brand */}
+          { }
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.brand") || "Brand"}
@@ -477,7 +532,7 @@ export const EditProductPage: React.FC = () => {
             />
           </div>
 
-          {/* Active Checkbox */}
+          { }
           <div>
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -497,7 +552,7 @@ export const EditProductPage: React.FC = () => {
             </label>
           </div>
 
-          {/* Images */}
+          { }
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.images") || "Images"}
@@ -537,7 +592,7 @@ export const EditProductPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Action Buttons */}
+          { }
           <div className="flex gap-3 pt-4 border-t border-white/10">
             <button
               type="submit"
@@ -558,7 +613,11 @@ export const EditProductPage: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => navigate("/products")}
+              onClick={() =>
+                navigate(
+                  `/products?storeId=${localStorage.getItem("lastActiveStoreId")}`,
+                )
+              }
               className="px-6 py-2.5 bg-dark-700 hover:bg-dark-600 text-white rounded-xl transition-colors font-medium"
             >
               {t("common.cancel") || "Cancel"}
@@ -567,7 +626,7 @@ export const EditProductPage: React.FC = () => {
         </form>
       </motion.div>
 
-      {/* Image Upload Modal */}
+      { }
       <ImageUploadModal
         isOpen={showImageModal}
         onClose={() => setShowImageModal(false)}

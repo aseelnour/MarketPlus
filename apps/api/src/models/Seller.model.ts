@@ -1,6 +1,8 @@
+
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { ISeller } from "../interfaces/seller.interface";
+
 const SellerSchema = new Schema<ISeller>(
   {
     firstName: { type: String, required: true },
@@ -9,16 +11,20 @@ const SellerSchema = new Schema<ISeller>(
     password: { type: String, required: true, minlength: 6 },
     phone: { type: String },
     avatar: { type: String },
-    storeName: { type: String, required: true, unique: true },
-    storeDescription: { type: String },
+    storeName: { type: String, sparse: true },
     storeLogo: { type: String },
     storeCover: { type: String },
-    categories: [{ type: String }],
+    categories: {
+      type: [String],
+      default: [],
+      required: false, 
+    },
     rating: { type: Number, default: 0 },
     totalSales: { type: Number, default: 0 },
     followers: { type: Number, default: 0 },
     isActive: { type: Boolean, default: true },
     isApproved: { type: Boolean, default: false },
+    deletedAt: { type: Date, default: null },
     status: {
       type: String,
       enum: ["pending", "active", "suspended", "rejected"],
@@ -41,6 +47,12 @@ const SellerSchema = new Schema<ISeller>(
       type: Boolean,
       default: false,
     },
+    notificationSettings: {
+      newOrders: { type: Boolean, default: true },
+      orderUpdates: { type: Boolean, default: true },
+      customerMessages: { type: Boolean, default: true },
+      promotions: { type: Boolean, default: false },
+    },
   },
   {
     timestamps: true,
@@ -58,7 +70,6 @@ SellerSchema.pre("save", async function (next) {
   }
 });
 
-// Compare password method
 SellerSchema.methods.comparePassword = async function (
   candidatePassword: string,
 ): Promise<boolean> {

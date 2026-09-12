@@ -1,44 +1,46 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
-import Sidebar from "./layouts/sidebar";
-import Header from "./layouts/header";
-import Home from "./pages/home.page";
-import Stores from "./pages/stores.page";
-import Cart from "./pages/cart.page";
-import Wishlist from "./pages/wishlist.page";
-import Profile from "./pages/profile.page";
-import "./i18n";
+import { MainLayout } from "./layouts/MainLayout";
+import { HomePage } from "./pages/HomePage";
+import StoresPage from "./pages/StoresPage";
+import { CartPage } from "./pages/CartPage";
+import { WishlistPage } from "./pages/WishlistPage";
+import { ProfilePage } from "./pages/ProfilePage";
+import { ProductDetailsPage } from "./pages/ProductDetailsPage";
+import { StoreDetailsPage } from "./pages/StoreDetailsPage";
+import { SearchResultsPage } from "./pages/SearchResultsPage";
+import { ProductsPage } from "./pages/ProductsPage";
+import { MessagesPage } from "./pages/MessagesPage";
+import { OrderDetailsPage } from "./pages/OrderDetailsPage";
+import { updateDirection } from "./utils/direction"; 
 
 function App() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    // تعيين اتجاه الصفحة حسب اللغة
-    document.dir = i18n.language === "ar" ? "rtl" : "ltr";
-    document.documentElement.lang = i18n.language;
+    updateDirection(i18n.language);
   }, [i18n.language]);
 
   return (
-    <Router>
-      <div
-        className={`flex min-h-screen bg-[#f7f4ff] ${i18n.language === "ar" ? "rtl" : "ltr"}`}
-      >
-        <Sidebar />
-        <div className={`flex-1 ${i18n.language === "ar" ? "mr-64" : "ml-64"}`}>
-          <Header />
-          <main className="p-6 md:p-8">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/stores" element={<Stores />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/profile" element={<Profile />} />
-            </Routes>
-          </main>
-        </div>
-      </div>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/stores" element={<StoresPage />} />
+          <Route path="/store/:storeId" element={<StoreDetailsPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/product/:id" element={<ProductDetailsPage />} />
+          <Route path="/search" element={<SearchResultsPage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/messages/:orderId" element={<MessagesPage />} />
+          <Route path="/order/:orderId" element={<OrderDetailsPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

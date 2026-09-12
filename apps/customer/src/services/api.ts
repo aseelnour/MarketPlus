@@ -1,8 +1,10 @@
+
 import axios from "axios";
+import { getGuestId } from "../utils/guestId";
 
-const API_URL =
-  (import.meta as any).env?.VITE_API_URL || "http://localhost:5000/api";
-
+const BASE_URL =
+  (import.meta as any).env?.VITE_API_URL || "http://localhost:5000";
+const API_URL = `${BASE_URL}/api`;
 export const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -11,9 +13,43 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
+  
   const token = localStorage.getItem("customerToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  const guestId = getGuestId();
+  if (guestId) {
+    config.headers["x-guest-id"] = guestId;
+  }
+
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.error("❌ API Error:", {
+      url: error.config?.url,
+      status: error.response?.status,
+      message: error.message,
+      data: error.response?.data,
+    });
+
+    if (error.response?.status === 401) {
+      localStorage.removeItem("customerToken");
+      localStorage.removeItem("customer");
+    }
+    return Promise.reject(error);
+  },
+);
+
+export const getImageUrl = (path: string | undefined) => {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  if (path.startsWith("/uploads")) return `${BASE_URL}${path}`;
+  return `${BASE_URL}/uploads/${path}`;
+};

@@ -1,11 +1,15 @@
+
 import { Document, Types } from "mongoose";
 
 export interface IProduct extends Document {
   _id: Types.ObjectId;
   sellerId: Types.ObjectId;
-  storeId?: Types.ObjectId;
+  storeId: Types.ObjectId;
   mainCategoryId: Types.ObjectId;
   sellerCategoryId: Types.ObjectId;
+
+  storeCategoryId?: Types.ObjectId; 
+
   title: string;
   category?: string;
   description: string;
@@ -62,9 +66,9 @@ export interface IProductFilter {
   storeId?: string;
   sellerId?: string;
   category?: string;
-
   mainCategoryId?: string;
   sellerCategoryId?: string;
+  storeCategoryId?: string; 
   search?: string;
   minPrice?: number;
   maxPrice?: number;

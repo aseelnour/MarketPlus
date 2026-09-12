@@ -22,16 +22,26 @@ const AdminSchema = new Schema<IAdmin>(
     },
     lastLogin: { type: Date },
     createdAt: { type: Date, default: Date.now },
-
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+
+    siteName: { type: String, default: "MarketPlus" },
+    siteEmail: { type: String, default: "admin@marketplus.com" },
+    currency: { type: String, default: "USD" },
+    timezone: { type: String, default: "UTC" },
+    maintenanceMode: { type: Boolean, default: false },
+    notificationSettings: {
+      newOrders: { type: Boolean, default: true },
+      newSellers: { type: Boolean, default: true },
+      storeApprovals: { type: Boolean, default: true },
+      dailyReports: { type: Boolean, default: false },
     },
   },
   { timestamps: true },
 );
 
-// Hash password before saving
 AdminSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   try {
@@ -43,7 +53,6 @@ AdminSchema.pre("save", async function (next) {
   }
 });
 
-// Compare password method
 AdminSchema.methods.comparePassword = async function (
   candidatePassword: string,
 ): Promise<boolean> {

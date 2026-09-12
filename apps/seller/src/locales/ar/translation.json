@@ -40,6 +40,10 @@
     "live": "مباشر",
     "storeInfo": "معلومات المتجر",
     "storeName": "اسم المتجر",
+    "noStoreFound": "لم تقم بإنشاء متجر بعد!",
+    "noStoreDesc": "أنت بحاجة لإنشاء متجرك الأول للبدء في بيع المنتجات وإدارة عملك.",
+    "noStoreSub": "الأمر لا يستغرق سوى دقيقة. ستقوم بإضافة اسم المتجر والشعار وصورة الغلاف.",
+    "createStore": "أنشئ متجرك الآن",
     "categories": "التصنيفات",
     "status": "الحالة",
     "quickActions": "إجراءات سريعة",
@@ -107,6 +111,7 @@
     "dashboard": "لوحة التحكم",
     "products": "المنتجات",
     "orders": "الطلبات",
+    "messages": "الرسائل",
     "customers": "العملاء",
     "analytics": "التحليلات",
     "settings": "الإعدادات",
@@ -125,7 +130,9 @@
     "add": "إضافة",
     "confirm": "تأكيد الإجراء",
     "confirmMessage": "هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.",
-    "noCategories": "لم تتم إضافة تصنيفات بعد"
+    "noCategories": "لم تتم إضافة تصنيفات بعد",
+    "saving": "جاري الحفظ...",
+    "update": "تحديث"
   },
   "categories": {
     "Electronics": "إلكترونيات",
@@ -138,7 +145,8 @@
     "Toys": "ألعاب",
     "Furniture": "أثاث",
     "Health": "صحة",
-    "main": "رئيسي"
+    "main": "رئيسي",
+    "add": "إضافة"
   },
   "sellers": {
     "confirm": {
@@ -166,6 +174,7 @@
     "deleteProduct": "حذف المنتج",
     "deleteConfirm": "هل أنت متأكد من أنك تريد حذف \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
     "yesDelete": "نعم، حذف",
+    "selectStoreFirst": "الرجاء اختيار متجر أولاً",
     "stats": {
       "total": "الإجمالي",
       "active": "نشط",
@@ -179,6 +188,279 @@
       "stock": "المخزون",
       "status": "الحالة",
       "actions": "الإجراءات"
+    }
+  },
+  "stores": {
+    "title": "متاجرك",
+    "list": "متاجري",
+    "new": "متجر جديد",
+    "create": "إنشاء متجر",
+    "edit": "تعديل المتجر",
+    "name": "اسم المتجر",
+    "slug": "الرابط (Slug)",
+    "category": "التصنيف الرئيسي",
+    "description": "الوصف",
+    "logo": "شعار المتجر",
+    "uploadLogo": "اختر شعاراً",
+    "coverImage": "صورة الغلاف",
+    "uploadCover": "اختر صورة غلاف",
+    "save": "حفظ المتجر",
+    "noStores": "لا توجد متاجر بعد",
+    "noCategory": "عام",
+    "active": "نشط",
+    "pending": "قيد الانتظار",
+    "rejected": "مرفوض",
+    "createSuccess": "تم إنشاء المتجر! في انتظار موافقة المدير.",
+    "updateSuccess": "تم طلب تعديل المتجر! في انتظار موافقة المدير.",
+    "deleteSuccess": "تم حذف المتجر",
+    "deleteError": "فشل في حذف المتجر",
+    "saveError": "فشل في حفظ المتجر",
+    "confirmDelete": "هل أنت متأكد من حذف هذا المتجر؟ لا يمكن التراجع عن هذا الإجراء.",
+    "confirmDeleteTitle": "حذف المتجر",
+    "confirmDeleteMessage": "هل أنت متأكد من حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+    "enter": "دخول",
+    "selectCategory": "اختر تصنيفاً واحداً على الأقل لمتجرك",
+    "categoriesSelected": "تم تحديد {{count}} تصنيف(ات)"
+  },
+  "orders": {
+    "title": "الطلبات",
+    "subtitle": "إدارة طلبات المتاجر الخاصة بك",
+    "noOrders": "لا توجد طلبات",
+    "noOrdersDesc": "ستظهر الطلبات هنا بمجرد قيام العملاء بالشراء",
+    "quantity": "الكمية",
+    "shippingAddress": "الشحن إلى",
+    "total": "المجموع",
+    "approve": "قُبول",
+    "reject": "رفض",
+    "approvedSuccess": "تم قبول الطلب بنجاح!",
+    "rejectedSuccess": "تم رفض الطلب!",
+    "updateError": "فشل في تحديث حالة الطلب",
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "تم التأكيد",
+      "shipped": "تم الشحن",
+      "delivered": "تم التسليم",
+      "cancelled": "ملغى"
+    }
+  },
+  "customers": {
+    "title": "العملاء",
+    "subtitle": "{{count}} عميل قاموا بالشراء من متجرك",
+    "searchPlaceholder": "بحث عن عميل...",
+    "noCustomers": "لا يوجد عملاء بعد",
+    "noMatch": "لا يوجد عملاء يطابقون بحثك",
+    "unknown": "غير معروف",
+    "loadError": "فشل في تحميل قائمة العملاء",
+    "viewOrders": "عرض الطلبات",
+    "columns": {
+      "customer": "العميل",
+      "contact": "الاتصال",
+      "orders": "الطلبات",
+      "totalSpent": "إجمالي الإنفاق",
+      "firstOrder": "أول طلب",
+      "action": "الإجراء"
+    }
+  },
+  "categoryManager": {
+    "yourCategories": "تصنيفاتك",
+    "mainCategory": "رئيسي",
+    "storeCategory": "تصنيف المتجر",
+    "selectStoreCategory": "اختر تصنيف المتجر...",
+    "noStoreCategories": "لم يتم العثور على تصنيفات للمتجر. يرجى تحديد التصنيفات عند إنشاء المتجر.",
+    "categoryName": "اسم التصنيف",
+    "categoryNameAr": "اسم التصنيف (بالعربية) (اختياري)",
+    "placeholderName": "مثال: Smartphones",
+    "placeholderNameAr": "مثال: هواتف ذكية"
+  },
+
+  "analytics": {
+    "title": "التحليلات",
+    "subtitle": "تتبع أداء ومتجرك ومبيعاتك",
+    "fetchError": "فشل في تحميل بيانات التحليلات",
+    "noData": "لا تتوفر بيانات تحليلات حالياً",
+    "items": "عنصر",
+    "sales": "المبيعات",
+    "periods": {
+      "7d": "٧ أيام",
+      "30d": "٣٠ يوم",
+      "90d": "٩٠ يوم"
+    },
+    "charts": {
+      "revenue": "الإيرادات",
+      "orders": "الطلبات",
+      "categorySales": "المبيعات حسب التصنيف",
+      "orderStatus": "حالة الطلبات"
+    },
+    "tables": {
+      "topProducts": "المنتجات الأكثر مبيعاً",
+      "noProducts": "لم يتم بيع أي منتجات حتى الآن",
+      "product": "المنتج",
+      "sold": "المبيع",
+      "revenue": "الإيرادات",
+      "recentOrders": "أحدث الطلبات",
+      "noOrders": "لا توجد طلبات حتى الآن",
+      "order": "رقم الطلب",
+      "date": "التاريخ",
+      "status": "الحالة",
+      "total": "الإجمالي"
+    }
+  },
+  "messages": {
+    "title": "الرسائل",
+    "subtitle": "إدارة التواصل مع العملاء بشأن الطلبات",
+    "search": "البحث عن عميل أو طلب...",
+    "noConversations": "لا توجد محادثات",
+    "noMessagesYet": "لا توجد رسائل بعد. أرسل رسالة لبدء المحادثة.",
+    "order": "الطلب",
+    "orderDetails": "تفاصيل الطلب",
+    "typeMessage": "اكتب رسالتك...",
+    "loadError": "فشل في تحميل المحادثات",
+    "sendError": "فشل في إرسال الرسالة",
+    "emptyState": {
+      "title": "محادثاتك",
+      "subtitle": "اختر محادثة من الشريط الجانبي لعرض رسائل العملاء وتحديثات الطلبات."
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "subtitle": "إدارة إعدادات متجرك وحسابك",
+    "common": {
+      "saving": "جاري الحفظ..."
+    },
+    "tabs": {
+      "profile": "الملف الشخصي",
+      "store": "المتجر",
+      "shipping": "الشحن",
+      "payment": "الدفع",
+      "notifications": "الإشعارات",
+      "security": "الأمان"
+    },
+    "profile": {
+      "title": "إعدادات الملف الشخصي",
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "storeName": "اسم المتجر",
+      "storeDescription": "وصف المتجر",
+      "address": "العنوان",
+      "saveBtn": "حفظ الملف الشخصي"
+    },
+    "store": {
+      "title": "إعدادات المتجر",
+      "statusTitle": "حالة المتجر",
+      "statusActiveDesc": "متجرك نشط ومرئي للعملاء حالياً",
+      "statusInactiveDesc": "متجرك غير نشط حالياً",
+      "activate": "تفعيل",
+      "deactivate": "إلغاء التفعيل",
+      "name": "اسم المتجر",
+      "description": "وصف المتجر",
+      "saveBtn": "حفظ بيانات المتجر"
+    },
+    "security": {
+      "title": "الأمان",
+      "subtitle": "تغيير كلمة المرور الخاصة بك",
+      "currentPassword": "كلمة المرور الحالية",
+      "newPassword": "كلمة المرور الجديدة",
+      "confirmPassword": "تأكيد كلمة المرور الجديدة",
+      "saveBtn": "تغيير كلمة المرور",
+      "changing": "جاري التغيير..."
+    },
+    "shipping": {
+      "title": "إعدادات الشحن",
+      "cost": "تلفة الشحن ($)",
+      "freeThreshold": "الحد الأدنى للشحن المجاني ($)",
+      "deliveryTime": "مدة التوصيل",
+      "daysOptions": {
+        "1_2": "١ - ٢ أيام",
+        "2_3": "٢ - ٣ أيام",
+        "3_5": "٣ - ٥ أيام",
+        "5_7": "٥ - ٧ أيام",
+        "7_14": "٧ - ١٤ يوم"
+      },
+      "saveBtn": "حفظ إعدادات الشحن"
+    },
+    "payment": {
+      "title": "إعدادات الدفع",
+      "subtitle": "تهيئة طرق الدفع المقبولة",
+      "methods": {
+        "cod": "الدفع عند الاستلام",
+        "creditCard": "البطاقة الائتمانية"
+      },
+      "saveBtn": "حفظ إعدادات الدفع"
+    },
+    "notifications": {
+      "title": "إعدادات الإشعارات",
+      "subtitle": "اختر الإشعارات التي تريد استلامها",
+      "options": {
+        "newOrders": "طلبات جديدة",
+        "orderUpdates": "تحديثات الطلبات",
+        "customerMessages": "رسائل العملاء",
+        "promotions": "العروض والعروض الترويجية"
+      },
+      "saveBtn": "حفظ إعدادات الإشعارات"
+    },
+    "toast": {
+      "fetchError": "فشل في تحميل الإعدادات",
+      "profileSuccess": "تم تحديث الملف الشخصي بنجاح",
+      "profileError": "فشل في تحديث الملف الشخصي",
+      "storeSuccess": "تم تحديث بيانات المتجر بنجاح",
+      "storeError": "فشل في تحديث بيانات المتجر",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين",
+      "passwordMinLength": "يجب أن تكون كلمة المرور ٦ أحرف على الأقل",
+      "passwordSuccess": "تم تغيير كلمة المرور بنجاح",
+      "passwordError": "فشل في تغيير كلمة المرور",
+      "storeActivated": "تم تفعيل المتجر بنجاح",
+      "storeDeactivated": "تم إلغاء تفعيل المتجر",
+      "storeStatusError": "فشل في تحديث حالة المتجر",
+      "shippingSaved": "تم حفظ إعدادات الشحن",
+      "paymentSaved": "تم حفظ إعدادات الدفع",
+      "notificationsSaved": "تم حفظ إعدادات الإشعارات"
+    }
+  },
+
+  "order": {
+    "details": "تفاصيل الطلب",
+    "notFound": "الطلب غير موجود",
+    "loadError": "فشل في تحميل تفاصيل الطلب",
+    "noId": "لم يتم توفير رقم الطلب",
+    "backToOrders": "العودة إلى الطلبات",
+    "statusUpdated": "تم تحديث حالة الطلب إلى {{status}}",
+    "updateError": "فشل في تحديث حالة الطلب",
+    "items": "عناصر الطلب ({{count}})",
+    "qty": "الكمية",
+    "subtotal": "المجموع الفرعي",
+    "shipping": "الشحن",
+    "discount": "الخصم",
+    "tax": "الضريبة",
+    "total": "المجموع",
+    "customer": "العميل",
+    "shippingAddress": "عنوان الشحن",
+    "payment": "الدفع",
+    "method": "طريقة الدفع",
+    "paymentStatus": "حالة الدفع",
+    "paid": "مدفوع",
+    "pending": "معلق",
+    "cashOnDelivery": "الدفع عند الاستلام",
+    "notes": "ملاحظات",
+    "message": "رسالة",
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "مؤكد",
+      "shipped": "تم الشحن",
+      "delivered": "تم التوصيل",
+      "cancelled": "ملغي"
+    }
+  },
+
+  "notifications": {
+    "title": "الإشعارات",
+    "clearAll": "مسح الكل",
+    "empty": "لا توجد إشعارات حالياً",
+    "types": {
+      "new_order": "تم إنشاء طلب جديد برقم {{orderNumber}} في متجر {{storeName}}",
+      "order_updated": "تم تحديث حالة الطلب برقم {{orderNumber}} إلى {{status}} في متجر {{storeName}}",
+      "order_cancelled": "تم إلغاء الطلب برقم {{orderNumber}} في متجر {{storeName}}"
     }
   }
 }

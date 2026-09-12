@@ -115,7 +115,7 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      {/* Welcome Section */}
+      { }
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -149,7 +149,7 @@ export const DashboardPage: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Stats Grid */}
+      { }
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat, index) => (
           <motion.div
@@ -176,9 +176,9 @@ export const DashboardPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Charts Section - تظهر فقط إذا في بيانات */}
+      { }
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Revenue Chart - تظهر فقط إذا في بيانات */}
+        { }
         {charts?.revenueData && charts.revenueData.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -220,7 +220,7 @@ export const DashboardPage: React.FC = () => {
           </motion.div>
         )}
 
-        {/* Top Categories - تظهر فقط إذا في بيانات */}
+        { }
         {charts?.topCategories && charts.topCategories.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}

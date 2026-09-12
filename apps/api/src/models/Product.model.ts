@@ -11,11 +11,13 @@ const ProductSchema = new Schema<IProduct>(
     storeId: {
       type: Schema.Types.ObjectId,
       ref: "Store",
+      required: true,
     },
+
     mainCategoryId: {
       type: Schema.Types.ObjectId,
       ref: "Category",
-      required: true,
+      required: false,
     },
     sellerCategoryId: {
       type: Schema.Types.ObjectId,
@@ -82,6 +84,11 @@ const ProductSchema = new Schema<IProduct>(
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+    storeCategoryId: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: false,
     },
   },
   {
