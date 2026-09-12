@@ -1,4 +1,6 @@
 {
+  "name": "customer",
+  "version": "1.0.0",
   "dependencies": {
     "@tanstack/react-query": "^4.44.0",
     "axios": "^1.18.1",
