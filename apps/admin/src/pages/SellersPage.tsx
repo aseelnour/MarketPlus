@@ -20,8 +20,7 @@ import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { ConfirmDialog } from "../components/confirm-dialog";
 
-const API_URL = "http://localhost:5000";
-
+const API_URL = "https://marketplus-wq71.onrender.com";
 const getImageUrl = (imagePath?: string) => {
   if (!imagePath) return "";
   if (imagePath.startsWith("http")) return imagePath;
@@ -44,8 +43,8 @@ interface Seller {
   phone?: string;
   storeName: string | null;
   storeDescription?: string | null;
-  categories: string[]; 
-  storeCategoryIds: Category[]; 
+  categories: string[];
+  storeCategoryIds: Category[];
   isActive: boolean;
   isVerified: boolean;
   status: "pending" | "active" | "rejected" | "suspended";
@@ -375,7 +374,7 @@ export const SellersPage: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      { }
+      {}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-white">
@@ -397,7 +396,7 @@ export const SellersPage: React.FC = () => {
         </button>
       </div>
 
-      { }
+      {}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="card p-4">
           <p className="text-sm text-dark-400">
@@ -441,7 +440,7 @@ export const SellersPage: React.FC = () => {
         </div>
       </div>
 
-      { }
+      {}
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-400 w-5 h-5" />
@@ -476,7 +475,7 @@ export const SellersPage: React.FC = () => {
         </select>
       </div>
 
-      { }
+      {}
       {loading ? (
         <div className="flex items-center justify-center h-64">
           <div className="flex flex-col items-center gap-4">
@@ -537,7 +536,7 @@ export const SellersPage: React.FC = () => {
                           transition={{ delay: index * 0.05 }}
                           className="hover:bg-white/5 transition-colors"
                         >
-                          { }
+                          {}
                           <td className="px-6 py-4 text-start">
                             <div className="flex items-center gap-3">
                               <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
@@ -556,7 +555,7 @@ export const SellersPage: React.FC = () => {
                             </div>
                           </td>
 
-                          { }
+                          {}
                           <td className="px-6 py-4 text-start">
                             <div>
                               <p className="text-white">
@@ -568,7 +567,7 @@ export const SellersPage: React.FC = () => {
                             </div>
                           </td>
 
-                          { }
+                          {}
                           <td className="px-6 py-4 text-start">
                             <div className="flex flex-wrap gap-1">
                               {seller.storeCategoryIds &&
@@ -599,7 +598,7 @@ export const SellersPage: React.FC = () => {
                             </div>
                           </td>
 
-                          { }
+                          {}
                           <td className="px-6 py-4 text-start">
                             <span
                               className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(seller.status)}`}
@@ -611,7 +610,7 @@ export const SellersPage: React.FC = () => {
                             </span>
                           </td>
 
-                          { }
+                          {}
                           <td className="px-6 py-4 text-start">
                             <p className="text-sm text-white">
                               {formatDate(
@@ -627,7 +626,7 @@ export const SellersPage: React.FC = () => {
                             </p>
                           </td>
 
-                          { }
+                          {}
                           <td className="px-6 py-4 text-end">
                             <div className="flex items-center justify-end gap-2">
                               <button
@@ -712,7 +711,7 @@ export const SellersPage: React.FC = () => {
         </div>
       )}
 
-      { }
+      {}
       <AnimatePresence>
         {showDetails && selectedSeller && (
           <motion.div
@@ -742,7 +741,7 @@ export const SellersPage: React.FC = () => {
               </div>
 
               <div className="space-y-6">
-                { }
+                {}
                 <div className="p-4 bg-white/5 rounded-xl">
                   <h3 className="text-lg font-semibold text-white mb-3">
                     {t("sellers.details.storeInfo") || "Store Information"}
@@ -781,7 +780,7 @@ export const SellersPage: React.FC = () => {
                   </div>
                 </div>
 
-                { }
+                {}
                 <div className="p-4 bg-white/5 rounded-xl">
                   <h3 className="text-lg font-semibold text-white mb-3">
                     {t("sellers.details.sellerInfo") || "Seller Information"}
@@ -820,7 +819,7 @@ export const SellersPage: React.FC = () => {
                   </div>
                 </div>
 
-                { }
+                {}
                 <div className="p-4 bg-white/5 rounded-xl">
                   <h3 className="text-lg font-semibold text-white mb-3">
                     {t("sellers.details.categories") || "Store Categories"}
@@ -843,7 +842,7 @@ export const SellersPage: React.FC = () => {
                   </div>
                 </div>
 
-                { }
+                {}
                 <div className="grid grid-cols-3 gap-4">
                   <div className="p-4 bg-white/5 rounded-xl text-center">
                     <p className="text-2xl font-bold text-white">
@@ -871,7 +870,7 @@ export const SellersPage: React.FC = () => {
                   </div>
                 </div>
 
-                { }
+                {}
                 <div className="flex gap-3 pt-4 border-t border-white/10">
                   {selectedSeller.status === "pending" && (
                     <>
