@@ -9,7 +9,7 @@ import { useSellerAuth } from "../hooks/useSellerAuth";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { useLanguage } from "../hooks/useLanguage";
-
+import { api } from "../services/apiClient";
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -18,7 +18,7 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 
 export const LoginPage: React.FC = () => {
-  const { t , i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { login, isLoading } = useSellerAuth();
   const { changeLanguage, currentLanguage } = useLanguage();
   const navigate = useNavigate();
@@ -35,18 +35,9 @@ export const LoginPage: React.FC = () => {
   const onSubmit = async (data: LoginForm) => {
     setError("");
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/seller/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        },
-      );
+      const response = await api.post("/seller/auth/login", data);
 
-      const result = await response.json();
+      const result = response.data;
 
       if (result.success) {
         localStorage.setItem("sellerToken", result.data.token);
@@ -55,7 +46,6 @@ export const LoginPage: React.FC = () => {
         toast.success("Welcome back! 🎉");
         window.location.href = "/dashboard";
       } else {
-        
         if (result.message.includes("pending admin approval")) {
           setError(
             "Your account is pending admin approval. Please wait for admin to verify your account.",
@@ -66,16 +56,18 @@ export const LoginPage: React.FC = () => {
           toast.error(result.message);
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error:", error);
-      setError("An error occurred during login");
-      toast.error("An error occurred during login");
+      const message =
+        error.response?.data?.message || "An error occurred during login";
+      setError(message);
+      toast.error(message);
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-emerald-950/30 to-dark-950 flex items-center justify-center p-4 relative overflow-hidden">
-      { }
+      {}
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <button
           onClick={() => changeLanguage("en")}
@@ -99,7 +91,7 @@ export const LoginPage: React.FC = () => {
         </button>
       </div>
 
-      { }
+      {}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl animate-pulse-slow delay-1000" />
@@ -111,7 +103,7 @@ export const LoginPage: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md relative z-10"
       >
-        { }
+        {}
         <div className="text-center mb-8">
           <motion.div
             initial={{ scale: 0 }}
@@ -129,7 +121,7 @@ export const LoginPage: React.FC = () => {
           </p>
         </div>
 
-        { }
+        {}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
