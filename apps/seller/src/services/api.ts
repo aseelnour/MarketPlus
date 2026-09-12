@@ -2,9 +2,9 @@ import axios from "axios";
 
 const BASE_URL =
   (import.meta as any).env?.VITE_API_URL ||
-  ((import.meta as any).env?.PROD
-    ? "https://marketplus-wq71.onrender.com"
-    : "http://localhost:5000");
+  ((import.meta as any).env?.DEV
+    ? "http://localhost:5000"
+    : "https://marketplus-wq71.onrender.com");
 const API_URL = `${BASE_URL}/api`;
 
 export const api = axios.create({
