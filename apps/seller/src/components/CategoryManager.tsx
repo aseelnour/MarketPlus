@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { X, Plus, Folder } from "lucide-react";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import toast from "react-hot-toast";
 import { useSellerAuth } from "../hooks/useSellerAuth";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -133,7 +132,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
     try {
       const response = await api.post("/seller/categories/seller", {
         storeId: activeStoreId,
-        mainCategoryId: selectedStoreCategory, 
+        mainCategoryId: selectedStoreCategory,
         name: selectedCategoryName.trim(),
         nameAr: selectedCategoryNameAr.trim() || undefined,
       });
@@ -213,7 +212,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
   return (
     <>
       <div className="space-y-4">
-        { }
+        {}
         <div>
           <label className="block text-sm font-medium text-dark-300 mb-2">
             {t("categoryManager.yourCategories")}
@@ -254,7 +253,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
           </div>
         </div>
 
-        { }
+        {}
         {!isAdding ? (
           <button
             onClick={() => setIsAdding(true)}
@@ -265,7 +264,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
           </button>
         ) : (
           <div className="bg-dark-800/50 p-4 rounded-xl border border-dark-700 space-y-3">
-            { }
+            {}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
                 {t("categoryManager.storeCategory")}
@@ -291,7 +290,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
               )}
             </div>
 
-            { }
+            {}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
                 {t("categoryManager.categoryName")}
@@ -305,7 +304,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
               />
             </div>
 
-            { }
+            {}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
                 {t("categoryManager.categoryNameAr")}
@@ -351,7 +350,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
         )}
       </div>
 
-      { }
+      {}
       <ConfirmDialog
         isOpen={confirmDialog.isOpen}
         onClose={() => setConfirmDialog({ isOpen: false, categoryId: null })}

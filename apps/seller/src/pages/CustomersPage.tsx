@@ -10,7 +10,7 @@ import {
   ChevronRight,
   ChevronLeft,
 } from "lucide-react";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import toast from "react-hot-toast";
 
 interface Customer {
@@ -123,7 +123,7 @@ export const CustomersPage = () => {
 
   return (
     <div className="space-y-5" dir={currentLang === "ar" ? "rtl" : "ltr"}>
-      { }
+      {}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-white">
@@ -135,7 +135,7 @@ export const CustomersPage = () => {
           </p>
         </div>
 
-        { }
+        {}
         <div className="relative">
           <Search
             className={`absolute top-1/2 -translate-y-1/2 text-dark-400 ${
@@ -157,7 +157,7 @@ export const CustomersPage = () => {
         </div>
       </div>
 
-      { }
+      {}
       {filteredCustomers.length === 0 ? (
         <div className="text-center py-12 bg-dark-800/50 backdrop-blur-sm rounded-xl border border-white/5">
           <User size={48} className="mx-auto text-dark-400/40" />
@@ -211,7 +211,7 @@ export const CustomersPage = () => {
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell text-start">
                       <div className="space-y-1">
-                        { }
+                        {}
                         <div className="flex items-center gap-1.5 text-xs text-dark-400">
                           <Phone size={12} className="shrink-0" />
                           <span>
@@ -224,7 +224,7 @@ export const CustomersPage = () => {
                           </span>
                         </div>
 
-                        { }
+                        {}
                         {customer.email && (
                           <div className="flex items-center gap-1.5 text-xs text-dark-400">
                             <Mail size={12} className="shrink-0" />

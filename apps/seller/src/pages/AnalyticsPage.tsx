@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -16,7 +15,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import toast from "react-hot-toast";
 import {
   ShoppingCart,
@@ -24,7 +23,7 @@ import {
   TrendingUp,
   Users,
   Star,
-  Package, 
+  Package,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 interface AnalyticsData {
@@ -146,7 +145,7 @@ export const AnalyticsPage = () => {
 
   return (
     <div className="space-y-6">
-      { }
+      {}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-white">
@@ -157,7 +156,7 @@ export const AnalyticsPage = () => {
           </p>
         </div>
 
-        { }
+        {}
         <div className="flex items-center gap-2">
           <button
             onClick={() => setPeriod("7d")}
@@ -192,10 +191,10 @@ export const AnalyticsPage = () => {
         </div>
       </div>
 
-      { }
+      {}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        { }
+        {}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-5">
           <h3 className="text-sm font-semibold text-white mb-4">
             📈 {t("analytics.charts.revenue") || "Revenue"}
@@ -243,7 +242,7 @@ export const AnalyticsPage = () => {
           </ResponsiveContainer>
         </div>
 
-        { }
+        {}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-5">
           <h3 className="text-sm font-semibold text-white mb-4">
             📊 {t("analytics.charts.orders") || "Orders"}
@@ -289,9 +288,9 @@ export const AnalyticsPage = () => {
         </div>
       </div>
 
-      { }
+      {}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        { }
+        {}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-5">
           <h3 className="text-sm font-semibold text-white mb-4">
             🥧 {t("analytics.charts.categorySales") || "Category Sales"}
@@ -338,7 +337,7 @@ export const AnalyticsPage = () => {
           </ResponsiveContainer>
         </div>
 
-        { }
+        {}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-5">
           <h3 className="text-sm font-semibold text-white mb-4">
             📦 {t("analytics.charts.orderStatus") || "Order Status"}
@@ -388,9 +387,9 @@ export const AnalyticsPage = () => {
         </div>
       </div>
 
-      { }
+      {}
 
-      { }
+      {}
       <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-5">
         <h3 className="text-sm font-semibold text-white mb-4">
           🏆 {t("analytics.tables.topProducts") || "Top Selling Products"}
@@ -459,7 +458,7 @@ export const AnalyticsPage = () => {
         )}
       </div>
 
-      { }
+      {}
       <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-5">
         <h3 className="text-sm font-semibold text-white mb-4">
           🛒 {t("analytics.tables.recentOrders") || "Recent Orders"}

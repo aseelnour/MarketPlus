@@ -11,7 +11,7 @@ import {
   Power,
   Save,
 } from "lucide-react";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import toast from "react-hot-toast";
 
 interface SellerProfile {
@@ -73,7 +73,6 @@ export const SettingsPage = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        
         const profileRes = await api.get("/seller/profile");
         if (profileRes.data.success) {
           const seller = profileRes.data.data.seller;
@@ -225,7 +224,7 @@ export const SettingsPage = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        { }
+        {}
         <div className="lg:col-span-1 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-2">
           {tabs.map((tab) => (
             <button
@@ -243,9 +242,9 @@ export const SettingsPage = () => {
           ))}
         </div>
 
-        { }
+        {}
         <div className="lg:col-span-3 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6">
-          { }
+          {}
           {activeTab === "profile" && (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-white">
@@ -358,14 +357,14 @@ export const SettingsPage = () => {
             </div>
           )}
 
-          { }
+          {}
           {activeTab === "store" && (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-white">
                 {t("settings.store.title")}
               </h2>
 
-              { }
+              {}
               <div className="flex items-center justify-between p-4 bg-slate-900/50 rounded-lg border border-slate-700">
                 <div>
                   <p className="text-sm font-medium text-white">
@@ -439,7 +438,7 @@ export const SettingsPage = () => {
             </div>
           )}
 
-          { }
+          {}
           {activeTab === "security" && (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-white">
@@ -511,7 +510,7 @@ export const SettingsPage = () => {
             </div>
           )}
 
-          { }
+          {}
           {activeTab === "shipping" && (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-white">
@@ -592,7 +591,7 @@ export const SettingsPage = () => {
             </div>
           )}
 
-          { }
+          {}
           {activeTab === "payment" && (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-white">
@@ -632,7 +631,7 @@ export const SettingsPage = () => {
             </div>
           )}
 
-          { }
+          {}
           {activeTab === "notifications" && (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-white">

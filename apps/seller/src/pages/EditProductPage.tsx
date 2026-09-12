@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useSellerAuth } from "../hooks/useSellerAuth";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import toast from "react-hot-toast";
 import { useLanguage } from "../hooks/useLanguage";
 import { motion } from "framer-motion";
@@ -245,7 +244,7 @@ export const EditProductPage: React.FC = () => {
     try {
       const response = await api.put(`/seller/products/${id}`, {
         storeId: activeStoreId,
-        mainCategoryId: formData.storeCategoryId, 
+        mainCategoryId: formData.storeCategoryId,
         sellerCategoryId: formData.sellerCategoryId,
         title: formData.title.trim(),
         description: formData.description.trim(),
@@ -285,7 +284,7 @@ export const EditProductPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      { }
+      {}
       <div className="flex items-center gap-4">
         <button
           onClick={() =>
@@ -307,16 +306,16 @@ export const EditProductPage: React.FC = () => {
         </div>
       </div>
 
-      { }
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="card max-w-3xl"
       >
         <form onSubmit={handleSubmit} className="space-y-6">
-          { }
+          {}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            { }
+            {}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
                 {t("dashboard.storeCategory") || "Store Category"} *
@@ -348,7 +347,7 @@ export const EditProductPage: React.FC = () => {
               )}
             </div>
 
-            { }
+            {}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
                 {t("dashboard.sellerCategory") || "Your Category"} *
@@ -387,7 +386,7 @@ export const EditProductPage: React.FC = () => {
             </div>
           </div>
 
-          { }
+          {}
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.productTitle") || "Product Title"} *
@@ -408,7 +407,7 @@ export const EditProductPage: React.FC = () => {
             </div>
           </div>
 
-          { }
+          {}
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.description") || "Description"}
@@ -426,7 +425,7 @@ export const EditProductPage: React.FC = () => {
             />
           </div>
 
-          { }
+          {}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
@@ -517,7 +516,7 @@ export const EditProductPage: React.FC = () => {
             </div>
           </div>
 
-          { }
+          {}
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.brand") || "Brand"}
@@ -532,7 +531,7 @@ export const EditProductPage: React.FC = () => {
             />
           </div>
 
-          { }
+          {}
           <div>
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -552,7 +551,7 @@ export const EditProductPage: React.FC = () => {
             </label>
           </div>
 
-          { }
+          {}
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.images") || "Images"}
@@ -592,7 +591,7 @@ export const EditProductPage: React.FC = () => {
             </p>
           </div>
 
-          { }
+          {}
           <div className="flex gap-3 pt-4 border-t border-white/10">
             <button
               type="submit"
@@ -626,7 +625,7 @@ export const EditProductPage: React.FC = () => {
         </form>
       </motion.div>
 
-      { }
+      {}
       <ImageUploadModal
         isOpen={showImageModal}
         onClose={() => setShowImageModal(false)}

@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from "react";
 import { useSellerAuth } from "../hooks/useSellerAuth";
-import { api, getImageUrl } from "../services/api"; 
+import { api, getImageUrl } from "../services/apiClient";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -345,7 +344,7 @@ export const StoresPage: React.FC = () => {
                   "Store Categories (Select at least one)"}
               </label>
 
-              { }
+              {}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-3 bg-dark-800/30 rounded-xl border border-dark-700">
                 {storeCategories.length === 0 ? (
                   <p className="col-span-full text-center text-dark-400 text-sm py-4">
@@ -400,7 +399,7 @@ export const StoresPage: React.FC = () => {
                 )}
               </div>
 
-              { }
+              {}
               {form.storeCategoryIds.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-1">
                   {form.storeCategoryIds.map((id) => {

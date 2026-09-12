@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Link,
@@ -28,7 +27,7 @@ import { useLanguage } from "../hooks/useLanguage";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import { StoreSwitcher } from "../components/StoreSwitcher";
 
 interface SellerLayoutProps {
@@ -72,20 +71,18 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
     return false;
   };
   const renderNotificationMessage = (notif: any) => {
-    
     if (notif.type && t(`notifications.types.${notif.type}`)) {
       return t(`notifications.types.${notif.type}`, {
         orderNumber: notif.orderNumber || notif.metadata?.orderNumber || "",
         storeName: notif.storeName || "",
         status: notif.status ? t(`order.status.${notif.status}`) : "",
-        defaultValue: notif.message, 
+        defaultValue: notif.message,
       });
     }
 
     return notif.message;
   };
   const loadPrimaryStore = async () => {
-    
     if (!getToken()) {
       console.warn("⚠️ No token found, skipping loadPrimaryStore");
       return;
@@ -110,7 +107,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
         setPrimaryStoreName(res.data.data.store.name);
       }
     } catch (err: any) {
-      
       if (err.response?.status === 404) {
         console.warn(
           "⚠️ Store not found, clearing and fetching first active store",
@@ -137,7 +133,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
   };
 
   const fetchNotifications = async () => {
-    
     if (!getToken() || !activeStoreId || activeStoreId === "null") return;
 
     try {
@@ -153,7 +148,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
   };
 
   const fetchUnreadMessages = async () => {
-    
     if (!getToken() || !activeStoreId || activeStoreId === "null") return;
 
     try {
@@ -174,7 +168,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
   };
 
   React.useEffect(() => {
-    
     const wasCleaned = cleanInvalidStoreId();
 
     if (!getToken()) {
@@ -261,13 +254,13 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
       className="min-h-screen bg-slate-950 text-slate-100 flex"
       dir={isRTL ? "rtl" : "ltr"}
     >
-      { }
+      {}
       <aside
         className={`fixed top-0 bottom-0 z-40 w-64 bg-slate-900/80 backdrop-blur-xl border-slate-800 flex flex-col transition-all duration-300 ${
           isRTL ? "right-0 border-l" : "left-0 border-r"
         }`}
       >
-        { }
+        {}
         <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-800/60">
           <div className="w-9 h-9 bg-emerald-500/10 border border-emerald-500/30 rounded-lg flex items-center justify-center text-emerald-400">
             <Store className="w-5 h-5" />
@@ -277,7 +270,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
           </span>
         </div>
 
-        { }
+        {}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const fullPath = `${item.path}?storeId=${activeStoreId || ""}`;
@@ -298,7 +291,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
                 />
                 <span className="flex-1">{item.label}</span>
 
-                { }
+                {}
                 {item.badge && (
                   <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold animate-pulse">
                     {item.badge > 99 ? "99+" : item.badge}
@@ -309,7 +302,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
           })}
         </nav>
 
-        { }
+        {}
         <div className="p-3 border-t border-slate-800/80 space-y-3 bg-slate-900/40">
           <div>
             <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider px-1 mb-1.5">
@@ -353,11 +346,11 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
         </div>
       </aside>
 
-      { }
+      {}
       <div
         className={`flex-1 flex flex-col min-w-0 ${isRTL ? "mr-64" : "ml-64"}`}
       >
-        { }
+        {}
         <header className="h-16 border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-30 px-8 flex items-center justify-between">
           <div>
             <h1 className="text-base font-semibold text-white">
@@ -371,7 +364,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
 
-            { }
+            {}
             <div className="relative">
               <button
                 onClick={() => setNotifOpen(!notifOpen)}
@@ -389,13 +382,12 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
-                     
                     className={`absolute mt-2 w-80 rounded-xl bg-slate-900 border border-slate-800 shadow-2xl z-50 p-2 overflow-hidden ${
                       isRTL ? "left-0" : "right-0"
                     }`}
                   >
                     <div className="flex items-center justify-between px-3 py-2 border-b border-slate-800">
-                      { }
+                      {}
                       <span className="text-xs font-semibold text-slate-300">
                         {t("notifications.title") || "Notifications"}
                       </span>
@@ -453,7 +445,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({ children }) => {
           </div>
         </header>
 
-        { }
+        {}
         <main className="flex-1 p-8">{children}</main>
       </div>
     </div>

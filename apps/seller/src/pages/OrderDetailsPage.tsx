@@ -17,7 +17,7 @@ import {
   Clock,
   MessageCircle,
 } from "lucide-react";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import toast from "react-hot-toast";
 import { useLanguage } from "../hooks/useLanguage";
 import { formatNumber, formatPhoneNumber } from "../utils/numbers";
@@ -209,7 +209,7 @@ export const OrderDetailsPage = () => {
 
   return (
     <div className="space-y-5">
-      { }
+      {}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
@@ -228,9 +228,9 @@ export const OrderDetailsPage = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        { }
+        {}
         <div className="lg:col-span-2 space-y-4">
-          { }
+          {}
           <div className="bg-dark-800/50 backdrop-blur-sm rounded-xl border border-white/5 p-5">
             <div className="flex items-center justify-between flex-wrap gap-3">
               <div className="flex items-center gap-3">
@@ -281,7 +281,7 @@ export const OrderDetailsPage = () => {
             </div>
           </div>
 
-          { }
+          {}
           <div className="bg-dark-800/50 backdrop-blur-sm rounded-xl border border-white/5 p-5">
             <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-3">
               <ShoppingBag size={16} className="text-dark-400" />
@@ -325,7 +325,7 @@ export const OrderDetailsPage = () => {
               })}
             </div>
 
-            { }
+            {}
             <div className="mt-4 pt-4 border-t border-white/5 space-y-1.5">
               <div className="flex justify-between text-sm">
                 <span className="text-dark-400">
@@ -377,9 +377,9 @@ export const OrderDetailsPage = () => {
           </div>
         </div>
 
-        { }
+        {}
         <div className="space-y-4">
-          { }
+          {}
           <div className="bg-dark-800/50 backdrop-blur-sm rounded-xl border border-white/5 p-5">
             <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-3">
               <User size={16} className="text-dark-400" />
@@ -407,7 +407,7 @@ export const OrderDetailsPage = () => {
             </div>
           </div>
 
-          { }
+          {}
           <div className="bg-dark-800/50 backdrop-blur-sm rounded-xl border border-white/5 p-5">
             <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-3">
               <MapPin size={16} className="text-dark-400" />
@@ -423,7 +423,7 @@ export const OrderDetailsPage = () => {
             </p>
           </div>
 
-          { }
+          {}
           <div className="bg-dark-800/50 backdrop-blur-sm rounded-xl border border-white/5 p-5">
             <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-3">
               <DollarSign size={16} className="text-dark-400" />

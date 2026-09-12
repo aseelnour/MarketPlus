@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import {
   Package,
   Clock,
@@ -209,7 +209,7 @@ export const OrdersPage: React.FC = () => {
                 </div>
               </div>
 
-              { }
+              {}
               {order.status === "pending" && (
                 <div className="flex items-center gap-2 mt-4 pt-3 border-t border-dark-700">
                   <button

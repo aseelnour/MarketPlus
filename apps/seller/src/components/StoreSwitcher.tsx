@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ChevronUp, Building2, Check } from "lucide-react";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface StoreOption {
@@ -84,7 +84,7 @@ export const StoreSwitcher: React.FC = () => {
 
   return (
     <div className="relative w-full" ref={menuRef}>
-      { }
+      {}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-slate-800/40 hover:bg-slate-800/80 border border-slate-700/50 text-slate-200 text-xs font-medium transition-all duration-150"
@@ -100,7 +100,7 @@ export const StoreSwitcher: React.FC = () => {
         />
       </button>
 
-      { }
+      {}
       <AnimatePresence>
         {isOpen && stores.length > 0 && (
           <motion.div

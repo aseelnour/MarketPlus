@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSellerAuth } from "../hooks/useSellerAuth";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import {
@@ -211,13 +211,11 @@ export const ProductsPage: React.FC = () => {
   };
 
   const getMainCategoryName = (product: Product) => {
-    
     if (product.mainCategoryId && product.mainCategoryId.name) {
       return product.mainCategoryId.name;
     }
-    
+
     if (typeof product.mainCategoryId === "string") {
-      
       const cat = mainCategories.find(
         (c) => c._id === product.mainCategoryId._id,
       );
@@ -252,7 +250,7 @@ export const ProductsPage: React.FC = () => {
   }
   return (
     <div className="space-y-6" dir={currentLanguage === "ar" ? "rtl" : "ltr"}>
-      { }
+      {}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-white">
@@ -272,7 +270,7 @@ export const ProductsPage: React.FC = () => {
         </button>
       </div>
 
-      { }
+      {}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="card p-4">
           <p className="text-sm text-dark-400">
@@ -317,7 +315,7 @@ export const ProductsPage: React.FC = () => {
         </div>
       </div>
 
-      { }
+      {}
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1 relative">
           <Search className="absolute ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 text-dark-400 w-5 h-5 pointer-events-none" />
@@ -389,7 +387,7 @@ export const ProductsPage: React.FC = () => {
         </button>
       </div>
 
-      { }
+      {}
       <div className="glass rounded-2xl overflow-hidden border border-white/10">
         <div className="overflow-x-auto">
           <table className="w-full text-start">
@@ -434,7 +432,7 @@ export const ProductsPage: React.FC = () => {
                     transition={{ delay: index * 0.05 }}
                     className="hover:bg-white/5 transition-colors"
                   >
-                    { }
+                    {}
                     <td className="px-6 py-4 text-start">
                       <div className="flex items-center gap-3 rtl:flex-row-reverse justify-end rtl:justify-end">
                         <div className="text-end rtl:text-right">
@@ -463,7 +461,7 @@ export const ProductsPage: React.FC = () => {
                       </div>
                     </td>
 
-                    { }
+                    {}
                     <td className="px-6 py-4 text-start">
                       <div>
                         <span className="text-xs text-slate-400 block">
@@ -475,7 +473,7 @@ export const ProductsPage: React.FC = () => {
                       </div>
                     </td>
 
-                    { }
+                    {}
                     <td className="px-6 py-4 text-start">
                       {product.discountPrice &&
                       product.discountPrice < product.price ? (
@@ -498,7 +496,7 @@ export const ProductsPage: React.FC = () => {
                       )}
                     </td>
 
-                    { }
+                    {}
                     <td className="px-6 py-4 text-start">
                       <p
                         className={`text-sm font-medium ${
@@ -509,7 +507,7 @@ export const ProductsPage: React.FC = () => {
                       </p>
                     </td>
 
-                    { }
+                    {}
                     <td className="px-6 py-4 text-start">
                       <span
                         className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
@@ -529,7 +527,7 @@ export const ProductsPage: React.FC = () => {
                       </span>
                     </td>
 
-                    { }
+                    {}
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end rtl:justify-start gap-2">
                         <button
@@ -602,7 +600,7 @@ export const ProductsPage: React.FC = () => {
         </div>
       </div>
 
-      { }
+      {}
       <ConfirmDialog
         isOpen={confirmDialog.isOpen}
         onClose={() =>

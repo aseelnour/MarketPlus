@@ -19,7 +19,7 @@ import {
   Folder,
   PlusCircle,
 } from "lucide-react";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import { motion } from "framer-motion";
 import { CategoryManager } from "../components/CategoryManager";
 import toast from "react-hot-toast";
@@ -65,7 +65,7 @@ export const DashboardPage: React.FC = () => {
       activeStoreId = localStorage.getItem("lastActiveStoreId");
       if (activeStoreId && activeStoreId !== "null") {
         navigate(`/dashboard?storeId=${activeStoreId}`, { replace: true });
-        return; 
+        return;
       }
     } else {
       localStorage.setItem("lastActiveStoreId", activeStoreId);
@@ -78,10 +78,9 @@ export const DashboardPage: React.FC = () => {
 
     const fetchDashboardData = async () => {
       try {
-        
         if (!activeStoreId || activeStoreId === "null") {
           console.warn("⚠️ No active store ID found");
-          
+
           try {
             const storesRes = await api.get("/seller/stores");
             const stores = storesRes.data.data.stores || [];
@@ -91,7 +90,7 @@ export const DashboardPage: React.FC = () => {
               const firstStoreId = activeStores[0]._id;
               localStorage.setItem("lastActiveStoreId", firstStoreId);
               navigate(`/dashboard?storeId=${firstStoreId}`);
-              return; 
+              return;
             } else {
               setError("No active stores found. Please create a store first.");
               setStats({
@@ -118,7 +117,7 @@ export const DashboardPage: React.FC = () => {
 
         if (response.data.success) {
           setStats(response.data.data.stats);
-          setError(null); 
+          setError(null);
         }
       } catch (error: any) {
         console.error("Dashboard error:", error);
@@ -126,11 +125,9 @@ export const DashboardPage: React.FC = () => {
         if (error.response?.status === 401) {
           setError("Session expired. Please login again.");
         } else if (error.response?.status === 404) {
-          
           console.warn("⚠️ Store not found, trying to get first active store");
 
           try {
-            
             const storesRes = await api.get("/seller/stores");
             const stores = storesRes.data.data.stores || [];
             const activeStores = stores.filter((s: any) => s.isActive === true);
@@ -139,7 +136,7 @@ export const DashboardPage: React.FC = () => {
               const firstStoreId = activeStores[0]._id;
               localStorage.setItem("lastActiveStoreId", firstStoreId);
               navigate(`/dashboard?storeId=${firstStoreId}`);
-              
+
               return;
             } else {
               setError("No active stores found. Please create a store first.");
@@ -320,7 +317,7 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-8" dir={isRTL ? "rtl" : "ltr"}>
-      { }
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -357,7 +354,7 @@ export const DashboardPage: React.FC = () => {
         </div>
       </motion.div>
 
-      { }
+      {}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat, index) => (
           <motion.div
@@ -384,9 +381,9 @@ export const DashboardPage: React.FC = () => {
         ))}
       </div>
 
-      { }
+      {}
 
-      { }
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -460,7 +457,7 @@ export const DashboardPage: React.FC = () => {
           </div>
         </motion.div>
 
-        { }
+        {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -539,7 +536,7 @@ export const DashboardPage: React.FC = () => {
         />
       </motion.div>
 
-      { }
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

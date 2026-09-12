@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSellerAuth } from "../hooks/useSellerAuth";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import {
@@ -80,7 +79,6 @@ export const AddProductPage: React.FC = () => {
       }
 
       try {
-        
         const storeRes = await api.get(`/seller/stores/${activeStoreId}`);
         if (storeRes.data.success) {
           const store = storeRes.data.data.store;
@@ -89,7 +87,7 @@ export const AddProductPage: React.FC = () => {
           const categoriesRes = await api.get("/seller/categories/store");
           if (categoriesRes.data.success) {
             const allCategories = categoriesRes.data.data.categories || [];
-            
+
             const filtered = allCategories.filter((cat: any) =>
               categoryIds.includes(cat._id),
             );
@@ -240,7 +238,7 @@ export const AddProductPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      { }
+      {}
       <div className="flex items-center gap-4">
         <button
           onClick={() => navigate(`/dashboard?storeId=${activeStoreId}`)}
@@ -258,16 +256,16 @@ export const AddProductPage: React.FC = () => {
         </div>
       </div>
 
-      { }
+      {}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="card max-w-3xl"
       >
         <form onSubmit={handleSubmit} className="space-y-6">
-          { }
+          {}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            { }
+            {}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
                 Store Category *
@@ -296,7 +294,7 @@ export const AddProductPage: React.FC = () => {
               )}
             </div>
 
-            { }
+            {}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
                 Your Category *
@@ -332,7 +330,7 @@ export const AddProductPage: React.FC = () => {
             </div>
           </div>
 
-          { }
+          {}
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.productTitle") || "Product Title"} *
@@ -353,7 +351,7 @@ export const AddProductPage: React.FC = () => {
             </div>
           </div>
 
-          { }
+          {}
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.description") || "Description"}
@@ -371,7 +369,7 @@ export const AddProductPage: React.FC = () => {
             />
           </div>
 
-          { }
+          {}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-1">
@@ -432,7 +430,7 @@ export const AddProductPage: React.FC = () => {
             </div>
           </div>
 
-          { }
+          {}
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.brand") || "Brand"}
@@ -447,7 +445,7 @@ export const AddProductPage: React.FC = () => {
             />
           </div>
 
-          { }
+          {}
           <div>
             <label className="block text-sm font-medium text-dark-300 mb-1">
               {t("dashboard.images") || "Images"}
@@ -487,7 +485,7 @@ export const AddProductPage: React.FC = () => {
             </p>
           </div>
 
-          { }
+          {}
           <div className="flex gap-3 pt-4 border-t border-white/10">
             <button
               type="submit"

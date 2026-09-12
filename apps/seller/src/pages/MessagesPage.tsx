@@ -1,8 +1,7 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import {
   ArrowLeft,
   Send,
@@ -199,7 +198,7 @@ export const SellerMessagesPage = () => {
 
   return (
     <div className="flex flex-col h-[calc(100vh-6rem)] max-w-7xl mx-auto space-y-4">
-      { }
+      {}
       <div className="flex items-center justify-between px-1">
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight">
@@ -209,15 +208,15 @@ export const SellerMessagesPage = () => {
         </div>
       </div>
 
-      { }
+      {}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-4 flex-1 bg-dark-900/40 backdrop-blur-md rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-        { }
+        {}
         <div
           className={`md:col-span-5 lg:col-span-4 border-r border-white/10 flex flex-col bg-dark-800/40 ${
             selectedConv ? "hidden md:flex" : "flex"
           }`}
         >
-          { }
+          {}
           <div className="p-3.5 border-b border-white/10 space-y-3">
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-dark-400" />
@@ -231,7 +230,7 @@ export const SellerMessagesPage = () => {
             </div>
           </div>
 
-          { }
+          {}
           <div className="flex-1 overflow-y-auto divide-y divide-white/5 custom-scrollbar">
             {filteredConversations.length === 0 ? (
               <div className="text-center py-16 px-4 text-dark-400 space-y-2">
@@ -253,7 +252,7 @@ export const SellerMessagesPage = () => {
                         : "hover:bg-white/5"
                     }`}
                   >
-                    { }
+                    {}
                     <div className="relative flex-shrink-0">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary/30 to-purple-500/30 border border-white/10 flex items-center justify-center text-white font-semibold text-sm">
                         {conv.customerName ? (
@@ -264,7 +263,7 @@ export const SellerMessagesPage = () => {
                       </div>
                     </div>
 
-                    { }
+                    {}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
                         <h3 className="text-xs font-semibold text-white truncate group-hover:text-primary transition-colors">
@@ -298,7 +297,7 @@ export const SellerMessagesPage = () => {
           </div>
         </div>
 
-        { }
+        {}
         <div
           className={`md:col-span-7 lg:col-span-8 flex flex-col bg-dark-900/60 ${
             !selectedConv ? "hidden md:flex" : "flex"
@@ -306,10 +305,10 @@ export const SellerMessagesPage = () => {
         >
           {selectedConv && activeConversation ? (
             <>
-              { }
+              {}
               <div className="p-3.5 px-5 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
                 <div className="flex items-center gap-3">
-                  { }
+                  {}
                   <button
                     onClick={() => setSelectedConv(null)}
                     className="md:hidden p-1.5 text-dark-400 hover:text-white rounded-lg hover:bg-white/5 transition"
@@ -333,7 +332,7 @@ export const SellerMessagesPage = () => {
                   </div>
                 </div>
 
-                { }
+                {}
                 <button
                   onClick={() => {
                     const storeId = getStoreId();
@@ -348,7 +347,7 @@ export const SellerMessagesPage = () => {
                 </button>
               </div>
 
-              { }
+              {}
               <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
                 {messages.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-dark-400 space-y-2 opacity-60">
@@ -391,7 +390,7 @@ export const SellerMessagesPage = () => {
                 <div ref={messagesEndRef} />
               </div>
 
-              { }
+              {}
               <div className="p-3.5 border-t border-white/10 bg-white/[0.01]">
                 <form
                   onSubmit={(e) => {
@@ -419,7 +418,6 @@ export const SellerMessagesPage = () => {
               </div>
             </>
           ) : (
-             
             <div className="flex-1 flex flex-col items-center justify-center text-dark-400 p-6 space-y-3">
               <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
                 <MessageSquare className="w-8 h-8 opacity-40 text-primary" />
