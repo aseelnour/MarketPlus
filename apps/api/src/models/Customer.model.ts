@@ -1,13 +1,12 @@
-
 import mongoose, { Schema } from "mongoose";
 import { ICustomer } from "../interfaces/customer.interface";
 
 const CustomerSchema = new Schema<ICustomer>(
   {
-    guestId: { type: String, unique: true, sparse: true }, 
+    guestId: { type: String, unique: true, sparse: true },
     fullName: { type: String, required: true },
     phone: { type: String, required: true, unique: true },
-    email: { type: String, default: "" },
+    email: { type: String, default: undefined, sparse: true },
     address: {
       street: { type: String },
       city: { type: String },
