@@ -91,7 +91,6 @@ router.get("/:conversationId/messages", async (req, res) => {
       .json({ success: false, message: "Failed to fetch messages" });
   }
 });
-
 router.post("/:orderId/messages", async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -113,29 +112,57 @@ router.post("/:orderId/messages", async (req, res) => {
       });
     }
 
-    let customer = await Customer.findOne({ guestId });
-    if (!customer) {
-      if (order.shippingAddress?.phone) {
-        customer = await Customer.findOne({
-          phone: order.shippingAddress.phone,
-        });
-      }
+    // 1) دوّري على customer بـ guestId
+    let customer = guestId ? await Customer.findOne({ guestId }) : null;
 
-      if (!customer && order.shippingAddress) {
-        customer = new Customer({
-          guestId: guestId,
-          fullName: order.shippingAddress.fullName || "Guest",
-          phone: order.shippingAddress.phone || "N/A",
-          email: order.shippingAddress.email || "",
-          address: {
-            street: order.shippingAddress.street || "",
-            city: order.shippingAddress.city || "",
-            state: order.shippingAddress.state || "",
-            country: order.shippingAddress.country || "",
-            zipCode: order.shippingAddress.zipCode || "",
-          },
-        });
+    // 2) لو ما لقيناه، دوّري بالإيميل
+    if (!customer && order.shippingAddress?.email) {
+      customer = await Customer.findOne({
+        email: order.shippingAddress.email,
+      });
+    }
+
+    // 3) لو لسا ما لقيناه، دوّري بالهاتف
+    if (!customer && order.shippingAddress?.phone) {
+      customer = await Customer.findOne({
+        phone: order.shippingAddress.phone,
+      });
+    }
+
+    // 4) لو لقينا customer موجود و guestId جديد، اربطيه
+    if (customer && guestId && customer.guestId !== guestId) {
+      customer.guestId = guestId;
+      await customer.save();
+    }
+
+    // 5) لو لسا ما لقيناش، سجّلي واحد جديد بأمان
+    if (!customer && order.shippingAddress) {
+      const emailToUse = order.shippingAddress.email?.trim() || undefined;
+      const phoneToUse = order.shippingAddress.phone?.trim() || undefined;
+
+      customer = new Customer({
+        guestId: guestId || undefined,
+        fullName: order.shippingAddress.fullName || "Guest",
+        phone: phoneToUse || "N/A",
+        email: emailToUse, // ما نحطش "" عشان ما تتعملش مشاكل بالـ unique index
+        address: {
+          street: order.shippingAddress.street || "",
+          city: order.shippingAddress.city || "",
+          state: order.shippingAddress.state || "",
+          country: order.shippingAddress.country || "",
+          zipCode: order.shippingAddress.zipCode || "",
+        },
+      });
+
+      try {
         await customer.save();
+      } catch (err: any) {
+        // لو حصل duplicate key (نادراً)، نرجع ندور على الإيميل
+        if (err.code === 11000 && emailToUse) {
+          customer = await Customer.findOne({ email: emailToUse });
+        } else {
+          throw err;
+        }
       }
     }
 
