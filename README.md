@@ -3,6 +3,7 @@
 ## 1. Project Overview
 
 A multi-vendor e-commerce platform that brings multiple sellers together in one place. Each seller can create and manage their own store, while customers can browse products and purchase items from different stores within the same platform.
+The Figma Design for the customer : https://www.figma.com/make/E5Le9q3IRUrcUFeqrKi5yZ/Customer-Dashboard-UI-UX-Design?code-node-id=0-9&fullscreen=1 
 
 ## 2. Project Goals
 
