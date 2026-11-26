@@ -1,78 +1,72 @@
-# مشروع: منصة سوق إلكتروني متعددة المتاجر
+# Project: Multi-Vendor Marketplace Platform
 
-# Multi-Vendor Marketplace
+## 1. Project Overview
 
-## 1. فكرة المشروع (Project Overview)
+A multi-vendor e-commerce platform that brings multiple sellers together in one place. Each seller can create and manage their own store, while customers can browse products and purchase items from different stores within the same platform.
 
-منصة تجارة إلكترونية متعددة المتاجر (Multi-Vendor Marketplace) تجمع عدة بائعين في مكان واحد، بحيث يستطيع كل بائع إنشاء متجره الخاص وإدارة منتجاته، بينما يستطيع العملاء تصفح المنتجات والشراء من متاجر مختلفة داخل نفس المنصة.
+## 2. Project Goals
 
-# 2. أهداف المشروع (Project Goals)
-
-- بناء منصة Marketplace تدعم عدة متاجر وبائعين.
-- توفير نظام متكامل لإدارة المتاجر والمنتجات والطلبات.
-- بناء لوحات تحكم مختلفة حسب نوع المستخدم.
-- تطبيق مفاهيم Full Stack Development و System Design.
-- إنشاء مشروع قابل للتوسع يشبه الأنظمة التجارية الحقيقية.
+- Build a marketplace platform that supports multiple stores and sellers.
+- Provide a complete system for managing stores, products, and orders.
+- Build different dashboards based on user roles.
+- Apply Full Stack Development and System Design concepts.
+- Create a scalable project similar to real-world commercial platforms.
 
 ---
 
-# 3. المستخدمون (User Roles)
+## 3. User Roles
 
-# Customer (العميل)
+### Customer
 
-## الصلاحيات:
+**Permissions and Features:**
 
-- إنشاء حساب وتسجيل الدخول.
-- تصفح المنتجات والمتاجر.
-- البحث عن المنتجات.
-- إضافة المنتجات إلى السلة.
-- إضافة المنتجات إلى المفضلة.
-- تنفيذ عمليات الشراء.
-- متابعة الطلبات.
-- تقييم المنتجات.
-- التواصل مع البائعين.
-- مقارنة المنتجات.
-- استقبال توصيات شخصية.
+- Create an account and log in.
+- Browse products and stores.
+- Search for products.
+- Add products to the shopping cart.
+- Add products to the wishlist.
+- Complete purchases.
+- Track orders.
+- Review and rate products.
+- Communicate with sellers.
+- Compare products.
+- Receive personalized recommendations.
 
----
+### Seller
 
-# Seller (البائع)
+**Permissions and Features:**
 
-## الصلاحيات:
+- Create a personal store.
+- Update store information.
+- Add products.
+- Edit and delete products.
+- Manage inventory.
+- Manage orders.
+- Track earnings.
+- Create discount coupons.
+- Communicate with customers.
+- View store analytics and statistics.
 
-- إنشاء متجر خاص.
-- تعديل معلومات المتجر.
-- إضافة المنتجات.
-- تعديل وحذف المنتجات.
-- إدارة المخزون.
-- إدارة الطلبات.
-- متابعة الأرباح.
-- إنشاء كوبونات خصم.
-- التواصل مع العملاء.
-- مشاهدة إحصائيات المتجر.
+### Admin
 
----
+**Permissions and Features:**
 
-# Admin (المدير)
-
-## الصلاحيات:
-
-- إدارة المستخدمين.
-- إدارة المتاجر.
-- الموافقة على حسابات البائعين.
-- إدارة المنتجات.
-- إدارة التصنيفات.
-- متابعة البلاغات.
-- مشاهدة إحصائيات المنصة.
-- إدارة محتوى النظام.
+- Manage users.
+- Manage stores.
+- Approve seller accounts.
+- Manage products.
+- Manage categories.
+- Monitor reports.
+- View platform-wide analytics and statistics.
+- Manage system content.
 
 ---
 
-# 4. الخصائص الأساسية للنظام (Core Features)
+## 4. Core Features
 
-# Authentication System
+### 4.1 Authentication System
 
-يشمل:
+Includes:
 
 - Register
 - Login
@@ -83,95 +77,83 @@
 - JWT Authentication
 - Refresh Token
 
----
+### 4.2 Marketplace
 
-# Marketplace
+The main marketplace page includes:
 
-واجهة السوق الرئيسية تحتوي على:
+- All products.
+- All stores.
+- Categories.
+- Featured products.
+- Best-selling products.
+- Latest products.
+- Deals and discounts.
 
-- جميع المنتجات.
-- جميع المتاجر.
-- التصنيفات.
-- المنتجات المميزة.
-- المنتجات الأكثر مبيعًا.
-- أحدث المنتجات.
-- العروض والخصومات.
+### 4.3 Store Management
 
----
+Each seller owns a personal store containing:
 
-# Store Management
+- Store name.
+- Store logo.
+- Cover image.
+- Store description.
+- Contact information.
+- Store rating.
+- Store products.
+- Number of followers.
 
-كل بائع يمتلك متجرًا خاصًا يحتوي على:
+### 4.4 Product Management
 
-- اسم المتجر.
-- شعار المتجر.
-- صورة الغلاف.
-- وصف المتجر.
-- معلومات التواصل.
-- تقييم المتجر.
-- المنتجات الخاصة بالمتجر.
-- عدد المتابعين.
+Sellers can:
 
----
+- Add products.
+- Edit products.
+- Delete products.
+- Upload multiple product images.
+- Set product prices.
+- Set discount prices.
+- Manage product quantities.
+- Add product variants.
 
-# Product Management
+Product variants include:
 
-البائع يستطيع:
+- Color.
+- Size.
+- Type.
 
-- إضافة منتج.
-- تعديل منتج.
-- حذف منتج.
-- رفع عدة صور.
-- تحديد السعر.
-- تحديد الخصم.
-- إدارة الكمية.
-- إضافة خيارات المنتج.
+### 4.5 Shopping Cart
 
-مثل:
+Customers can:
 
-- اللون.
-- الحجم.
-- النوع.
+- Add products to the cart.
+- Remove products from the cart.
+- Update product quantities.
+- Save products for later purchases.
 
----
+### 4.6 Checkout
 
-# Shopping Cart
+Includes:
 
-العميل يستطيع:
+- Select a shipping address.
+- Choose a payment method.
+- Review the order.
+- Confirm the purchase.
 
-- إضافة منتجات للسلة.
-- حذف منتجات.
-- تعديل الكمية.
-- حفظ المنتجات للشراء لاحقًا.
+### 4.7 Orders Management
 
----
+**Customer:**
 
-# Checkout
+- View orders.
+- Track orders.
+- Check order status.
 
-يشمل:
+**Seller:**
 
-- اختيار عنوان الشحن.
-- اختيار طريقة الدفع.
-- مراجعة الطلب.
-- تأكيد عملية الشراء.
+- View received orders.
+- Accept or reject orders.
+- Update order status.
 
----
-
-# Orders Management
-
-## Customer:
-
-- مشاهدة الطلبات.
-- تتبع الطلب.
-- معرفة حالة الطلب.
-
-## Seller:
-
-- مشاهدة الطلبات.
-- قبول أو رفض الطلب.
-- تحديث حالة الطلب.
-
-حالات الطلب:
+**Order Statuses:**
 
 - Pending
 - Confirmed
@@ -179,32 +161,30 @@
 - Delivered
 - Cancelled
 
+### 4.8 Reviews System
+
+Each product supports:
+
+- Star ratings.
+- Written comments.
+- Review images.
+- Customer feedback.
+
+### 4.9 Wishlist
+
+Customers can:
+
+- Add products to their wishlist.
+- Remove products from their wishlist.
+- View their saved products.
+
 ---
 
-# Reviews System
+## 7. Dashboards
 
-كل منتج يحتوي على:
+### Customer Dashboard
 
-- تقييم بالنجوم.
-- تعليق.
-- صور.
-- تقييمات العملاء.
-
----
-
-# Wishlist
-
-العميل يستطيع:
-
-- إضافة منتجات للمفضلة.
-- حذف منتجات.
-- مشاهدة قائمة المفضلة.
-
-# 7. Dashboards
-
-# Customer Dashboard
-
-يحتوي على:
+Includes:
 
 - Profile
 - Orders
@@ -213,11 +193,9 @@
 - Notifications
 - Saved Addresses
 
----
+### Seller Dashboard
 
-# Seller Dashboard
-
-يحتوي على:
+Includes:
 
 - Store Overview
 - Products Management
@@ -229,11 +207,9 @@
 - Messages
 - AI Tools
 
----
+### Admin Dashboard
 
-# Admin Dashboard
-
-يحتوي على:
+Includes:
 
 - Users Management
 - Sellers Management
@@ -245,9 +221,9 @@
 
 ---
 
-# 8. Database Design
+## 8. Database Design
 
-# Users
+### Users
 
 Fields:
 
@@ -262,9 +238,7 @@ Fields:
 - status
 - createdAt
 
----
-
-# Stores
+### Stores
 
 Fields:
 
@@ -279,9 +253,7 @@ Fields:
 - rating
 - followersCount
 
----
-
-# Categories
+### Categories
 
 Fields:
 
@@ -290,9 +262,7 @@ Fields:
 - icon
 - parentCategoryId
 
----
-
-# Products
+### Products
 
 Fields:
 
@@ -309,9 +279,7 @@ Fields:
 - AI_Summary
 - createdAt
 
----
-
-# ProductImages
+### ProductImages
 
 Fields:
 
@@ -319,9 +287,7 @@ Fields:
 - productId
 - imageUrl
 
----
-
-# ProductVariants
+### ProductVariants
 
 Fields:
 
@@ -332,18 +298,14 @@ Fields:
 - quantity
 - price
 
----
-
-# Cart
+### Cart
 
 Fields:
 
 - id
 - userId
 
----
-
-# CartItems
+### CartItems
 
 Fields:
 
@@ -352,9 +314,7 @@ Fields:
 - productId
 - quantity
 
----
-
-# Wishlist
+### Wishlist
 
 Fields:
 
@@ -362,9 +322,7 @@ Fields:
 - userId
 - productId
 
----
-
-# Orders
+### Orders
 
 Fields:
 
@@ -375,9 +333,7 @@ Fields:
 - status
 - createdAt
 
----
-
-# OrderItems
+### OrderItems
 
 Fields:
 
@@ -388,9 +344,7 @@ Fields:
 - quantity
 - price
 
----
-
-# Reviews
+### Reviews
 
 Fields:
 
@@ -401,9 +355,7 @@ Fields:
 - comment
 - createdAt
 
----
-
-# Messages
+### Messages
 
 Fields:
 
@@ -413,9 +365,7 @@ Fields:
 - message
 - createdAt
 
----
-
-# Notifications
+### Notifications
 
 Fields:
 
@@ -426,9 +376,7 @@ Fields:
 - type
 - isRead
 
----
-
-# AI Conversations
+### AI Conversations
 
 Fields:
 
@@ -438,9 +386,7 @@ Fields:
 - response
 - createdAt
 
----
-
-# Recently Viewed
+### Recently Viewed
 
 Fields:
 
@@ -448,9 +394,7 @@ Fields:
 - userId
 - productId
 
----
-
-# Store Followers
+### Store Followers
 
 Fields:
 
@@ -458,9 +402,7 @@ Fields:
 - storeId
 - userId
 
----
-
-# Reports
+### Reports
 
 Fields:
 
@@ -473,9 +415,9 @@ Fields:
 
 ---
 
-# 9. Tech Stack
+## 9. Tech Stack
 
-## Frontend
+### Frontend
 
 - React
 - TypeScript
@@ -485,51 +427,39 @@ Fields:
 - React Hook Form
 - Zod
 
----
-
-## Backend
+### Backend
 
 - Node.js
 - Express.js
 - TypeScript
 
----
-
-## Database
+### Database
 
 - PostgreSQL
 - Prisma ORM
 
----
-
-## Storage
+### Storage
 
 - Cloudinary
 
----
-
-## Realtime
+### Realtime Communication
 
 - Socket.IO
 
----
-
-## Search
+### Search
 
 - Meilisearch
 
----
-
-## DevOps
+### DevOps
 
 - Docker
 - GitHub Actions
 
 ---
 
-# 10. Development Phases
+## 10. Development Phases
 
-# Phase 1 - MVP
+### Phase 1 – MVP
 
 - Authentication
 - Users
@@ -539,9 +469,7 @@ Fields:
 - Marketplace
 - Product Details
 
----
-
-# Phase 2
+### Phase 2
 
 - Cart
 - Checkout
@@ -550,137 +478,142 @@ Fields:
 - Wishlist
 - Seller Dashboard
 
----
-
-# Phase 3
+### Phase 3
 
 - Chat System
 - Notifications
 - Coupons
 - Analytics
 
----
+### Future Improvements
 
-# Future Improvements
-
-- Visual Search باستخدام الصور.
-- نظام أسئلة وأجوبة للمنتجات.
-- متابعة المتاجر.
-- إشعارات العروض.
-- نظام اقتراحات متقدم باستخدام Machine Learning.
-
-الـ Main Category
-تبقى عامة وبموافقة الأدمن،
-لكن السيلر ما يحط منتجاته مباشرة تحتها،
-بل ينظمها داخل أقسام خاصة فيه
-(Seller Categories).
-ولما يضيف منتج،
-يختار أولًا الـ
-Main Category
-ثم يختار واحدة من الـ
-Seller Categories
-التابعة إله ضمن هذا القسم.
+- Visual Search using product images.
+- Product Questions and Answers system.
+- Store Following.
+- Deal and discount notifications.
+- Advanced recommendation system using Machine Learning.
 
 ---
 
-Main Category (بوافق عليها الأدمن)
-هاي اللي أنتو عملتوها بالفعل (add-category).
-مثال:
-Electronics
-Fashion
-Home
-Sports
-هاي بتكون Global، وكل السيّلرز بشوفوها.
+# 11. Category Management System
 
----
+The category system follows a two-level structure: **Main Categories** and **Seller Categories**.
 
-Seller Category (خاصة بكل Seller)
-كل Seller بقدر يعمل Categories خاصة فيه تحت الـ
-Main Categories.
-مثلاً:
-Seller اسمه Ahmad
-عمل:
+The Main Categories are global categories managed and approved by the Admin. Sellers cannot add their products directly under these categories. Instead, each seller organizes their products into their own Seller Categories.
+
+When adding a product, the seller must first select a Main Category and then select one of their own Seller Categories that belongs to the selected Main Category.
+
+### 11.1 Main Categories (Admin-Managed)
+
+These are the global categories already implemented through the `add-category` functionality.
+
+Examples:
+
+- Electronics
+- Fashion
+- Home
+- Sports
+
+**Rules:**
+
+- Main Categories are global and shared across the platform.
+- All sellers can view and use them.
+- Only the Admin can create, manage, and approve Main Categories.
+
+### 11.2 Seller Categories (Seller-Specific)
+
+Each seller can create their own categories under the available Main Categories.
+
+For example:
+
+**Seller: Ahmad**
+
 Main Category: Electronics
-وبعدين أنشأ Seller Categories:
-Phones
-Laptops
-Accessories
-Used Devices
 
-أما Seller ثاني ممكن بنفس الـ Main Category يعمل:
-Gaming,Cameras ,Smart Home
-يعني كل Seller عنده Structure خاص فيه.
+Seller Categories:
 
-############customer page ################
+- Phones
+- Laptops
+- Accessories
+- Used Devices
 
-المهام القادمة لـ Customer App:
+Another seller can create different categories under the same Main Category.
 
-1. Store Page (صفحة السوق)
-   عرض جميع الأسواق (Sellers)
+**Seller: Another Seller**
 
-فلترة حسب التصنيف
+Main Category: Electronics
 
-عرض معلومات السوق
+Seller Categories:
 
-2. Store Details Page (صفحة سوق معين)
-   عرض معلومات السوق
+- Gaming
+- Cameras
+- Smart Home
 
-عرض أقسام السوق (Seller Categories)
+**Important Rules:**
 
-عرض منتجات كل قسم
+- Each seller manages their own Seller Categories.
+- Seller Categories are private to the seller who created them.
+- Different sellers can have different category structures under the same Main Category.
+- Seller Categories must always be associated with a Main Category.
+- When adding a product, the seller must select a Main Category first, followed by one of their own Seller Categories under that Main Category.
 
-متابعة السوق (Follow)
+---
 
-3. Product Details Page (صفحة منتج)
-   عرض تفاصيل المنتج (صور، سعر، وصف)
+# 12. Customer App – Upcoming Tasks
 
-تقييمات العملاء
+The following features need to be implemented in the Customer Application.
 
-إضافة إلى السلة
+### 12.1 Store Page (Marketplace Page)
 
-إضافة إلى المفضلة
+- Display all available stores (sellers).
+- Filter stores by category.
+- Display store information.
 
-منتجات مشابهة
+### 12.2 Store Details Page
 
-4. Search Page (صفحة البحث)
-   عرض نتائج البحث
+- Display store information.
+- Display the store's Seller Categories.
+- Display products belonging to each category.
+- Allow customers to follow the store.
 
-فلترة حسب التصنيف
+### 12.3 Product Details Page
 
-فلترة حسب السعر
+- Display complete product details (images, price, and description).
+- Display customer reviews.
+- Add products to the shopping cart.
+- Add products to the wishlist.
+- Display similar products.
 
-5. Cart Page (صفحة السلة)
-   عرض المنتجات في السلة
+### 12.4 Search Page
 
-تحديث الكميات
+- Display search results.
+- Filter products by category.
+- Filter products by price.
 
-حذف منتج
+### 12.5 Cart Page
 
-إجمالي السعر
+- Display products in the shopping cart.
+- Update product quantities.
+- Remove products from the cart.
+- Calculate the total price.
+- Provide a Checkout button.
 
-زر Checkout
+### 12.6 Checkout Page
 
-6. Checkout Page (صفحة إتمام الطلب)
-   عنوان الشحن
+- Select a shipping address.
+- Select a payment method.
+- Review the order.
+- Confirm the purchase.
 
-طريقة الدفع
+### 12.7 Login / Register Pages (Optional)
 
-مراجعة الطلب
+- Allow customers to log in.
+- Allow new customers to create an account.
+- Maintain user sessions.
 
-تأكيد الطلب
+### 12.8 Customer Dashboard
 
-7. Login/Register (صفحات تسجيل الدخول)(optional)
-   تسجيل دخول العميل
-
-إنشاء حساب جديد
-
-حفظ الجلسة
-
-8. Customer Dashboard (لوحة تحكم العميل)
-   الطلبات السابقة
-
-المفضلة (Wishlist)
-
-الملف الشخصي
-
-عناوين الشحن
+- View previous orders.
+- Manage the wishlist.
+- Manage the customer profile.
+- Manage shipping addresses.
